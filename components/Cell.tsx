@@ -7,9 +7,15 @@ interface Props {
 }
 
 export const Cell: React.FC<Props> = ({ width }) => {
+  const [rawValue, setRawValue] = useState<string>("");
+
   return (
     <>
-      <input className="cell"></input>
+      <input
+        className="cell"
+        value={rawValue}
+        onChange={(e) => setRawValue(e.target.value)}
+      ></input>
       <style jsx>{`
         .cell {
           width: ${width}px;
