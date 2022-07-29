@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Cell } from "./Cell";
+import { Row } from "./Row";
 
 const alpha = Array.from(Array(26)).map((e, i) => i + 65);
 const alphabet = alpha.map((x) => String.fromCharCode(x));
@@ -23,26 +24,15 @@ export const Sheet: React.FC = () => {
           })}
         </div>
         <div className="sheetBody">
-          <div className="sidebar">
-            {rows.map((row, i) => {
-              return (
-                <div key={i} className="sidebarcol">
-                  {i + 1}
-                </div>
-              );
-            })}
-          </div>
-          <div>
-            {rows.map((row, i) => {
-              return (
-                <div key={i} className="sheetRow">
-                  {columns.map((col, j) => {
-                    return <Cell x={j} y={i} key={j} width={colWidth} />;
-                  })}
-                </div>
-              );
-            })}
-          </div>
+          {rows.map((row, i) => {
+            return (
+              <Row key={i} row={i}>
+                {columns.map((col, j) => {
+                  return <Cell x={j} y={i} key={j} width={colWidth} />;
+                })}
+              </Row>
+            );
+          })}
         </div>
       </div>
       <style jsx>{`
@@ -66,9 +56,6 @@ export const Sheet: React.FC = () => {
         .cellHeader:first-of-type {
           width: 40px;
         }
-        .sheetBody {
-          display: flex;
-        }
         .sidebar {
           width: 40px;
           flex-shrink: 0;
@@ -81,11 +68,6 @@ export const Sheet: React.FC = () => {
         }
         .sidebarcol:first-of-type {
           border-top: 1px solid #c0c0c0;
-        }
-        .sheetRow {
-          height: 30px;
-          display: flex;
-          line-heigth: 30px;
         }
       `}</style>
     </>

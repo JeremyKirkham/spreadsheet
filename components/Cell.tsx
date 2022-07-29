@@ -16,6 +16,8 @@ export const Cell: React.FC<Props> = ({ width }) => {
           height: 30px;
           flex-shrink: 0;
           border: none;
+          border-left: solid 1px white;
+          border-top: solid 1px white;
           border-right: solid 1px #f2f2f2;
           border-bottom: solid 1px #f2f2f2;
         }
