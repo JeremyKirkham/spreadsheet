@@ -26,6 +26,7 @@ export const Cell: React.FC<Props> = ({ width }) => {
           border-top: solid 1px white;
           border-right: solid 1px #f2f2f2;
           border-bottom: solid 1px #f2f2f2;
+          outline: none;
         }
         .cell:focus {
           border: solid 1px blue;
