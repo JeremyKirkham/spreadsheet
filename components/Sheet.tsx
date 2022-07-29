@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SelectedCellProvider } from "../contexts/SelectedCellContext";
 import { Cell } from "./Cell";
 import { Row } from "./Row";
 
@@ -12,29 +13,31 @@ export const Sheet: React.FC = () => {
 
   return (
     <>
-      <div className="sheet">
-        <div className="sheetHeader">
-          <div className="cellHeader"></div>
-          {columns.map((c, i) => {
-            return (
-              <div key={i} className="cellHeader">
-                {c}
-              </div>
-            );
-          })}
+      <SelectedCellProvider>
+        <div className="sheet">
+          <div className="sheetHeader">
+            <div className="cellHeader"></div>
+            {columns.map((c, i) => {
+              return (
+                <div key={i} className="cellHeader">
+                  {c}
+                </div>
+              );
+            })}
+          </div>
+          <div className="sheetBody">
+            {rows.map((row, i) => {
+              return (
+                <Row key={i} row={i}>
+                  {columns.map((col, j) => {
+                    return <Cell x={col} y={i} key={j} width={colWidth} />;
+                  })}
+                </Row>
+              );
+            })}
+          </div>
         </div>
-        <div className="sheetBody">
-          {rows.map((row, i) => {
-            return (
-              <Row key={i} row={i}>
-                {columns.map((col, j) => {
-                  return <Cell x={j} y={i} key={j} width={colWidth} />;
-                })}
-              </Row>
-            );
-          })}
-        </div>
-      </div>
+      </SelectedCellProvider>
       <style jsx>{`
         .sheet {
           overflow-y: auto;
@@ -52,14 +55,10 @@ export const Sheet: React.FC = () => {
           background: #f2f2f2;
           height: 30px;
           border-right: solid 1px #c0c0c0;
+          border-bottom: solid 1px #c0c0c0;
         }
         .cellHeader:first-of-type {
-          width: 40px;
-        }
-        .sidebar {
-          width: 40px;
-          flex-shrink: 0;
-          text-align: center;
+          width: 50px;
         }
         .sidebarcol {
           height: 30px;

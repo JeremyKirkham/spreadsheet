@@ -1,19 +1,27 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SelectedCellContext } from "../contexts/SelectedCellContext";
 
 interface Props {
   width: number;
-  x: number;
+  x: string;
   y: number;
 }
 
-export const Cell: React.FC<Props> = ({ width }) => {
+export const Cell: React.FC<Props> = ({ x, y, width }) => {
+  const selectedCell = useContext(SelectedCellContext);
   const [rawValue, setRawValue] = useState<string>("");
+
+  const onSelect = () => {
+    selectedCell.setX(x);
+    selectedCell.setY(y);
+  };
 
   return (
     <>
       <input
         className="cell"
         value={rawValue}
+        onFocus={onSelect}
         onChange={(e) => setRawValue(e.target.value)}
       ></input>
       <style jsx>{`
