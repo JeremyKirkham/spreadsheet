@@ -3,16 +3,16 @@ import { createContext, PropsWithChildren, useState } from "react";
 const PWORD_KEY = "pword";
 
 interface SelectedCellContext {
-  x: string;
-  y: number;
+  x?: string;
+  y?: number;
   rawValue?: string;
-  setX: (x: string) => void;
-  setY: (y: number) => void;
+  setX: (x?: string) => void;
+  setY: (y?: number) => void;
   setRawValue: (rawValue: string) => void;
 }
 
 export const SelectedCellContext = createContext<SelectedCellContext>({
-  x: "A",
+  x: "foo",
   y: 1,
   setX: (_x) => {},
   setY: (_x) => {},
@@ -22,8 +22,8 @@ export const SelectedCellContext = createContext<SelectedCellContext>({
 export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const [x, setX] = useState("A");
-  const [y, setY] = useState(1);
+  const [x, setX] = useState<string>();
+  const [y, setY] = useState<number>();
   const [rawValue, setRawValue] = useState<string>();
 
   return (

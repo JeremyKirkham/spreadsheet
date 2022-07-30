@@ -11,9 +11,14 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const selectedCell = useContext(SelectedCellContext);
   const [rawValue, setRawValue] = useState<string>("");
 
-  const onSelect = () => {
+  const onFocus = () => {
     selectedCell.setX(x);
     selectedCell.setY(y);
+  };
+
+  const onBlur = () => {
+    selectedCell.setX();
+    selectedCell.setY();
   };
 
   return (
@@ -21,7 +26,8 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
       <input
         className="cell"
         value={rawValue}
-        onFocus={onSelect}
+        onFocus={onFocus}
+        onBlur={onBlur}
         onChange={(e) => setRawValue(e.target.value)}
       ></input>
       <style jsx>{`
