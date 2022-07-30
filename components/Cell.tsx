@@ -1,5 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { SelectedCellContext } from "../contexts/SelectedCellContext";
+import { Parser as FormulaParser } from "hot-formula-parser";
 
 interface Props {
   width: number;
@@ -7,9 +8,12 @@ interface Props {
   y: number;
 }
 
+const parser = new FormulaParser();
+
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const selectedCell = useContext(SelectedCellContext);
   const [rawValue, setRawValue] = useState<string>("");
+  const [calculatedValue, setCalculatedValue] = useState<string>("");
   const isSelected = selectedCell.x === x && selectedCell.y === y;
 
   useEffect(() => {
@@ -17,6 +21,15 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
       setRawValue(selectedCell.rawValue ?? "");
     }
   }, [isSelected, selectedCell.rawValue]);
+
+  useEffect(() => {
+    if (rawValue.charAt(0) == "=") {
+      const calculated = parser.parse(rawValue.substring(1));
+      setCalculatedValue(calculated.result);
+    } else {
+      setCalculatedValue(rawValue);
+    }
+  }, [rawValue]);
 
   const isHighlighted = (): boolean => {
     if (selectedCell.highlightedRange != null) {
