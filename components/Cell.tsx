@@ -84,29 +84,33 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
 
   return (
     <>
-      <input
-        className="cell"
-        value={rawValue}
-        onFocus={onFocus}
-        onMouseOver={onMouseOver}
-        onChange={onChange}
-      ></input>
-      <div className="dragger"></div>
+      <div className="cell">
+        <input
+          value={isSelected ? rawValue : calculatedValue}
+          onFocus={onFocus}
+          onMouseOver={onMouseOver}
+          onChange={onChange}
+        ></input>
+        <div className="dragger"></div>
+      </div>
       <style jsx>{`
         .cell {
           width: ${width}px;
           height: 30px;
           flex-shrink: 0;
-          border: none;
+          display: flex;
           border-left: solid 1px rgba(0, 0, 0, 0);
           border-top: solid 1px rgba(0, 0, 0, 0);
           border-right: solid 1px #e2e3e3;
           border-bottom: solid 1px #e2e3e3;
-          outline: none;
           background: ${isHighlighted() ? "#E8F0FD" : null};
-          cursor: default;
-          margin-right: ${isSelected ? "-8px" : "none"};
           border: ${isSelected ? "solid 1px blue" : "default"};
+        }
+        input {
+          outline: none;
+          border: none;
+          width: ${width - 2}px;
+          cursor: default;
         }
         .dragger {
           width: 8px;
@@ -114,7 +118,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
           background: blue;
           position: relative;
           top: 24px;
-          left: 2px;
+          left: -5px;
           z-index: 999999;
           flex-shrink: 0;
           display: ${isSelected ? "block" : "none"};
