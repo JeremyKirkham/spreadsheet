@@ -33,6 +33,13 @@ export const SheetMenu: React.FC = () => {
             ? `${selectedCell.x}${selectedCell.y}`
             : null}
         </div>
+        <div className="cellInput">
+          <input
+            placeholder="Cell input"
+            value={selectedCell.rawValue}
+            onChange={(e) => selectedCell.setRawValue(e.target.value)}
+          />
+        </div>
       </div>
       <style jsx>{`
         .secondmenu {
@@ -40,11 +47,23 @@ export const SheetMenu: React.FC = () => {
           width: 100%;
           background: #f2f2f2;
           border-bottom: 1px solid #c0c0c0;
+          display: flex;
         }
         .selectedCells {
           border-right: 1px solid #c0c0c0;
           height: 30px;
           width: 60px;
+          padding: 0px 4px;
+        }
+        .cellInput {
+          flex-grow: 1;
+          background: white;
+        }
+        input {
+          outline: none;
+          border: none;
+          height: 29px;
+          width: 100%;
           padding: 0px 4px;
         }
       `}</style>

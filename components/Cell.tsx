@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { SelectedCellContext } from "../contexts/SelectedCellContext";
 
 interface Props {
@@ -10,8 +10,13 @@ interface Props {
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const selectedCell = useContext(SelectedCellContext);
   const [rawValue, setRawValue] = useState<string>("");
-
   const isSelected = selectedCell.x === x && selectedCell.y === y;
+
+  useEffect(() => {
+    if (isSelected) {
+      setRawValue(selectedCell.rawValue ?? "");
+    }
+  }, [isSelected, selectedCell.rawValue]);
 
   const isHighlighted = (): boolean => {
     if (selectedCell.highlightedRange != null) {
@@ -35,6 +40,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const onFocus = () => {
     selectedCell.setX(x);
     selectedCell.setY(y);
+    selectedCell.setRawValue(rawValue);
     selectedCell.setHighlightedRange({
       start: {
         x,
@@ -47,9 +53,9 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
     });
   };
 
-  const onBlur = () => {
-    selectedCell.setX();
-    selectedCell.setY();
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    selectedCell.setRawValue(e.target.value);
+    setRawValue(e.target.value);
   };
 
   const onMouseOver = () => {
@@ -69,9 +75,8 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
         className="cell"
         value={rawValue}
         onFocus={onFocus}
-        onBlur={onBlur}
         onMouseOver={onMouseOver}
-        onChange={(e) => setRawValue(e.target.value)}
+        onChange={onChange}
       ></input>
       <div className="dragger"></div>
       <style jsx>{`
@@ -88,9 +93,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
           background: ${isHighlighted() ? "#E8F0FD" : null};
           cursor: default;
           margin-right: ${isSelected ? "-8px" : "none"};
-        }
-        .cell:focus {
-          border: solid 1px blue;
+          border: ${isSelected ? "solid 1px blue" : "default"};
         }
         .dragger {
           width: 8px;
