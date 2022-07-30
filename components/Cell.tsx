@@ -111,6 +111,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
           border: none;
           width: ${width - 2}px;
           cursor: default;
+          background: none;
         }
         .dragger {
           width: 8px;
