@@ -40,7 +40,7 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, columns }) => {
           border-bottom: solid 1px #c0c0c0;
         }
         .cellHeader:first-of-type {
-          width: 50px;
+          width: 60px;
         }
         .cellHeader.selected {
           background: #e8eaed;

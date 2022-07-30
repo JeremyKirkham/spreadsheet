@@ -4,11 +4,35 @@ import { SelectedCellContext } from "../contexts/SelectedCellContext";
 export const SheetMenu: React.FC = () => {
   const selectedCell = useContext(SelectedCellContext);
 
+  const range = () => {
+    if (selectedCell.highlightedRange != null) {
+      const start = selectedCell.highlightedRange.start;
+      const end = selectedCell.highlightedRange.end;
+
+      if (start.x === end.x && start.y === end.y) {
+        return null;
+      }
+
+      const startY = start.y < end.y ? start.y : end.y;
+      const startX = start.x < end.x ? start.x : end.x;
+      const endY = start.y < end.y ? end.y : start.y;
+      const endX = start.x < end.x ? end.x : start.x;
+
+      return `${startX}${startY}:${endX}${endY}`;
+    }
+    return null;
+  };
+
   return (
     <>
       <div className="secondmenu">
-        {selectedCell.x}
-        {selectedCell.y}
+        <div className="selectedCells">
+          {range()
+            ? range()
+            : selectedCell.x
+            ? `${selectedCell.x}${selectedCell.y}`
+            : null}
+        </div>
       </div>
       <style jsx>{`
         .secondmenu {
@@ -16,6 +40,12 @@ export const SheetMenu: React.FC = () => {
           width: 100%;
           background: #f2f2f2;
           border-bottom: 1px solid #c0c0c0;
+        }
+        .selectedCells {
+          border-right: 1px solid #c0c0c0;
+          height: 30px;
+          width: 60px;
+          padding: 0px 4px;
         }
       `}</style>
     </>
