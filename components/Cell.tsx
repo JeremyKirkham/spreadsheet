@@ -80,10 +80,10 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
           height: 30px;
           flex-shrink: 0;
           border: none;
-          border-left: solid 1px white;
-          border-top: solid 1px white;
-          border-right: solid 1px #f2f2f2;
-          border-bottom: solid 1px #f2f2f2;
+          border-left: solid 1px rgba(0, 0, 0, 0);
+          border-top: solid 1px rgba(0, 0, 0, 0);
+          border-right: solid 1px #e2e3e3;
+          border-bottom: solid 1px #e2e3e3;
           outline: none;
           background: ${isHighlighted() ? "#E8F0FD" : null};
           cursor: default;
