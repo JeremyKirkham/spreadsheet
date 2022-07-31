@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { ChangeEvent, useContext } from "react";
 import { SelectedCellContext } from "../contexts/SelectedCellContext";
 
 export const SheetMenu: React.FC = () => {
@@ -23,6 +23,10 @@ export const SheetMenu: React.FC = () => {
     return null;
   };
 
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    selectedCell.setCellValue(selectedCell.x!, selectedCell.y!, e.target.value);
+  };
+
   return (
     <>
       <div className="secondmenu">
@@ -36,8 +40,11 @@ export const SheetMenu: React.FC = () => {
         <div className="cellInput">
           <input
             placeholder="Cell input"
-            value={selectedCell.rawValue}
-            onChange={(e) => selectedCell.setRawValue(e.target.value)}
+            value={
+              selectedCell.cellValues[`${selectedCell.x}${selectedCell.y}`]
+                ?.rawValue ?? ""
+            }
+            onChange={onChange}
           />
         </div>
       </div>

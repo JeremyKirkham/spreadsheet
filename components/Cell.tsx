@@ -2,6 +2,17 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { SelectedCellContext } from "../contexts/SelectedCellContext";
 import { Parser as FormulaParser } from "hot-formula-parser";
 
+interface CellPos {
+  index: number;
+  label: string;
+  isAbsolute: boolean;
+}
+interface CellCoord {
+  label: string;
+  row: CellPos;
+  column: CellPos;
+}
+
 interface Props {
   width: number;
   x: string;
@@ -17,10 +28,21 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const isSelected = selectedCell.x === x && selectedCell.y === y;
 
   useEffect(() => {
+    const fn = (cellCoord: CellCoord, done: any) => {
+      const cell = selectedCell.cellValues[`${cellCoord.label}`].rawValue;
+      done(cell);
+    };
+
+    parser.on("callCellValue", fn);
+
+    return () => parser.off("callCellValue", fn);
+  }, [selectedCell.cellValues]);
+
+  useEffect(() => {
     if (isSelected) {
-      setRawValue(selectedCell.rawValue ?? "");
+      setRawValue(selectedCell.cellValues[`${x}${y}`]?.rawValue ?? "");
     }
-  }, [isSelected, selectedCell.rawValue]);
+  }, [isSelected, selectedCell.cellValues, x, y]);
 
   useEffect(() => {
     if (rawValue.charAt(0) == "=") {
@@ -53,7 +75,6 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const onFocus = () => {
     selectedCell.setX(x);
     selectedCell.setY(y);
-    selectedCell.setRawValue(rawValue);
     selectedCell.setHighlightedRange({
       start: {
         x,
@@ -67,7 +88,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    selectedCell.setRawValue(e.target.value);
+    selectedCell.setCellValue(x, y, e.target.value);
     setRawValue(e.target.value);
   };
 

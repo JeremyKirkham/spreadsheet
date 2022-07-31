@@ -5,6 +5,12 @@ interface Position {
   y: number;
 }
 
+interface CellValues {
+  [key: string]: {
+    rawValue: string;
+  };
+}
+
 interface SelectedCellContext {
   x?: string;
   y?: number;
@@ -20,16 +26,17 @@ interface SelectedCellContext {
     end?: Position;
   }) => void;
   mousedown: boolean;
-  rawValue?: string;
   setX: (x?: string) => void;
   setY: (y?: number) => void;
-  setRawValue: (rawValue: string) => void;
+  cellValues: CellValues;
+  setCellValue: (x: string, y: number, rawValue: string) => void;
 }
 
 export const SelectedCellContext = createContext<SelectedCellContext>({
   setX: (_x) => {},
   setY: (_x) => {},
-  setRawValue: (_x) => {},
+  cellValues: {},
+  setCellValue: () => {},
   setHighlightedRange: () => {},
   mousedown: false,
 });
@@ -39,12 +46,23 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
 }) => {
   const [x, setX] = useState<string>();
   const [y, setY] = useState<number>();
-  const [rawValue, setRawValue] = useState<string>();
   const [mousedown, setMousedown] = useState(false);
   const [highlightedStartX, setHighlightedStartX] = useState<string>();
   const [highlightedStartY, setHighlightedStartY] = useState<number>();
   const [highlightedEndX, setHighlightedEndX] = useState<string>();
   const [highlightedEndY, setHighlightedEndY] = useState<number>();
+  const [cellValues, setCellValues] = useState<CellValues>({});
+
+  const setCellValue = (x: string, y: number, rawValue: string) => {
+    setCellValues((prev) => {
+      return {
+        ...prev,
+        [`${x}${y}`]: {
+          rawValue,
+        },
+      };
+    });
+  };
 
   useEffect(() => {
     document.body.onmousedown = () => {
@@ -91,13 +109,13 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
       value={{
         x,
         y,
-        rawValue,
         setX,
         setY,
-        setRawValue,
         setHighlightedRange,
         highlightedRange,
         mousedown,
+        cellValues,
+        setCellValue,
       }}
     >
       {children}
