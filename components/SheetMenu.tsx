@@ -1,8 +1,11 @@
 import { ChangeEvent, useContext } from "react";
+import { CellValuesContext } from "../contexts/CellValuesContext";
 import { SelectedCellContext } from "../contexts/SelectedCellContext";
+import { indexToAlpha } from "../lib/indexToAlpha";
 
 export const SheetMenu: React.FC = () => {
   const selectedCell = useContext(SelectedCellContext);
+  const { cellValues, setCellValue } = useContext(CellValuesContext);
 
   const range = () => {
     if (selectedCell.highlightedRange != null) {
@@ -18,13 +21,13 @@ export const SheetMenu: React.FC = () => {
       const endY = start.y < end.y ? end.y : start.y;
       const endX = start.x < end.x ? end.x : start.x;
 
-      return `${startX}${startY}:${endX}${endY}`;
+      return `${indexToAlpha(startX)}${startY}:${indexToAlpha(endX)}${endY}`;
     }
     return null;
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    selectedCell.setCellValue(selectedCell.x!, selectedCell.y!, e.target.value);
+    setCellValue(selectedCell.x!, selectedCell.y!, e.target.value);
   };
 
   return (
@@ -34,15 +37,14 @@ export const SheetMenu: React.FC = () => {
           {range()
             ? range()
             : selectedCell.x
-            ? `${selectedCell.x}${selectedCell.y}`
+            ? `${indexToAlpha(selectedCell.x)}${selectedCell.y}`
             : null}
         </div>
         <div className="cellInput">
           <input
             placeholder="Cell input"
             value={
-              selectedCell.cellValues[`${selectedCell.x}${selectedCell.y}`]
-                ?.rawValue ?? ""
+              cellValues[`${selectedCell.x}${selectedCell.y}`]?.rawValue ?? ""
             }
             onChange={onChange}
           />

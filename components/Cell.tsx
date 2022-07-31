@@ -1,6 +1,7 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { SelectedCellContext } from "../contexts/SelectedCellContext";
 import { Parser as FormulaParser } from "hot-formula-parser";
+import { CellValuesContext } from "../contexts/CellValuesContext";
 
 interface CellPos {
   index: number;
@@ -15,7 +16,7 @@ interface CellCoord {
 
 interface Props {
   width: number;
-  x: string;
+  x: number;
   y: number;
 }
 
@@ -23,26 +24,31 @@ const parser = new FormulaParser();
 
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const selectedCell = useContext(SelectedCellContext);
+  const { cellValues, setCellValue } = useContext(CellValuesContext);
   const [rawValue, setRawValue] = useState<string>("");
   const [calculatedValue, setCalculatedValue] = useState<string>("");
   const isSelected = selectedCell.x === x && selectedCell.y === y;
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fn = (cellCoord: CellCoord, done: any) => {
-      const cell = selectedCell.cellValues[`${cellCoord.label}`].rawValue;
+      const cell =
+        cellValues[`${cellCoord.column.index + 1}${cellCoord.row.index + 1}`]
+          .rawValue;
       done(cell);
     };
 
     parser.on("callCellValue", fn);
 
     return () => parser.off("callCellValue", fn);
-  }, [selectedCell.cellValues]);
+  }, [cellValues]);
 
   useEffect(() => {
     if (isSelected) {
-      setRawValue(selectedCell.cellValues[`${x}${y}`]?.rawValue ?? "");
+      setRawValue(cellValues[`${x}${y}`]?.rawValue ?? "");
+      inputRef.current?.focus();
     }
-  }, [isSelected, selectedCell.cellValues, x, y]);
+  }, [isSelected, cellValues, x, y]);
 
   useEffect(() => {
     if (rawValue.charAt(0) == "=") {
@@ -88,7 +94,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    selectedCell.setCellValue(x, y, e.target.value);
+    setCellValue(x, y, e.target.value);
     setRawValue(e.target.value);
   };
 
@@ -105,12 +111,13 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
 
   return (
     <>
-      <div className="cell">
+      <div className="cell" id={`${x}${y}`} onClick={onFocus}>
         <input
           value={isSelected ? rawValue : calculatedValue}
           onFocus={onFocus}
           onMouseOver={onMouseOver}
           onChange={onChange}
+          ref={inputRef}
         ></input>
         <div className="dragger"></div>
       </div>

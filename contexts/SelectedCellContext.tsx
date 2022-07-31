@@ -1,18 +1,12 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 
 interface Position {
-  x: string;
+  x: number;
   y: number;
 }
 
-interface CellValues {
-  [key: string]: {
-    rawValue: string;
-  };
-}
-
 interface SelectedCellContext {
-  x?: string;
+  x?: number;
   y?: number;
   highlightedRange?: {
     start: Position;
@@ -26,17 +20,13 @@ interface SelectedCellContext {
     end?: Position;
   }) => void;
   mousedown: boolean;
-  setX: (x?: string) => void;
+  setX: (x?: number) => void;
   setY: (y?: number) => void;
-  cellValues: CellValues;
-  setCellValue: (x: string, y: number, rawValue: string) => void;
 }
 
 export const SelectedCellContext = createContext<SelectedCellContext>({
-  setX: (_x) => {},
-  setY: (_x) => {},
-  cellValues: {},
-  setCellValue: () => {},
+  setX: () => {},
+  setY: () => {},
   setHighlightedRange: () => {},
   mousedown: false,
 });
@@ -44,25 +34,13 @@ export const SelectedCellContext = createContext<SelectedCellContext>({
 export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const [x, setX] = useState<string>();
+  const [x, setX] = useState<number>();
   const [y, setY] = useState<number>();
   const [mousedown, setMousedown] = useState(false);
-  const [highlightedStartX, setHighlightedStartX] = useState<string>();
+  const [highlightedStartX, setHighlightedStartX] = useState<number>();
   const [highlightedStartY, setHighlightedStartY] = useState<number>();
-  const [highlightedEndX, setHighlightedEndX] = useState<string>();
+  const [highlightedEndX, setHighlightedEndX] = useState<number>();
   const [highlightedEndY, setHighlightedEndY] = useState<number>();
-  const [cellValues, setCellValues] = useState<CellValues>({});
-
-  const setCellValue = (x: string, y: number, rawValue: string) => {
-    setCellValues((prev) => {
-      return {
-        ...prev,
-        [`${x}${y}`]: {
-          rawValue,
-        },
-      };
-    });
-  };
 
   useEffect(() => {
     document.body.onmousedown = () => {
@@ -70,6 +48,20 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
     };
     document.body.onmouseup = () => {
       setMousedown(false);
+    };
+    document.body.onkeydown = (event: KeyboardEvent) => {
+      if (event.key == "ArrowDown") {
+        setY((prev) => (prev ? prev + 1 : undefined));
+      }
+      if (event.key == "ArrowUp") {
+        setY((prev) => (prev ? prev - 1 : undefined));
+      }
+      if (event.key == "ArrowRight") {
+        setX((prev) => (prev ? prev + 1 : undefined));
+      }
+      if (event.key == "ArrowLeft") {
+        setX((prev) => (prev ? prev - 1 : undefined));
+      }
     };
   }, []);
 
@@ -114,8 +106,6 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
         setHighlightedRange,
         highlightedRange,
         mousedown,
-        cellValues,
-        setCellValue,
       }}
     >
       {children}

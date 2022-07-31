@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { CellValuesProvider } from "../contexts/CellValuesContext";
 import { SelectedCellProvider } from "../contexts/SelectedCellContext";
 import { Cell } from "./Cell";
 import { Row } from "./Row";
@@ -15,23 +16,27 @@ export const Sheet: React.FC = () => {
 
   return (
     <>
-      <SelectedCellProvider>
-        <SheetMenu />
-        <div className="sheet">
-          <SheetHeaderRow width={colWidth} columns={columns} />
-          <div className="sheetBody">
-            {rows.map((row, i) => {
-              return (
-                <Row key={i} row={i + 1}>
-                  {columns.map((col, j) => {
-                    return <Cell x={col} y={i + 1} key={j} width={colWidth} />;
-                  })}
-                </Row>
-              );
-            })}
+      <CellValuesProvider>
+        <SelectedCellProvider>
+          <SheetMenu />
+          <div className="sheet">
+            <SheetHeaderRow width={colWidth} columns={columns} />
+            <div className="sheetBody">
+              {rows.map((row, i) => {
+                return (
+                  <Row key={i} row={i + 1}>
+                    {columns.map((col, j) => {
+                      return (
+                        <Cell x={j + 1} y={i + 1} key={j} width={colWidth} />
+                      );
+                    })}
+                  </Row>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </SelectedCellProvider>
+        </SelectedCellProvider>
+      </CellValuesProvider>
       <style jsx>{`
         .sheet {
           overflow-y: auto;

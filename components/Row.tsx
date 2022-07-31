@@ -11,6 +11,7 @@ export const Row: React.FC<PropsWithChildren<{ row: number }>> = ({
     <>
       <div className="sheetRow">
         <div
+          id={`row-${row}`}
           className={`rowHeader ${selectedCell.y === row ? "selected" : null}`}
         >
           {row}

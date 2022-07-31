@@ -17,8 +17,9 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, columns }) => {
           return (
             <div
               key={i}
+              id={`header-${c}`}
               className={`cellHeader ${
-                selectedCell.x === c ? "selected" : null
+                selectedCell.x === i + 1 ? "selected" : null
               }`}
             >
               {c}
