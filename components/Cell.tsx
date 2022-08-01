@@ -1,4 +1,12 @@
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { SelectedCellContext } from "../contexts/SelectedCellContext";
 import { Parser as FormulaParser } from "hot-formula-parser";
 import { CellValuesContext } from "../contexts/CellValuesContext";
@@ -20,28 +28,40 @@ interface Props {
   y: number;
 }
 
-const parser = new FormulaParser();
-
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const selectedCell = useContext(SelectedCellContext);
   const { cellValues, setCellValue } = useContext(CellValuesContext);
+  const [parser] = useState(new FormulaParser());
   const [rawValue, setRawValue] = useState<string>("");
+  const [reliesOnCells, setReliesOnCells] = useState<string[]>([]);
   const [calculatedValue, setCalculatedValue] = useState<string>("");
   const isSelected = selectedCell.x === x && selectedCell.y === y;
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fn = (cellCoord: CellCoord, done: any) => {
-      const cell =
-        cellValues[`${cellCoord.column.index + 1}${cellCoord.row.index + 1}`]
-          .rawValue;
+      const cellId = `${cellCoord.column.index + 1}${cellCoord.row.index + 1}`;
+      const cell = cellValues[cellId].rawValue;
+      if (reliesOnCells[0] !== cellId) {
+        setReliesOnCells([cellId]);
+      }
       done(cell);
     };
 
     parser.on("callCellValue", fn);
 
     return () => parser.off("callCellValue", fn);
-  }, [cellValues]);
+  }, [parser, reliesOnCells, cellValues]);
+
+  useEffect(() => {
+    if (reliesOnCells.length > 0) {
+      const newReliedOnCellValue = cellValues[reliesOnCells[0]];
+      if (newReliedOnCellValue) {
+        const calculated = parser.parse(rawValue.substring(1));
+        setCalculatedValue(calculated.error ?? calculated.result);
+      }
+    }
+  }, [cellValues, reliesOnCells, rawValue, parser]);
 
   useEffect(() => {
     if (isSelected) {
@@ -53,11 +73,11 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   useEffect(() => {
     if (rawValue.charAt(0) == "=") {
       const calculated = parser.parse(rawValue.substring(1));
-      setCalculatedValue(calculated.result);
+      setCalculatedValue(calculated.error ?? calculated.result);
     } else {
       setCalculatedValue(rawValue);
     }
-  }, [rawValue]);
+  }, [rawValue, parser]);
 
   const isHighlighted = (): boolean => {
     if (selectedCell.highlightedRange != null) {
