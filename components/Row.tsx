@@ -31,6 +31,8 @@ export const Row: React.FC<PropsWithChildren<{ row: number }>> = ({
           text-align: center;
           border-bottom: solid 1px #c0c0c0;
           border-right: solid 1px #c0c0c0;
+          position: sticky;
+          left: 0;
         }
         .rowHeader.selected {
           background: #e8eaed;

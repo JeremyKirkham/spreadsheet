@@ -19,30 +19,27 @@ export const Sheet: React.FC = () => {
       <CellValuesProvider>
         <SelectedCellProvider>
           <SheetMenu />
-          <div className="sheet">
+          <div className="sheetBody">
             <SheetHeaderRow width={colWidth} columns={columns} />
-            <div className="sheetBody">
-              {rows.map((row, i) => {
-                return (
-                  <Row key={i} row={i + 1}>
-                    {columns.map((col, j) => {
-                      return (
-                        <Cell x={j + 1} y={i + 1} key={j} width={colWidth} />
-                      );
-                    })}
-                  </Row>
-                );
-              })}
-            </div>
+            {rows.map((row, i) => {
+              return (
+                <Row key={i} row={i + 1}>
+                  {columns.map((col, j) => {
+                    return (
+                      <Cell x={j + 1} y={i + 1} key={j} width={colWidth} />
+                    );
+                  })}
+                </Row>
+              );
+            })}
           </div>
         </SelectedCellProvider>
       </CellValuesProvider>
       <style jsx>{`
-        .sheet {
+        .sheetBody {
           overflow-y: auto;
           overflow-x: auto;
-          width: 100%;
-          height: 100%;
+          height: calc(100vh - 70px);
         }
         .sidebarcol {
           height: 30px;

@@ -12,23 +12,30 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, columns }) => {
   return (
     <>
       <div className="sheetHeader">
-        <div className="cellHeader"></div>
-        {columns.map((c, i) => {
-          return (
-            <div
-              key={i}
-              id={`header-${c}`}
-              className={`cellHeader ${
-                selectedCell.x === i + 1 ? "selected" : null
-              }`}
-            >
-              {c}
-            </div>
-          );
-        })}
+        <div className="inner">
+          <div className="cellHeader"></div>
+          {columns.map((c, i) => {
+            return (
+              <div
+                key={i}
+                id={`header-${c}`}
+                className={`cellHeader ${
+                  selectedCell.x === i + 1 ? "selected" : null
+                }`}
+              >
+                {c}
+              </div>
+            );
+          })}
+        </div>
       </div>
       <style jsx>{`
         .sheetHeader {
+          position: sticky;
+          top: 0;
+          z-index: 9;
+        }
+        .inner {
           display: flex;
         }
         .cellHeader {
@@ -42,6 +49,8 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, columns }) => {
         }
         .cellHeader:first-of-type {
           width: 60px;
+          position: sticky;
+          left: 0;
         }
         .cellHeader.selected {
           background: #e8eaed;
