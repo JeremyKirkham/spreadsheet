@@ -1,52 +1,39 @@
-import { ChangeEvent, useContext } from "react";
-import { CellValuesContext } from "../contexts/CellValuesContext";
-import { SelectedCellContext } from "../contexts/SelectedCellContext";
+import { ChangeEvent } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { indexToAlpha } from "../lib/indexToAlpha";
+import { cellValues, setCellValue } from "../store/cellValuesSlice";
+import { selectedCell } from "../store/selectedCellSlice";
 
 export const SheetMenu: React.FC = () => {
-  const selectedCell = useContext(SelectedCellContext);
-  const { cellValues, setCellValue } = useContext(CellValuesContext);
+  const currentCellValues = useAppSelector(cellValues);
+  const selectedCellValue = useAppSelector(selectedCell);
+  const dispatch = useAppDispatch();
+  const selectedX = selectedCellValue[0];
+  const selectedY = selectedCellValue[1];
 
   const range = () => {
-    if (selectedCell.highlightedRange != null) {
-      const start = selectedCell.highlightedRange.start;
-      const end = selectedCell.highlightedRange.end;
-
-      if (start.x === end.x && start.y === end.y) {
-        return null;
-      }
-
-      const startY = start.y < end.y ? start.y : end.y;
-      const startX = start.x < end.x ? start.x : end.x;
-      const endY = start.y < end.y ? end.y : start.y;
-      const endX = start.x < end.x ? end.x : start.x;
-
-      return `${indexToAlpha(startX)}${startY}:${indexToAlpha(endX)}${endY}`;
-    }
     return null;
   };
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCellValue(selectedCell.x!, selectedCell.y!, e.target.value);
+  const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      setCellValue({ key: selectedCellValue, rawValue: e.target.value })
+    );
   };
 
   return (
     <>
       <div className="secondmenu">
         <div className="selectedCells">
-          {range()
-            ? range()
-            : selectedCell.x
-            ? `${indexToAlpha(selectedCell.x)}${selectedCell.y}`
+          {selectedX
+            ? `${indexToAlpha(parseInt(selectedX))}${selectedY}`
             : null}
         </div>
         <div className="cellInput">
           <input
             placeholder="Cell input"
-            value={
-              cellValues[`${selectedCell.x}${selectedCell.y}`]?.rawValue ?? ""
-            }
-            onChange={onChange}
+            value={currentCellValues[selectedCellValue]?.rawValue ?? ""}
+            onBlur={onBlur}
           />
         </div>
       </div>

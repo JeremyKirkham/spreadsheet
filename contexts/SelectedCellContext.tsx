@@ -1,4 +1,6 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks/store";
+import { selectedCell, update } from "../store/selectedCellSlice";
 
 interface Position {
   x: number;
@@ -6,8 +8,6 @@ interface Position {
 }
 
 interface SelectedCellContext {
-  x?: number;
-  y?: number;
   highlightedRange?: {
     start: Position;
     end: Position;
@@ -20,13 +20,9 @@ interface SelectedCellContext {
     end?: Position;
   }) => void;
   mousedown: boolean;
-  setX: (x?: number) => void;
-  setY: (y?: number) => void;
 }
 
 export const SelectedCellContext = createContext<SelectedCellContext>({
-  setX: () => {},
-  setY: () => {},
   setHighlightedRange: () => {},
   mousedown: false,
 });
@@ -34,36 +30,64 @@ export const SelectedCellContext = createContext<SelectedCellContext>({
 export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
-  const [x, setX] = useState<number>();
-  const [y, setY] = useState<number>();
   const [mousedown, setMousedown] = useState(false);
   const [highlightedStartX, setHighlightedStartX] = useState<number>();
   const [highlightedStartY, setHighlightedStartY] = useState<number>();
   const [highlightedEndX, setHighlightedEndX] = useState<number>();
   const [highlightedEndY, setHighlightedEndY] = useState<number>();
+  const selectedCellValue = useAppSelector(selectedCell);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    document.body.onmousedown = () => {
-      setMousedown(true);
-    };
-    document.body.onmouseup = () => {
-      setMousedown(false);
-    };
-    document.body.onkeydown = (event: KeyboardEvent) => {
+    const keydownfn = (event: KeyboardEvent) => {
+      const existingX = parseInt(selectedCellValue[0]);
+      const existingY = parseInt(selectedCellValue[1]);
+      let newX = 1;
+      let newY = 1;
       if (event.key == "ArrowDown") {
-        setY((prev) => (prev ? prev + 1 : undefined));
+        newX = existingX ?? 1;
+        newY = existingY ? existingY + 1 : 1;
+        document
+          .getElementById(`${newX}${newY}`)
+          ?.getElementsByTagName("input")[0]
+          .focus();
+        dispatch(update(`${newX}${newY}`));
       }
       if (event.key == "ArrowUp") {
-        setY((prev) => (prev ? prev - 1 : undefined));
+        newX = existingX ?? 1;
+        newY = existingY ? existingY - 1 : 1;
+        document
+          .getElementById(`${newX}${newY}`)
+          ?.getElementsByTagName("input")[0]
+          .focus();
+        dispatch(update(`${newX}${newY}`));
       }
       if (event.key == "ArrowRight") {
-        setX((prev) => (prev ? prev + 1 : undefined));
+        newX = existingX ? existingX + 1 : 1;
+        newY = existingY ?? 1;
+        document
+          .getElementById(`${newX}${newY}`)
+          ?.getElementsByTagName("input")[0]
+          .focus();
+        dispatch(update(`${newX}${newY}`));
       }
       if (event.key == "ArrowLeft") {
-        setX((prev) => (prev ? prev - 1 : undefined));
+        newX = existingX ? existingX - 1 : 1;
+        newY = existingY ?? 1;
+        document
+          .getElementById(`${newX}${newY}`)
+          ?.getElementsByTagName("input")[0]
+          .focus();
+        dispatch(update(`${newX}${newY}`));
       }
     };
-  }, []);
+
+    document.body.addEventListener("keydown", keydownfn);
+
+    return () => {
+      document.body.removeEventListener("keydown", keydownfn);
+    };
+  }, [dispatch, selectedCellValue]);
 
   const setHighlightedRange = ({
     start,
@@ -82,27 +106,11 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
     }
   };
 
-  const highlightedRange =
-    highlightedStartX && highlightedStartY && highlightedEndX && highlightedEndY
-      ? {
-          start: {
-            x: highlightedStartX,
-            y: highlightedStartY,
-          },
-          end: {
-            x: highlightedEndX,
-            y: highlightedEndY,
-          },
-        }
-      : undefined;
+  const highlightedRange = undefined;
 
   return (
     <SelectedCellContext.Provider
       value={{
-        x,
-        y,
-        setX,
-        setY,
         setHighlightedRange,
         highlightedRange,
         mousedown,

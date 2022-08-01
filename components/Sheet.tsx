@@ -1,22 +1,24 @@
 import { useState } from "react";
-import { CellValuesProvider } from "../contexts/CellValuesContext";
 import { SelectedCellProvider } from "../contexts/SelectedCellContext";
 import { Cell } from "./Cell";
 import { Row } from "./Row";
 import { SheetHeaderRow } from "./SheetHeaderRow";
 import { SheetMenu } from "./SheetMenu";
+import { Provider } from "react-redux";
+import { store } from "../store";
 
 const alpha = Array.from(Array(26)).map((e, i) => i + 65);
 const alphabet = alpha.map((x) => String.fromCharCode(x));
+const rowCount = 100;
 
 export const Sheet: React.FC = () => {
   const [columns, setColumns] = useState(alphabet);
-  const [rows, setRows] = useState(Array.from(Array(20).keys()));
+  const [rows, setRows] = useState(Array.from(Array(rowCount).keys()));
   const [colWidth, setColWidth] = useState(150);
 
   return (
     <>
-      <CellValuesProvider>
+      <Provider store={store}>
         <SelectedCellProvider>
           <SheetMenu />
           <div className="sheetBody">
@@ -34,7 +36,7 @@ export const Sheet: React.FC = () => {
             })}
           </div>
         </SelectedCellProvider>
-      </CellValuesProvider>
+      </Provider>
       <style jsx>{`
         .sheetBody {
           overflow-y: auto;

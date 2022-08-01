@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { SelectedCellContext } from "../contexts/SelectedCellContext";
+import { useAppSelector } from "../hooks/store";
+import { selectedCell } from "../store/selectedCellSlice";
 
 interface Props {
   width: number;
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const SheetHeaderRow: React.FC<Props> = ({ width, columns }) => {
-  const selectedCell = useContext(SelectedCellContext);
+  const selectedCellValue = useAppSelector(selectedCell);
 
   return (
     <>
@@ -20,7 +20,7 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, columns }) => {
                 key={i}
                 id={`header-${c}`}
                 className={`cellHeader ${
-                  selectedCell.x === i + 1 ? "selected" : null
+                  parseInt(selectedCellValue[0]) === i + 1 ? "selected" : null
                 }`}
               >
                 {c}

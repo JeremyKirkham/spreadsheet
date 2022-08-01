@@ -1,7 +1,8 @@
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
-import { SelectedCellContext } from "../contexts/SelectedCellContext";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { update } from "../store/selectedCellSlice";
+import { cellValues, setCellValue } from "../store/cellValuesSlice";
 import { Parser as FormulaParser } from "hot-formula-parser";
-import { CellValuesContext } from "../contexts/CellValuesContext";
+import { useAppDispatch, useAppSelector } from "../hooks/store";
 
 interface CellPos {
   index: number;
@@ -21,19 +22,19 @@ interface Props {
 }
 
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
-  const selectedCell = useContext(SelectedCellContext);
-  const { cellValues, setCellValue } = useContext(CellValuesContext);
   const [parser] = useState(new FormulaParser());
   const [rawValue, setRawValue] = useState<string>("");
   const [reliesOnCells, setReliesOnCells] = useState<string[]>([]);
   const [calculatedValue, setCalculatedValue] = useState<string>("");
-  const isSelected = selectedCell.x === x && selectedCell.y === y;
+  const dispatch = useAppDispatch();
+  const [isSelected, setIsSelected] = useState(false);
+  const currentCellValues = useAppSelector(cellValues);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fn = (cellCoord: CellCoord, done: any) => {
       const cellId = `${cellCoord.column.index + 1}${cellCoord.row.index + 1}`;
-      const cell = cellValues[cellId].rawValue;
+      const cell = currentCellValues[cellId].rawValue;
       if (reliesOnCells[0] !== cellId) {
         setReliesOnCells([cellId]);
       }
@@ -43,24 +44,17 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
     parser.on("callCellValue", fn);
 
     return () => parser.off("callCellValue", fn);
-  }, [parser, reliesOnCells, cellValues]);
+  }, [parser, reliesOnCells, currentCellValues]);
 
   useEffect(() => {
     if (reliesOnCells.length > 0) {
-      const newReliedOnCellValue = cellValues[reliesOnCells[0]];
+      const newReliedOnCellValue = currentCellValues[reliesOnCells[0]];
       if (newReliedOnCellValue) {
         const calculated = parser.parse(rawValue.substring(1));
         setCalculatedValue(calculated.error ?? calculated.result);
       }
     }
-  }, [cellValues, reliesOnCells, rawValue, parser]);
-
-  useEffect(() => {
-    if (isSelected) {
-      setRawValue(cellValues[`${x}${y}`]?.rawValue ?? "");
-      inputRef.current?.focus();
-    }
-  }, [isSelected, cellValues, x, y]);
+  }, [reliesOnCells, rawValue, parser, currentCellValues]);
 
   useEffect(() => {
     if (rawValue.charAt(0) == "=") {
@@ -72,54 +66,25 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   }, [rawValue, parser]);
 
   const isHighlighted = (): boolean => {
-    if (selectedCell.highlightedRange != null) {
-      const start = selectedCell.highlightedRange.start;
-      const end = selectedCell.highlightedRange.end;
-
-      if (start.x === end.x && start.y === end.y) {
-        return false;
-      }
-
-      const startY = start.y < end.y ? start.y : end.y;
-      const startX = start.x < end.x ? start.x : end.x;
-      const endY = start.y < end.y ? end.y : start.y;
-      const endX = start.x < end.x ? end.x : start.x;
-
-      return y >= startY && y <= endY && x >= startX && x <= endX;
-    }
     return false;
   };
 
   const onFocus = () => {
-    selectedCell.setX(x);
-    selectedCell.setY(y);
-    selectedCell.setHighlightedRange({
-      start: {
-        x,
-        y,
-      },
-      end: {
-        x,
-        y,
-      },
-    });
+    inputRef.current?.focus();
+    dispatch(update(`${x}${y}`));
+    setIsSelected(true);
+  };
+
+  const onBlur = () => {
+    setIsSelected(false);
+    dispatch(setCellValue({ key: `${x}${y}`, rawValue }));
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCellValue(x, y, e.target.value);
     setRawValue(e.target.value);
   };
 
-  const onMouseOver = () => {
-    if (selectedCell.mousedown) {
-      selectedCell.setHighlightedRange({
-        end: {
-          x,
-          y,
-        },
-      });
-    }
-  };
+  const onMouseOver = () => {};
 
   return (
     <>
@@ -127,6 +92,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
         <input
           value={isSelected ? rawValue : calculatedValue}
           onFocus={onFocus}
+          onBlur={onBlur}
           onMouseOver={onMouseOver}
           onChange={onChange}
           ref={inputRef}

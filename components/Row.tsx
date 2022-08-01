@@ -1,18 +1,21 @@
-import { PropsWithChildren, useContext } from "react";
-import { SelectedCellContext } from "../contexts/SelectedCellContext";
+import { PropsWithChildren } from "react";
+import { useAppSelector } from "../hooks/store";
+import { selectedCell } from "../store/selectedCellSlice";
 
 export const Row: React.FC<PropsWithChildren<{ row: number }>> = ({
   row,
   children,
 }) => {
-  const selectedCell = useContext(SelectedCellContext);
+  const selectedCellValue = useAppSelector(selectedCell);
 
   return (
     <>
       <div className="sheetRow">
         <div
           id={`row-${row}`}
-          className={`rowHeader ${selectedCell.y === row ? "selected" : null}`}
+          className={`rowHeader ${
+            parseInt(selectedCellValue[1]) === row ? "selected" : null
+          }`}
         >
           {row}
         </div>
