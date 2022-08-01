@@ -35,13 +35,17 @@ describe("Spreadsheet", () => {
     cy.get("#row-1").should("have.class", "selected");
   });
 
-  it("calculates values", { scrollBehavior: false }, () => {
+  it.only("calculates values", { scrollBehavior: false }, () => {
     cy.get("#1-1").click().type("1");
     cy.get("#2-1").click().type("= A1 + 2");
     cy.get("#2-2").click();
     cy.get("#2-1>input").should("have.value", "3");
+    cy.get("#3-1").click().type("= B1 - 1");
+    cy.get("#2-2").click();
+    cy.get("#3-1>input").should("have.value", "2");
     cy.get("#1-1").click().clear().type("2");
     cy.get("#2-2").click();
     cy.get("#2-1>input").should("have.value", "4");
+    cy.get("#3-1>input").should("have.value", "3");
   });
 });

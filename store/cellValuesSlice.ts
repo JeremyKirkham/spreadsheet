@@ -1,12 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
+import { Parser as FormulaParser } from "hot-formula-parser";
+
+export interface CellValue {
+  rawValue: string;
+  calculatedValue?: string;
+}
 
 // Define a type for the slice state
 interface CellValuesState {
   value: {
-    [key: string]: {
-      rawValue: string;
-    };
+    [key: string]: CellValue;
   };
 }
 
@@ -22,12 +26,17 @@ export const cellValuesSlice = createSlice({
   reducers: {
     setCellValue: (
       state,
-      action: PayloadAction<{ key: string; rawValue: string }>
+      action: PayloadAction<{
+        key: string;
+        rawValue: string;
+        calculatedValue?: string;
+      }>
     ) => {
       state.value = {
         ...state.value,
         [action.payload.key]: {
           rawValue: action.payload.rawValue,
+          calculatedValue: action.payload.calculatedValue,
         },
       };
     },

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { update } from "../store/selectedCellSlice";
-import { cellValues, setCellValue } from "../store/cellValuesSlice";
+import { CellValue, cellValues, setCellValue } from "../store/cellValuesSlice";
 import { Parser as FormulaParser } from "hot-formula-parser";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { xAndYToPos } from "../lib/xAndYtoPost";
@@ -24,9 +24,11 @@ interface Props {
 
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const [parser] = useState(new FormulaParser());
-  const [localRawValue, setLocalRawValue] = useState<string>("");
+  const [localValue, setLocalValue] = useState<CellValue>({
+    rawValue: "",
+    calculatedValue: "",
+  });
   const [reliesOnCells, setReliesOnCells] = useState<string[]>([]);
-  const [calculatedValue, setCalculatedValue] = useState<string>("");
   const dispatch = useAppDispatch();
   const [isSelected, setIsSelected] = useState(false);
   const currentCellValues = useAppSelector(cellValues);
@@ -35,17 +37,12 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const pos = xAndYToPos(x, y);
 
   useEffect(() => {
-    setLocalRawValue(currentCellValues[pos]?.rawValue ?? "");
-  }, [currentCellValues, x, y, pos]);
-
-  useEffect(() => {
     const fn = (cellCoord: CellCoord, done: any) => {
       const cellId = xAndYToPos(
         cellCoord.column.index + 1,
         cellCoord.row.index + 1
       );
-      const cell = currentCellValues[cellId].rawValue;
-      console.log("????", cellId, cell);
+      const cell = currentCellValues[cellId].calculatedValue;
       if (reliesOnCells[0] !== cellId) {
         setReliesOnCells([cellId]);
       }
@@ -61,20 +58,26 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
     if (reliesOnCells.length > 0) {
       const newReliedOnCellValue = currentCellValues[reliesOnCells[0]];
       if (newReliedOnCellValue) {
-        const calculated = parser.parse(localRawValue.substring(1));
-        setCalculatedValue(calculated.error ?? calculated.result);
+        const calculated = parser.parse(localValue.rawValue.substring(1));
+        let calc = calculated.error ?? calculated.result;
+        if (localValue.calculatedValue !== calc) {
+          setLocalValue({
+            rawValue: localValue.rawValue,
+            calculatedValue: calc,
+          });
+          setTimeout(() => {
+            dispatch(
+              setCellValue({
+                key: pos,
+                rawValue: localValue.rawValue,
+                calculatedValue: calc,
+              })
+            );
+          }, 10);
+        }
       }
     }
-  }, [reliesOnCells, localRawValue, parser, currentCellValues]);
-
-  useEffect(() => {
-    if (localRawValue.charAt(0) == "=") {
-      const calculated = parser.parse(localRawValue.substring(1));
-      setCalculatedValue(calculated.error ?? calculated.result);
-    } else {
-      setCalculatedValue(localRawValue);
-    }
-  }, [localRawValue, parser]);
+  }, [reliesOnCells, localValue, parser, currentCellValues, dispatch, pos]);
 
   const isHighlighted = (): boolean => {
     return false;
@@ -88,11 +91,26 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
 
   const onBlur = () => {
     setIsSelected(false);
-    dispatch(setCellValue({ key: pos, rawValue: localRawValue }));
+    let calculatedValue = localValue.rawValue;
+    if (localValue.rawValue.charAt(0) == "=") {
+      const calculated = parser.parse(localValue.rawValue.substring(1));
+      calculatedValue = calculated.error ?? calculated.result;
+    }
+    setLocalValue({
+      rawValue: localValue.rawValue,
+      calculatedValue,
+    });
+    dispatch(
+      setCellValue({
+        key: pos,
+        rawValue: localValue.rawValue,
+        calculatedValue,
+      })
+    );
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLocalRawValue(e.target.value);
+    setLocalValue({ rawValue: e.target.value });
   };
 
   const onMouseOver = () => {};
@@ -101,7 +119,9 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
     <>
       <div className="cell" id={pos} onClick={onFocus}>
         <input
-          value={isSelected ? localRawValue : calculatedValue}
+          value={
+            isSelected ? localValue.rawValue : localValue.calculatedValue ?? ""
+          }
           onFocus={onFocus}
           onBlur={onBlur}
           onMouseOver={onMouseOver}
