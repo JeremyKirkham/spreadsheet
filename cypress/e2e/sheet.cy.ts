@@ -1,5 +1,5 @@
 describe("Spreadsheet", () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit("/");
   });
 
@@ -17,7 +17,7 @@ describe("Spreadsheet", () => {
     cy.get("#row-1").should("have.class", "selected");
   });
 
-  it("navigates with arrows", () => {
+  it("navigates with arrows", { scrollBehavior: false }, () => {
     cy.get("#11").click();
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");

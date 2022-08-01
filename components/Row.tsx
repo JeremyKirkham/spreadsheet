@@ -2,15 +2,16 @@ import { PropsWithChildren } from "react";
 import { useAppSelector } from "../hooks/store";
 import { selectedCell } from "../store/selectedCellSlice";
 
-export const Row: React.FC<PropsWithChildren<{ row: number }>> = ({
+export const Row: React.FC<PropsWithChildren<{ row: number; style: any }>> = ({
   row,
+  style,
   children,
 }) => {
   const selectedCellValue = useAppSelector(selectedCell);
 
   return (
     <>
-      <div className="sheetRow">
+      <div className="sheetRow" style={style}>
         <div
           id={`row-${row}`}
           className={`rowHeader ${

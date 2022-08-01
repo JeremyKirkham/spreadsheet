@@ -32,7 +32,7 @@ export const SheetMenu: React.FC = () => {
         <div className="cellInput">
           <input
             placeholder="Cell input"
-            value={currentCellValues[selectedCellValue]?.rawValue ?? ""}
+            defaultValue={currentCellValues[selectedCellValue]?.rawValue ?? ""}
             onBlur={onBlur}
           />
         </div>

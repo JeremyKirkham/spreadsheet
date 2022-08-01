@@ -23,13 +23,17 @@ interface Props {
 
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const [parser] = useState(new FormulaParser());
-  const [rawValue, setRawValue] = useState<string>("");
+  const [localRawValue, setLocalRawValue] = useState<string>("");
   const [reliesOnCells, setReliesOnCells] = useState<string[]>([]);
   const [calculatedValue, setCalculatedValue] = useState<string>("");
   const dispatch = useAppDispatch();
   const [isSelected, setIsSelected] = useState(false);
   const currentCellValues = useAppSelector(cellValues);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setLocalRawValue(currentCellValues[`${x}${y}`]?.rawValue ?? "");
+  }, [currentCellValues, x, y]);
 
   useEffect(() => {
     const fn = (cellCoord: CellCoord, done: any) => {
@@ -50,20 +54,20 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
     if (reliesOnCells.length > 0) {
       const newReliedOnCellValue = currentCellValues[reliesOnCells[0]];
       if (newReliedOnCellValue) {
-        const calculated = parser.parse(rawValue.substring(1));
+        const calculated = parser.parse(localRawValue.substring(1));
         setCalculatedValue(calculated.error ?? calculated.result);
       }
     }
-  }, [reliesOnCells, rawValue, parser, currentCellValues]);
+  }, [reliesOnCells, localRawValue, parser, currentCellValues]);
 
   useEffect(() => {
-    if (rawValue.charAt(0) == "=") {
-      const calculated = parser.parse(rawValue.substring(1));
+    if (localRawValue.charAt(0) == "=") {
+      const calculated = parser.parse(localRawValue.substring(1));
       setCalculatedValue(calculated.error ?? calculated.result);
     } else {
-      setCalculatedValue(rawValue);
+      setCalculatedValue(localRawValue);
     }
-  }, [rawValue, parser]);
+  }, [localRawValue, parser]);
 
   const isHighlighted = (): boolean => {
     return false;
@@ -77,11 +81,11 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
 
   const onBlur = () => {
     setIsSelected(false);
-    dispatch(setCellValue({ key: `${x}${y}`, rawValue }));
+    dispatch(setCellValue({ key: `${x}${y}`, rawValue: localRawValue }));
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setRawValue(e.target.value);
+    setLocalRawValue(e.target.value);
   };
 
   const onMouseOver = () => {};
@@ -90,7 +94,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
     <>
       <div className="cell" id={`${x}${y}`} onClick={onFocus}>
         <input
-          value={isSelected ? rawValue : calculatedValue}
+          value={isSelected ? localRawValue : calculatedValue}
           onFocus={onFocus}
           onBlur={onBlur}
           onMouseOver={onMouseOver}
