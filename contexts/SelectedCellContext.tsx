@@ -1,6 +1,7 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
-import { selectedCell, update } from "../store/selectedCellSlice";
+import { xAndYToPos } from "../lib/xAndYtoPost";
+import { selectedCellPosition, update } from "../store/selectedCellSlice";
 
 interface Position {
   x: number;
@@ -35,50 +36,50 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
   const [highlightedStartY, setHighlightedStartY] = useState<number>();
   const [highlightedEndX, setHighlightedEndX] = useState<number>();
   const [highlightedEndY, setHighlightedEndY] = useState<number>();
-  const selectedCellValue = useAppSelector(selectedCell);
+  const cellPos = useAppSelector(selectedCellPosition);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     const keydownfn = (event: KeyboardEvent) => {
-      const existingX = parseInt(selectedCellValue[0]);
-      const existingY = parseInt(selectedCellValue[1]);
+      const existingX = cellPos.x;
+      const existingY = cellPos.y;
       let newX = 1;
       let newY = 1;
       if (event.key == "ArrowDown") {
         newX = existingX ?? 1;
         newY = existingY ? existingY + 1 : 1;
         document
-          .getElementById(`${newX}${newY}`)
+          .getElementById(xAndYToPos(newX, newY))
           ?.getElementsByTagName("input")[0]
           .focus();
-        dispatch(update(`${newX}${newY}`));
+        dispatch(update(xAndYToPos(newX, newY)));
       }
       if (event.key == "ArrowUp") {
         newX = existingX ?? 1;
         newY = existingY ? existingY - 1 : 1;
         document
-          .getElementById(`${newX}${newY}`)
+          .getElementById(xAndYToPos(newX, newY))
           ?.getElementsByTagName("input")[0]
           .focus();
-        dispatch(update(`${newX}${newY}`));
+        dispatch(update(xAndYToPos(newX, newY)));
       }
       if (event.key == "ArrowRight") {
         newX = existingX ? existingX + 1 : 1;
         newY = existingY ?? 1;
         document
-          .getElementById(`${newX}${newY}`)
+          .getElementById(xAndYToPos(newX, newY))
           ?.getElementsByTagName("input")[0]
           .focus();
-        dispatch(update(`${newX}${newY}`));
+        dispatch(update(xAndYToPos(newX, newY)));
       }
       if (event.key == "ArrowLeft") {
         newX = existingX ? existingX - 1 : 1;
         newY = existingY ?? 1;
         document
-          .getElementById(`${newX}${newY}`)
+          .getElementById(xAndYToPos(newX, newY))
           ?.getElementsByTagName("input")[0]
           .focus();
-        dispatch(update(`${newX}${newY}`));
+        dispatch(update(xAndYToPos(newX, newY)));
       }
     };
 
@@ -87,7 +88,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
     return () => {
       document.body.removeEventListener("keydown", keydownfn);
     };
-  }, [dispatch, selectedCellValue]);
+  }, [dispatch, cellPos]);
 
   const setHighlightedRange = ({
     start,

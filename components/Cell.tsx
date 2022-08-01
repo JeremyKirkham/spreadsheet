@@ -3,6 +3,7 @@ import { update } from "../store/selectedCellSlice";
 import { cellValues, setCellValue } from "../store/cellValuesSlice";
 import { Parser as FormulaParser } from "hot-formula-parser";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
+import { xAndYToPos } from "../lib/xAndYtoPost";
 
 interface CellPos {
   index: number;
@@ -31,14 +32,20 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const currentCellValues = useAppSelector(cellValues);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const pos = xAndYToPos(x, y);
+
   useEffect(() => {
-    setLocalRawValue(currentCellValues[`${x}${y}`]?.rawValue ?? "");
-  }, [currentCellValues, x, y]);
+    setLocalRawValue(currentCellValues[pos]?.rawValue ?? "");
+  }, [currentCellValues, x, y, pos]);
 
   useEffect(() => {
     const fn = (cellCoord: CellCoord, done: any) => {
-      const cellId = `${cellCoord.column.index + 1}${cellCoord.row.index + 1}`;
+      const cellId = xAndYToPos(
+        cellCoord.column.index + 1,
+        cellCoord.row.index + 1
+      );
       const cell = currentCellValues[cellId].rawValue;
+      console.log("????", cellId, cell);
       if (reliesOnCells[0] !== cellId) {
         setReliesOnCells([cellId]);
       }
@@ -75,13 +82,13 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
 
   const onFocus = () => {
     inputRef.current?.focus();
-    dispatch(update(`${x}${y}`));
+    dispatch(update(pos));
     setIsSelected(true);
   };
 
   const onBlur = () => {
     setIsSelected(false);
-    dispatch(setCellValue({ key: `${x}${y}`, rawValue: localRawValue }));
+    dispatch(setCellValue({ key: pos, rawValue: localRawValue }));
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -92,7 +99,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
 
   return (
     <>
-      <div className="cell" id={`${x}${y}`} onClick={onFocus}>
+      <div className="cell" id={pos} onClick={onFocus}>
         <input
           value={isSelected ? localRawValue : calculatedValue}
           onFocus={onFocus}

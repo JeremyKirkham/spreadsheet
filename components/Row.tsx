@@ -1,22 +1,20 @@
 import { PropsWithChildren } from "react";
 import { useAppSelector } from "../hooks/store";
-import { selectedCell } from "../store/selectedCellSlice";
+import { selectedCellPosition } from "../store/selectedCellSlice";
 
 export const Row: React.FC<PropsWithChildren<{ row: number; style: any }>> = ({
   row,
   style,
   children,
 }) => {
-  const selectedCellValue = useAppSelector(selectedCell);
+  const cellPos = useAppSelector(selectedCellPosition);
 
   return (
     <>
       <div className="sheetRow" style={style}>
         <div
           id={`row-${row}`}
-          className={`rowHeader ${
-            parseInt(selectedCellValue[1]) === row ? "selected" : null
-          }`}
+          className={`rowHeader ${cellPos.y === row ? "selected" : null}`}
         >
           {row}
         </div>

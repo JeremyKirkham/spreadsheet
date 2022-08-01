@@ -24,7 +24,7 @@ export const Sheet: React.FC = () => {
       return <SheetHeaderRow width={colWidth} columns={columns} />;
     } else {
       return (
-        <Row style={{ ...style, pointerEvents: "auto" }} row={index}>
+        <Row style={style} row={index}>
           {columns.map((col, j) => {
             return <Cell x={j + 1} y={index} key={j} width={colWidth} />;
           })}
@@ -37,6 +37,10 @@ export const Sheet: React.FC = () => {
     return <>Loading...</>;
   }
 
+  const itemKey = (index: number, data: number[]) => {
+    return data[index];
+  };
+
   return (
     <>
       <Provider store={store}>
@@ -44,9 +48,11 @@ export const Sheet: React.FC = () => {
           <SheetMenu />
           <div className="sheetBody">
             <List
-              height={height - 70}
+              height={height}
               itemCount={rows.length + 1}
+              itemData={rows}
               itemSize={30}
+              itemKey={itemKey}
               width="100%"
             >
               {RowChild}

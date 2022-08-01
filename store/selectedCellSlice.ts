@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
+import { posToXAndY } from "../lib/xAndYtoPost";
 
 // Define a type for the slice state
 interface SelectedCellState {
@@ -25,5 +26,7 @@ export const selectedCellSlice = createSlice({
 export const { update } = selectedCellSlice.actions;
 
 export const selectedCell = (state: RootState) => state.selectedCell.value;
+export const selectedCellPosition = (state: RootState) =>
+  posToXAndY(state.selectedCell.value);
 
 export default selectedCellSlice.reducer;

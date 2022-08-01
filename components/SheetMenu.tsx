@@ -1,6 +1,7 @@
 import { ChangeEvent } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { indexToAlpha } from "../lib/indexToAlpha";
+import { posToXAndY } from "../lib/xAndYtoPost";
 import { cellValues, setCellValue } from "../store/cellValuesSlice";
 import { selectedCell } from "../store/selectedCellSlice";
 
@@ -8,8 +9,9 @@ export const SheetMenu: React.FC = () => {
   const currentCellValues = useAppSelector(cellValues);
   const selectedCellValue = useAppSelector(selectedCell);
   const dispatch = useAppDispatch();
-  const selectedX = selectedCellValue[0];
-  const selectedY = selectedCellValue[1];
+  const splitVal = posToXAndY(selectedCellValue);
+  const selectedX = splitVal.x;
+  const selectedY = splitVal.y;
 
   const range = () => {
     return null;
@@ -25,9 +27,7 @@ export const SheetMenu: React.FC = () => {
     <>
       <div className="secondmenu">
         <div className="selectedCells">
-          {selectedX
-            ? `${indexToAlpha(parseInt(selectedX))}${selectedY}`
-            : null}
+          {selectedX ? `${indexToAlpha(selectedX)}${selectedY}` : null}
         </div>
         <div className="cellInput">
           <input
