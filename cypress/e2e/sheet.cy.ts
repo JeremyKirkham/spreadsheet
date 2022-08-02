@@ -56,6 +56,20 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#3-1>input").should("have.value", "3");
   });
 
+  it("calculates values with multiple dependencies", () => {
+    cy.get("#1-1").click().type("1");
+    cy.get("#1-2").click().type("2");
+    cy.get("#2-1").click().type("= A1 + A2 + 2");
+    cy.get("#2-2").click();
+    cy.get("#2-1>input").should("have.value", "5");
+    cy.get("#1-1").click().clear().type("2");
+    cy.get("#2-2").click();
+    cy.get("#2-1>input").should("have.value", "6");
+    cy.get("#1-2").click().clear().type("3");
+    cy.get("#2-2").click();
+    cy.get("#2-1>input").should("have.value", "7");
+  });
+
   it("typing in cell updates sheet menu input", () => {
     cy.get("#1-1").click().type("This");
     cy.get(".cellInput>input").should("have.value", "This");
