@@ -51,14 +51,13 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   };
 
   const onBlur = () => {
-    if (localRaw !== localValue.rawValue) {
-      dispatch(
-        setCellValue({
-          key: pos,
-          rawValue: localRaw,
-        })
-      );
-    }
+    dispatch(
+      setCellValue({
+        key: pos,
+        rawValue: localRaw,
+        propagateChanges: true,
+      })
+    );
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,6 +66,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
       setCellValue({
         key: pos,
         rawValue: e.target.value,
+        propagateChanges: false,
       })
     );
   };

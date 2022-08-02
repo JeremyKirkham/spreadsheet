@@ -23,7 +23,11 @@ export const SheetMenu: React.FC = () => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLocalValue(e.target.value);
     dispatch(
-      setCellValue({ key: selectedCellValue, rawValue: e.target.value })
+      setCellValue({
+        key: selectedCellValue,
+        rawValue: e.target.value,
+        propagateChanges: false,
+      })
     );
   };
 
@@ -33,7 +37,11 @@ export const SheetMenu: React.FC = () => {
 
   const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(
-      setCellValue({ key: selectedCellValue, rawValue: e.target.value })
+      setCellValue({
+        key: selectedCellValue,
+        rawValue: e.target.value,
+        propagateChanges: true,
+      })
     );
     setInMenu(false);
   };
