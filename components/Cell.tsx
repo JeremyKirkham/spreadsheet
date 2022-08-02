@@ -1,20 +1,8 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { update } from "../store/selectedCellSlice";
 import { CellValue, cellValues, setCellValue } from "../store/cellValuesSlice";
-import { Parser as FormulaParser } from "hot-formula-parser";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { xAndYToPos } from "../lib/xAndYtoPost";
-
-interface CellPos {
-  index: number;
-  label: string;
-  isAbsolute: boolean;
-}
-interface CellCoord {
-  label: string;
-  row: CellPos;
-  column: CellPos;
-}
 
 interface Props {
   width: number;
@@ -23,12 +11,10 @@ interface Props {
 }
 
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
-  const [parser] = useState(new FormulaParser());
   const [localValue, setLocalValue] = useState<CellValue>({
     rawValue: "",
     calculatedValue: "",
   });
-  const [reliesOnCells, setReliesOnCells] = useState<string[]>([]);
   const dispatch = useAppDispatch();
   const [isSelected, setIsSelected] = useState(false);
   const currentCellValues = useAppSelector(cellValues);
@@ -37,47 +23,11 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
   const pos = xAndYToPos(x, y);
 
   useEffect(() => {
-    const fn = (cellCoord: CellCoord, done: any) => {
-      const cellId = xAndYToPos(
-        cellCoord.column.index + 1,
-        cellCoord.row.index + 1
-      );
-      const cell = currentCellValues[cellId].calculatedValue;
-      if (reliesOnCells[0] !== cellId) {
-        setReliesOnCells([cellId]);
-      }
-      done(cell);
-    };
-
-    parser.on("callCellValue", fn);
-
-    return () => parser.off("callCellValue", fn);
-  }, [parser, reliesOnCells, currentCellValues]);
-
-  useEffect(() => {
-    if (reliesOnCells.length > 0) {
-      const newReliedOnCellValue = currentCellValues[reliesOnCells[0]];
-      if (newReliedOnCellValue) {
-        const calculated = parser.parse(localValue.rawValue.substring(1));
-        let calc = calculated.error ?? calculated.result;
-        if (localValue.calculatedValue !== calc) {
-          setLocalValue({
-            rawValue: localValue.rawValue,
-            calculatedValue: calc,
-          });
-          setTimeout(() => {
-            dispatch(
-              setCellValue({
-                key: pos,
-                rawValue: localValue.rawValue,
-                calculatedValue: calc,
-              })
-            );
-          }, 10);
-        }
-      }
+    const cellValue = currentCellValues[pos];
+    if (cellValue) {
+      setLocalValue(cellValue);
     }
-  }, [reliesOnCells, localValue, parser, currentCellValues, dispatch, pos]);
+  }, [currentCellValues, pos]);
 
   const isHighlighted = (): boolean => {
     return false;
@@ -91,20 +41,10 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
 
   const onBlur = () => {
     setIsSelected(false);
-    let calculatedValue = localValue.rawValue;
-    if (localValue.rawValue.charAt(0) == "=") {
-      const calculated = parser.parse(localValue.rawValue.substring(1));
-      calculatedValue = calculated.error ?? calculated.result;
-    }
-    setLocalValue({
-      rawValue: localValue.rawValue,
-      calculatedValue,
-    });
     dispatch(
       setCellValue({
         key: pos,
         rawValue: localValue.rawValue,
-        calculatedValue,
       })
     );
   };
