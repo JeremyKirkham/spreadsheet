@@ -55,4 +55,15 @@ describe("Spreadsheet", () => {
     cy.get("#2-1>input").should("have.value", "4");
     cy.get("#3-1>input").should("have.value", "3");
   });
+
+  it("typing in cell updates sheet menu input", () => {
+    cy.get("#1-1").click().type("This");
+    cy.get(".cellInput>input").should("have.value", "This");
+  });
+
+  it("typing in sheet menu input updates cell", () => {
+    cy.get("#1-1").click();
+    cy.get(".cellInput>input").type("That");
+    cy.get("#1-1>input").should("have.value", "That");
+  });
 });

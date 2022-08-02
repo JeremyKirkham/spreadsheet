@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { SelectedCellContext } from "../contexts/SelectedCellContext";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { indexToAlpha } from "../lib/indexToAlpha";
 import { posToXAndY } from "../lib/xAndYtoPost";
@@ -6,6 +7,7 @@ import { cellValues, setCellValue } from "../store/cellValuesSlice";
 import { selectedCell } from "../store/selectedCellSlice";
 
 export const SheetMenu: React.FC = () => {
+  const { setInMenu } = useContext(SelectedCellContext);
   const [localValue, setLocalValue] = useState("");
   const currentCellValues = useAppSelector(cellValues);
   const selectedCellValue = useAppSelector(selectedCell);
@@ -20,6 +22,9 @@ export const SheetMenu: React.FC = () => {
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLocalValue(e.target.value);
+    dispatch(
+      setCellValue({ key: selectedCellValue, rawValue: e.target.value })
+    );
   };
 
   const range = () => {
@@ -30,6 +35,11 @@ export const SheetMenu: React.FC = () => {
     dispatch(
       setCellValue({ key: selectedCellValue, rawValue: e.target.value })
     );
+    setInMenu(false);
+  };
+
+  const onFocus = () => {
+    setInMenu(true);
   };
 
   return (
@@ -44,6 +54,7 @@ export const SheetMenu: React.FC = () => {
             value={localValue}
             onChange={onChange}
             onBlur={onBlur}
+            onFocus={onFocus}
           />
         </div>
       </div>

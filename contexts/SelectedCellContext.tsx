@@ -21,17 +21,20 @@ interface SelectedCellContext {
     end?: Position;
   }) => void;
   mousedown: boolean;
+  setInMenu: (inMenu: boolean) => void;
 }
 
 export const SelectedCellContext = createContext<SelectedCellContext>({
   setHighlightedRange: () => {},
   mousedown: false,
+  setInMenu: () => {},
 });
 
 export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
   children,
 }) => {
   const [mousedown, setMousedown] = useState(false);
+  const [inMenu, setInMenu] = useState(false);
   const [highlightedStartX, setHighlightedStartX] = useState<number>();
   const [highlightedStartY, setHighlightedStartY] = useState<number>();
   const [highlightedEndX, setHighlightedEndX] = useState<number>();
@@ -41,6 +44,9 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
 
   useEffect(() => {
     const keydownfn = (event: KeyboardEvent) => {
+      if (inMenu) {
+        return;
+      }
       const existingX = cellPos.x;
       const existingY = cellPos.y;
       let newX = 1;
@@ -88,7 +94,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
     return () => {
       document.body.removeEventListener("keydown", keydownfn);
     };
-  }, [dispatch, cellPos]);
+  }, [dispatch, cellPos, inMenu]);
 
   const setHighlightedRange = ({
     start,
@@ -115,6 +121,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
         setHighlightedRange,
         highlightedRange,
         mousedown,
+        setInMenu,
       }}
     >
       {children}
