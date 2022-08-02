@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { update } from "../store/selectedCellSlice";
+import { selectedCell, update } from "../store/selectedCellSlice";
 import { CellValue, cellValues, setCellValue } from "../store/cellValuesSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { xAndYToPos } from "../lib/xAndYtoPost";
@@ -20,9 +20,19 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   const dispatch = useAppDispatch();
   const [isSelected, setIsSelected] = useState(false);
   const currentCellValues = useAppSelector(cellValues);
+  const selectedCellValue = useAppSelector(selectedCell);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const pos = xAndYToPos(x, y);
+
+  useEffect(() => {
+    if (selectedCellValue == pos) {
+      setIsSelected(true);
+      inputRef.current?.focus();
+    } else {
+      setIsSelected(false);
+    }
+  }, [selectedCellValue, pos]);
 
   useEffect(() => {
     const cellValue = currentCellValues[pos];
@@ -37,25 +47,28 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   };
 
   const onFocus = () => {
-    inputRef.current?.focus();
     dispatch(update(pos));
-    setIsSelected(true);
   };
 
   const onBlur = () => {
-    setIsSelected(false);
-    if (localRaw !== localValue.rawValue) {
-      dispatch(
-        setCellValue({
-          key: pos,
-          rawValue: localRaw,
-        })
-      );
-    }
+    dispatch(
+      setCellValue({
+        key: pos,
+        rawValue: localRaw,
+        propagateChanges: true,
+      })
+    );
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLocalRaw(e.target.value);
+    dispatch(
+      setCellValue({
+        key: pos,
+        rawValue: e.target.value,
+        propagateChanges: false,
+      })
+    );
   };
 
   const onMouseOver = () => {};
@@ -100,7 +113,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           position: relative;
           top: ${height - 6}px;
           left: -5px;
-          z-index: 999999;
+          z-index: 9;
           flex-shrink: 0;
           display: ${isSelected ? "block" : "none"};
           cursor: grab;

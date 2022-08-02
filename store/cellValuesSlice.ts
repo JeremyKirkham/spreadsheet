@@ -69,6 +69,7 @@ export const cellValuesSlice = createSlice({
       action: PayloadAction<{
         key: string;
         rawValue: string;
+        propagateChanges: boolean;
       }>
     ) => {
       const rawValue = action.payload.rawValue;
@@ -80,24 +81,27 @@ export const cellValuesSlice = createSlice({
         reliesOnCells: rs.reliesOnCells,
       };
 
-      const cellsThatRelyOnMe = Object.keys(state.value).filter((objKey) =>
-        state.value[objKey].reliesOnCells?.includes(action.payload.key)
-      );
-
       state.value = {
         ...state.value,
         [action.payload.key]: newVal,
       };
 
-      cellsThatRelyOnMe.map((c) => {
-        cellValuesSlice.caseReducers.setCellValue(
-          state,
-          setCellValue({
-            key: c,
-            rawValue: state.value[c].rawValue,
-          })
-        );
-      });
+      if (action.payload.propagateChanges) {
+        Object.keys(state.value)
+          .filter((objKey) =>
+            state.value[objKey].reliesOnCells?.includes(action.payload.key)
+          )
+          .map((c) => {
+            cellValuesSlice.caseReducers.setCellValue(
+              state,
+              setCellValue({
+                key: c,
+                rawValue: state.value[c].rawValue,
+                propagateChanges: true,
+              })
+            );
+          });
+      }
     },
   },
 });

@@ -33,6 +33,7 @@ export const Row: React.FC<
           border-right: solid 1px #c0c0c0;
           position: sticky;
           left: 0;
+          z-index: 10;
         }
         .rowHeader.selected {
           background: #e8eaed;

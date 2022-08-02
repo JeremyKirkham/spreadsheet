@@ -1,4 +1,4 @@
-describe("Spreadsheet", () => {
+describe("Spreadsheet", { scrollBehavior: false }, () => {
   beforeEach(() => {
     cy.visit("/");
   });
@@ -17,7 +17,7 @@ describe("Spreadsheet", () => {
     cy.get("#row-1").should("have.class", "selected");
   });
 
-  it("navigates with arrows", { scrollBehavior: false }, () => {
+  it("navigates with arrows", () => {
     cy.get("#1-1").click();
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
@@ -42,7 +42,7 @@ describe("Spreadsheet", () => {
     cy.get("#row-1").should("have.class", "selected");
   });
 
-  it("calculates values", { scrollBehavior: false }, () => {
+  it("calculates values", () => {
     cy.get("#1-1").click().type("1");
     cy.get("#2-1").click().type("= A1 + 2");
     cy.get("#2-2").click();
@@ -54,5 +54,16 @@ describe("Spreadsheet", () => {
     cy.get("#2-2").click();
     cy.get("#2-1>input").should("have.value", "4");
     cy.get("#3-1>input").should("have.value", "3");
+  });
+
+  it("typing in cell updates sheet menu input", () => {
+    cy.get("#1-1").click().type("This");
+    cy.get(".cellInput>input").should("have.value", "This");
+  });
+
+  it("typing in sheet menu input updates cell", () => {
+    cy.get("#1-1").click();
+    cy.get(".cellInput>input").type("That");
+    cy.get("#1-1>input").should("have.value", "That");
   });
 });
