@@ -51,7 +51,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
       const existingY = cellPos.y;
       let newX = 1;
       let newY = 1;
-      if (event.key == "ArrowDown") {
+      if (event.key == "ArrowDown" || event.key == "Enter") {
         newX = existingX ?? 1;
         newY = existingY ? existingY + 1 : 1;
         document

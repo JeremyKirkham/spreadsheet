@@ -41,7 +41,7 @@ const calculateFromRaw = (state: CellValuesState, rawValue: string) => {
       cellCoord.column.index + 1,
       cellCoord.row.index + 1
     );
-    reliesOnCells = [cellId];
+    reliesOnCells.push(cellId);
     done(state.value[cellId].calculatedValue);
   };
 
