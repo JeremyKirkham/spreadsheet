@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SelectedCellProvider } from "../contexts/SelectedCellContext";
 import { Cell } from "./Cell";
 import { Row } from "./Row";
@@ -14,11 +14,11 @@ const alphabet = alpha.map((x) => String.fromCharCode(x));
 const rowCount = 100;
 
 export const Sheet: React.FC = () => {
-  const [columns, setColumns] = useState(alphabet);
-  const [rows, setRows] = useState(Array.from(Array(rowCount).keys()));
-  const [colWidth, setColWidth] = useState(110);
-  const [rowHeight, setRowHeight] = useState(24);
-  const { height, width } = useWindowDimensions();
+  const [columns] = useState(alphabet);
+  const [rows] = useState(Array.from(Array(rowCount).keys()));
+  const [colWidth] = useState(110);
+  const [rowHeight] = useState(24);
+  const { height } = useWindowDimensions();
 
   const RowChild = ({ index, style }: { index: number; style: any }) => {
     if (index == 0) {
