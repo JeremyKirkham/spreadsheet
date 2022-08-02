@@ -113,7 +113,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           position: relative;
           top: ${height - 6}px;
           left: -5px;
-          z-index: 999999;
+          z-index: 9;
           flex-shrink: 0;
           display: ${isSelected ? "block" : "none"};
           cursor: grab;
