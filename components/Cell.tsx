@@ -11,6 +11,7 @@ interface Props {
 }
 
 export const Cell: React.FC<Props> = ({ x, y, width }) => {
+  const [localRaw, setLocalRaw] = useState<string>("");
   const [localValue, setLocalValue] = useState<CellValue>({
     rawValue: "",
     calculatedValue: "",
@@ -26,6 +27,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
     const cellValue = currentCellValues[pos];
     if (cellValue) {
       setLocalValue(cellValue);
+      setLocalRaw(cellValue.rawValue);
     }
   }, [currentCellValues, pos]);
 
@@ -41,16 +43,18 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
 
   const onBlur = () => {
     setIsSelected(false);
-    dispatch(
-      setCellValue({
-        key: pos,
-        rawValue: localValue.rawValue,
-      })
-    );
+    if (localRaw !== localValue.rawValue) {
+      dispatch(
+        setCellValue({
+          key: pos,
+          rawValue: localRaw,
+        })
+      );
+    }
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLocalValue({ rawValue: e.target.value });
+    setLocalRaw(e.target.value);
   };
 
   const onMouseOver = () => {};
@@ -59,9 +63,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
     <>
       <div className="cell" id={pos} onClick={onFocus}>
         <input
-          value={
-            isSelected ? localValue.rawValue : localValue.calculatedValue ?? ""
-          }
+          value={isSelected ? localRaw : localValue.calculatedValue ?? ""}
           onFocus={onFocus}
           onBlur={onBlur}
           onMouseOver={onMouseOver}
