@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { indexToAlpha } from "../lib/indexToAlpha";
 import { posToXAndY } from "../lib/xAndYtoPost";
@@ -6,12 +6,21 @@ import { cellValues, setCellValue } from "../store/cellValuesSlice";
 import { selectedCell } from "../store/selectedCellSlice";
 
 export const SheetMenu: React.FC = () => {
+  const [localValue, setLocalValue] = useState("");
   const currentCellValues = useAppSelector(cellValues);
   const selectedCellValue = useAppSelector(selectedCell);
   const dispatch = useAppDispatch();
   const splitVal = posToXAndY(selectedCellValue);
   const selectedX = splitVal.x;
   const selectedY = splitVal.y;
+
+  useEffect(() => {
+    setLocalValue(currentCellValues[selectedCellValue]?.rawValue ?? "");
+  }, [currentCellValues, selectedCellValue]);
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setLocalValue(e.target.value);
+  };
 
   const range = () => {
     return null;
@@ -32,7 +41,8 @@ export const SheetMenu: React.FC = () => {
         <div className="cellInput">
           <input
             placeholder="Cell input"
-            defaultValue={currentCellValues[selectedCellValue]?.rawValue ?? ""}
+            value={localValue}
+            onChange={onChange}
             onBlur={onBlur}
           />
         </div>
@@ -48,8 +58,10 @@ export const SheetMenu: React.FC = () => {
         .selectedCells {
           border-right: 1px solid #c0c0c0;
           height: 30px;
+          line-height: 30px;
           width: 60px;
           padding: 0px 4px;
+          text-align: center;
         }
         .cellInput {
           flex-grow: 1;

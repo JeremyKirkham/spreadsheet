@@ -2,11 +2,9 @@ import { PropsWithChildren } from "react";
 import { useAppSelector } from "../hooks/store";
 import { selectedCellPosition } from "../store/selectedCellSlice";
 
-export const Row: React.FC<PropsWithChildren<{ row: number; style: any }>> = ({
-  row,
-  style,
-  children,
-}) => {
+export const Row: React.FC<
+  PropsWithChildren<{ row: number; style: any; height: number }>
+> = ({ row, style, height, children }) => {
   const cellPos = useAppSelector(selectedCellPosition);
 
   return (
@@ -22,9 +20,9 @@ export const Row: React.FC<PropsWithChildren<{ row: number; style: any }>> = ({
       </div>
       <style jsx>{`
         .sheetRow {
-          height: 30px;
+          height: ${height}px;
           display: flex;
-          line-heigth: 30px;
+          line-heigth: ${height}px;
         }
         .rowHeader {
           width: 60px;

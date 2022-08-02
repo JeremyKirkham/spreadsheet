@@ -6,11 +6,12 @@ import { xAndYToPos } from "../lib/xAndYtoPost";
 
 interface Props {
   width: number;
+  height: number;
   x: number;
   y: number;
 }
 
-export const Cell: React.FC<Props> = ({ x, y, width }) => {
+export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   const [localRaw, setLocalRaw] = useState<string>("");
   const [localValue, setLocalValue] = useState<CellValue>({
     rawValue: "",
@@ -75,7 +76,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
       <style jsx>{`
         .cell {
           width: ${width}px;
-          height: 30px;
+          height: ${height}px;
           flex-shrink: 0;
           display: flex;
           border-left: solid 1px rgba(0, 0, 0, 0);
@@ -97,7 +98,7 @@ export const Cell: React.FC<Props> = ({ x, y, width }) => {
           height: 8px;
           background: blue;
           position: relative;
-          top: 24px;
+          top: ${height - 6}px;
           left: -5px;
           z-index: 999999;
           flex-shrink: 0;

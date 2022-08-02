@@ -33,9 +33,16 @@ describe("Spreadsheet", () => {
     cy.get("body").type("{leftArrow}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    // Test you can't navigate outside of the sheet parameters.
+    cy.get("body").type("{leftArrow}");
+    cy.get("#header-A").should("have.class", "selected");
+    cy.get("#row-1").should("have.class", "selected");
+    cy.get("body").type("{upArrow}");
+    cy.get("#header-A").should("have.class", "selected");
+    cy.get("#row-1").should("have.class", "selected");
   });
 
-  it.only("calculates values", { scrollBehavior: false }, () => {
+  it("calculates values", { scrollBehavior: false }, () => {
     cy.get("#1-1").click().type("1");
     cy.get("#2-1").click().type("= A1 + 2");
     cy.get("#2-2").click();

@@ -3,10 +3,11 @@ import { selectedCellPosition } from "../store/selectedCellSlice";
 
 interface Props {
   width: number;
+  height: number;
   columns: any[];
 }
 
-export const SheetHeaderRow: React.FC<Props> = ({ width, columns }) => {
+export const SheetHeaderRow: React.FC<Props> = ({ width, height, columns }) => {
   const cellPos = useAppSelector(selectedCellPosition);
 
   return (
@@ -43,7 +44,8 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, columns }) => {
           text-align: center;
           flex-shrink: 0;
           background: #f2f2f2;
-          height: 30px;
+          height: ${height}px;
+          line-height: ${height}px;
           border-right: solid 1px #c0c0c0;
           border-bottom: solid 1px #c0c0c0;
         }

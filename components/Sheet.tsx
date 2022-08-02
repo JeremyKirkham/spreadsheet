@@ -16,17 +16,28 @@ const rowCount = 100;
 export const Sheet: React.FC = () => {
   const [columns, setColumns] = useState(alphabet);
   const [rows, setRows] = useState(Array.from(Array(rowCount).keys()));
-  const [colWidth, setColWidth] = useState(150);
+  const [colWidth, setColWidth] = useState(110);
+  const [rowHeight, setRowHeight] = useState(24);
   const { height, width } = useWindowDimensions();
 
   const RowChild = ({ index, style }: { index: number; style: any }) => {
     if (index == 0) {
-      return <SheetHeaderRow width={colWidth} columns={columns} />;
+      return (
+        <SheetHeaderRow width={colWidth} columns={columns} height={rowHeight} />
+      );
     } else {
       return (
-        <Row style={style} row={index}>
+        <Row style={style} row={index} height={rowHeight}>
           {columns.map((col, j) => {
-            return <Cell x={j + 1} y={index} key={j} width={colWidth} />;
+            return (
+              <Cell
+                x={j + 1}
+                y={index}
+                key={j}
+                width={colWidth}
+                height={rowHeight}
+              />
+            );
           })}
         </Row>
       );
@@ -51,7 +62,7 @@ export const Sheet: React.FC = () => {
               height={height}
               itemCount={rows.length + 1}
               itemData={rows}
-              itemSize={30}
+              itemSize={rowHeight}
               itemKey={itemKey}
               width="100%"
             >
@@ -62,7 +73,7 @@ export const Sheet: React.FC = () => {
       </Provider>
       <style jsx>{`
         .sidebarcol {
-          height: 30px;
+          height: ${rowHeight}px;
           background: #f2f2f2;
           border-bottom: 1px solid #c0c0c0;
         }

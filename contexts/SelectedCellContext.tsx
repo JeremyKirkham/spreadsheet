@@ -56,7 +56,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
       }
       if (event.key == "ArrowUp") {
         newX = existingX ?? 1;
-        newY = existingY ? existingY - 1 : 1;
+        newY = existingY && existingY > 1 ? existingY - 1 : 1;
         document
           .getElementById(xAndYToPos(newX, newY))
           ?.getElementsByTagName("input")[0]
@@ -73,7 +73,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
         dispatch(update(xAndYToPos(newX, newY)));
       }
       if (event.key == "ArrowLeft") {
-        newX = existingX ? existingX - 1 : 1;
+        newX = existingX && existingX > 1 ? existingX - 1 : 1;
         newY = existingY ?? 1;
         document
           .getElementById(xAndYToPos(newX, newY))
