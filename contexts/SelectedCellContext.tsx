@@ -47,6 +47,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
       if (inMenu) {
         return;
       }
+
       const existingX = cellPos.x;
       const existingY = cellPos.y;
       let newX = 1;

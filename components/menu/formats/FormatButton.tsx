@@ -1,12 +1,12 @@
 import { IconType } from "react-icons";
-import { useAppDispatch, useAppSelector } from "../../hooks/store";
+import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import {
   CellFormat,
   cellValues,
   setCellFormat,
-} from "../../store/cellValuesSlice";
-import { selectedCell } from "../../store/selectedCellSlice";
-import { Button } from "./Button";
+} from "../../../store/cellValuesSlice";
+import { selectedCell } from "../../../store/selectedCellSlice";
+import { Button } from "../Button";
 
 export const FormatButton: React.FC<{ format: CellFormat; icon: IconType }> = ({
   format,

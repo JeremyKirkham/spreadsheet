@@ -6,6 +6,7 @@ export const Spacer = () => {
         .menu-spacer {
           border-right: 1px solid #dadce0;
           margin: 10px 2px;
+          display: flex;
         }
       `}</style>
     </>
