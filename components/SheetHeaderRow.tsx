@@ -31,11 +31,6 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, height, columns }) => {
         </div>
       </div>
       <style jsx>{`
-        .sheetHeader {
-          position: sticky;
-          top: 0;
-          z-index: 9;
-        }
         .inner {
           display: flex;
         }

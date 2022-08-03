@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { Sheet } from "../components/Sheet";
-import { TopMenu } from "../components/TopMenu";
 
 const Home: NextPage = () => {
   return (
@@ -9,7 +8,6 @@ const Home: NextPage = () => {
       <Head>
         <title>Spreadsheet</title>
       </Head>
-      <TopMenu />
       <Sheet />
       <style jsx>{``}</style>
     </>

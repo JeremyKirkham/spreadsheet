@@ -16,6 +16,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   const [localValue, setLocalValue] = useState<CellValue>({
     rawValue: "",
     calculatedValue: "",
+    format: "text",
   });
   const dispatch = useAppDispatch();
   const [isSelected, setIsSelected] = useState(false);
@@ -28,7 +29,9 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   useEffect(() => {
     if (selectedCellValue == pos) {
       setIsSelected(true);
-      inputRef.current?.focus();
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 20);
     } else {
       setIsSelected(false);
     }
@@ -76,6 +79,10 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   return (
     <>
       <div className="cell" id={pos} onClick={onFocus}>
+        <div className="calculatedValue">
+          {localValue.format == "currency" && "$"}
+          {localValue.calculatedValue}
+        </div>
         <input
           value={isSelected ? localRaw : localValue.calculatedValue ?? ""}
           onFocus={onFocus}
@@ -98,21 +105,33 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           border-bottom: solid 1px #e2e3e3;
           background: ${isHighlighted() ? "#E8F0FD" : null};
           border: ${isSelected ? "solid 1px blue" : "default"};
+          position: relative;
+        }
+        .calculatedValue {
+          width: ${width - 3}px;
+          height: ${height}px;
+          line-height: ${height - 2}px;
+          padding: 0px 2px;
         }
         input {
           outline: none;
           border: none;
           width: ${width - 2}px;
+          height: ${height - 2}px;
           cursor: default;
-          background: none;
+          background: white;
+          visibility: ${isSelected ? "show" : "hidden"};
+          position: absolute;
+          top: 0;
+          left: 0;
         }
         .dragger {
           width: 8px;
           height: 8px;
           background: blue;
-          position: relative;
-          top: ${height - 6}px;
-          left: -5px;
+          position: absolute;
+          right: -3px;
+          bottom: -3px;
           z-index: 9;
           flex-shrink: 0;
           display: ${isSelected ? "block" : "none"};

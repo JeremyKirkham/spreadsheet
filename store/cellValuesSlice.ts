@@ -14,10 +14,13 @@ interface CellCoord {
   column: CellPos;
 }
 
+type CellFormat = "text" | "number" | "currency" | "percentage";
+
 export interface CellValue {
   rawValue: string;
   calculatedValue?: string;
   reliesOnCells?: string[];
+  format?: CellFormat;
 }
 
 // Define a type for the slice state
@@ -64,6 +67,21 @@ export const cellValuesSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    setCellFormat: (
+      state,
+      action: PayloadAction<{
+        key: string;
+        format: CellFormat;
+      }>
+    ) => {
+      state.value = {
+        ...state.value,
+        [action.payload.key]: {
+          ...state.value[action.payload.key],
+          format: action.payload.format,
+        },
+      };
+    },
     setCellValue: (
       state,
       action: PayloadAction<{
@@ -74,11 +92,13 @@ export const cellValuesSlice = createSlice({
     ) => {
       const rawValue = action.payload.rawValue;
       const rs = calculateFromRaw(state, rawValue);
+      const currentVal = state.value[action.payload.key];
 
       const newVal = {
         rawValue,
         calculatedValue: rs.calculatedValue,
         reliesOnCells: rs.reliesOnCells,
+        format: currentVal?.format,
       };
 
       state.value = {
@@ -106,7 +126,7 @@ export const cellValuesSlice = createSlice({
   },
 });
 
-export const { setCellValue } = cellValuesSlice.actions;
+export const { setCellValue, setCellFormat } = cellValuesSlice.actions;
 
 export const cellValues = (state: RootState) => state.cellValues.value;
 
