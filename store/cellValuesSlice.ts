@@ -14,7 +14,7 @@ interface CellCoord {
   column: CellPos;
 }
 
-type CellFormat = "text" | "number" | "currency" | "percentage";
+export type CellFormat = "text" | "number" | "currency" | "percentage";
 
 export interface CellValue {
   rawValue: string;
