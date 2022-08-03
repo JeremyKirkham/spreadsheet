@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { store } from "../store";
 import { FixedSizeList as List } from "react-window";
 import { useWindowDimensions } from "../hooks/useWindowDimensions";
-import { TopMenu } from "./menu/TopMenu";
+import { ActionMenu } from "./menu/ActionMenu";
 
 const alpha = Array.from(Array(26)).map((e, i) => i + 65);
 const alphabet = alpha.map((x) => String.fromCharCode(x));
@@ -57,7 +57,7 @@ export const Sheet: React.FC = () => {
     <>
       <Provider store={store}>
         <SelectedCellProvider>
-          <TopMenu />
+          <ActionMenu />
           <SheetMenu />
           <div className="sheetBody">
             <List

@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes } from "react";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
-  isActive: boolean;
+  isActive?: boolean;
 }
 
 export const Button: React.FC<Props> = ({ children, isActive, ...props }) => {
