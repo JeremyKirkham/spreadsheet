@@ -32,15 +32,25 @@ export const selectedRangeSlice = createSlice({
   reducers: {
     addCell: (state, action: PayloadAction<CellKey>) => {
       const pos = posToXAndY(action.payload);
-      let start = state.value.start;
-      let end = state.value.end;
-      if (!start || pos.x < start.x || pos.y < start.y) {
+      const stateStart = state.value.start;
+      const stateEnd = state.value.end;
+      let start = stateStart;
+      let end = stateEnd;
+      if (!start) {
         start = pos;
+      } else {
+        start = {
+          x: stateStart!.x < pos.x ? stateStart!.x : pos.x,
+          y: stateStart!.y < pos.y ? stateStart!.y : pos.y,
+        };
       }
       if (!end) {
         end = pos;
-      } else if (pos.x > end.x || pos.y > end.y) {
-        end = pos;
+      } else {
+        end = {
+          x: stateEnd!.x > pos.x ? stateEnd!.x : pos.x,
+          y: stateEnd!.y > pos.y ? stateEnd!.y : pos.y,
+        };
       }
       if (state.value.mouseDown) {
         state.value = {
