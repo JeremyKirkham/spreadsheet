@@ -6,6 +6,7 @@ import { indexToAlpha } from "../lib/indexToAlpha";
 import { posToXAndY } from "../lib/xAndYtoPos";
 import { cellValues, setCellValue } from "../store/cellValuesSlice";
 import { selectedCell } from "../store/selectedCellSlice";
+import { selectedRangeSymbol } from "../store/selectedRangeSlice";
 
 export const SheetMenu: React.FC = () => {
   const {
@@ -19,6 +20,7 @@ export const SheetMenu: React.FC = () => {
   const [localValue, setLocalValue] = useState("");
   const currentCellValues = useAppSelector(cellValues);
   const selectedCellValue = useAppSelector(selectedCell);
+  const selectedRangeValue = useAppSelector(selectedRangeSymbol);
   const dispatch = useAppDispatch();
   const splitVal = posToXAndY(selectedCellValue);
   const selectedX = splitVal.x;
@@ -37,10 +39,6 @@ export const SheetMenu: React.FC = () => {
         propagateChanges: false,
       })
     );
-  };
-
-  const range = () => {
-    return null;
   };
 
   const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +60,8 @@ export const SheetMenu: React.FC = () => {
     <>
       <div className="secondmenu">
         <div className="selectedCells">
-          {selectedX ? `${indexToAlpha(selectedX)}${selectedY}` : null}
+          {selectedRangeValue ??
+            (selectedX ? `${indexToAlpha(selectedX)}${selectedY}` : null)}
         </div>
         <div className="cellInput">
           <input

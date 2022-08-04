@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
+import { indexToAlpha } from "../lib/indexToAlpha";
 import { posToXAndY } from "../lib/xAndYtoPos";
 
 type CellKey = string;
@@ -88,5 +89,13 @@ export const selectedRangeSlice = createSlice({
 export const { addCell, clearRange, setMouseDown } = selectedRangeSlice.actions;
 
 export const selectedRange = (state: RootState) => state.selectedRange.value;
+export const selectedRangeSymbol = (state: RootState) =>
+  state.selectedRange.value.start && state.selectedRange.value.end
+    ? `${indexToAlpha(state.selectedRange.value.start.x)}${
+        state.selectedRange.value.start.y
+      }:${indexToAlpha(state.selectedRange.value.end.x)}${
+        state.selectedRange.value.end.y
+      }`
+    : null;
 
 export default selectedRangeSlice.reducer;
