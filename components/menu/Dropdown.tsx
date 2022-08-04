@@ -22,7 +22,11 @@ export const Dropdown: React.FC<Props> = ({
 }) => {
   const [open, setOpen] = useState(false);
   const ref = useClickOutside(() => {
-    setOpen(false);
+    if (open) {
+      setTimeout(() => {
+        setOpen(false);
+      }, 10);
+    }
   });
 
   const onClick = () => {
@@ -62,7 +66,7 @@ export const Dropdown: React.FC<Props> = ({
           overflow-y: auto;
           position: absolute;
           top: 36px;
-          left: 0;
+          left: 2px;
           z-index: 999;
           background: white;
           border-radius: 4px;

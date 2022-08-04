@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { selectedCell, update } from "../store/selectedCellSlice";
 import { CellValue, cellValues, setCellValue } from "../store/cellValuesSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
@@ -53,6 +53,12 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
     dispatch(update(pos));
   };
 
+  const onTab = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key == "Tab") {
+      e.preventDefault();
+    }
+  };
+
   const onBlur = () => {
     dispatch(
       setCellValue({
@@ -89,6 +95,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           onBlur={onBlur}
           onMouseOver={onMouseOver}
           onChange={onChange}
+          onKeyDown={onTab}
           ref={inputRef}
         ></input>
         <div className="dragger"></div>
@@ -109,6 +116,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
         }
         .calculatedValue {
           width: ${width - 3}px;
+          overflow: hidden;
           height: ${height}px;
           line-height: ${height - 2}px;
           padding: 0px 2px;
@@ -120,10 +128,10 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           height: ${height - 2}px;
           cursor: default;
           background: white;
-          visibility: ${isSelected ? "show" : "hidden"};
           position: absolute;
           top: 0;
           left: 0;
+          visibility: ${isSelected ? "show" : "hidden"};
         }
         .dragger {
           width: 8px;

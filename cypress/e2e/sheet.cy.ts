@@ -17,20 +17,32 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#row-1").should("have.class", "selected");
   });
 
-  it("navigates with arrows", () => {
+  it("navigates with keyboard", () => {
     cy.get("#1-1").click();
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    // Down
     cy.get("body").type("{downArrow}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-2").should("have.class", "selected");
+    // Right
     cy.get("body").type("{rightArrow}");
     cy.get("#header-B").should("have.class", "selected");
     cy.get("#row-2").should("have.class", "selected");
+    // Up
     cy.get("body").type("{upArrow}");
     cy.get("#header-B").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    // Left
     cy.get("body").type("{leftArrow}");
+    cy.get("#header-A").should("have.class", "selected");
+    cy.get("#row-1").should("have.class", "selected");
+    // Enter key
+    cy.get("body").type("{enter}");
+    cy.get("#header-A").should("have.class", "selected");
+    cy.get("#row-2").should("have.class", "selected");
+    // Shift Enter key
+    cy.get("body").type("{shift}{enter}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
     // Test you can't navigate outside of the sheet parameters.
