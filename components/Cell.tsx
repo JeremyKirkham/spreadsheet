@@ -139,6 +139,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           font-size: ${localValue.meta.fontSize ?? 12}px;
           text-decoration: ${localValue.meta.textDecoration ?? "none"};
           font-style: ${localValue.meta.fontStyle ?? "normal"};
+          text-align: ${localValue.meta.textAlign ?? "left"};
         }
         input {
           outline: none;
