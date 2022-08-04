@@ -74,7 +74,6 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
     };
 
     const onMouseUp = () => {
-      console.log("mouseup");
       dispatch(setMouseDown(false));
     };
 
