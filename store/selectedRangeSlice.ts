@@ -13,6 +13,7 @@ interface Position {
 interface SelectedRangeState {
   value: {
     mouseDown: boolean;
+    originalStart?: Position;
     start?: Position;
     end?: Position;
   };
@@ -31,34 +32,41 @@ export const selectedRangeSlice = createSlice({
   initialState,
   reducers: {
     addCell: (state, action: PayloadAction<CellKey>) => {
+      if (!state.value.mouseDown) {
+        return;
+      }
       const pos = posToXAndY(action.payload);
       const stateStart = state.value.start;
       const stateEnd = state.value.end;
+      let originalStart = state.value.originalStart;
       let start = stateStart;
       let end = stateEnd;
+      if (!originalStart) {
+        originalStart = pos;
+      }
       if (!start) {
         start = pos;
       } else {
         start = {
-          x: stateStart!.x < pos.x ? stateStart!.x : pos.x,
-          y: stateStart!.y < pos.y ? stateStart!.y : pos.y,
+          x: pos.x < originalStart!.x ? pos.x : originalStart!.x,
+          y: pos.y < originalStart!.y ? pos.y : originalStart!.y,
         };
       }
       if (!end) {
         end = pos;
       } else {
         end = {
-          x: stateEnd!.x > pos.x ? stateEnd!.x : pos.x,
-          y: stateEnd!.y > pos.y ? stateEnd!.y : pos.y,
+          x: pos.x > originalStart.x ? pos.x : originalStart.x,
+          y: pos.y > originalStart.y ? pos.y : originalStart.y,
         };
       }
-      if (state.value.mouseDown) {
-        state.value = {
-          start,
-          end,
-          mouseDown: state.value.mouseDown,
-        };
-      }
+      const newValue = {
+        originalStart,
+        start,
+        end,
+        mouseDown: state.value.mouseDown,
+      };
+      state.value = newValue;
     },
     setMouseDown: (state, action: PayloadAction<boolean>) => {
       state.value = {
@@ -68,6 +76,7 @@ export const selectedRangeSlice = createSlice({
     },
     clearRange: (state) => {
       state.value = {
+        originalStart: undefined,
         start: undefined,
         end: undefined,
         mouseDown: false,

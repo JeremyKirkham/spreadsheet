@@ -103,6 +103,20 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#2-2").should("have.class", "highlighted");
   });
 
+  it("selects ranges of cells 2", () => {
+    cy.get("#1-1").trigger("mousedown");
+    cy.get("#1-2").trigger("mouseover");
+    cy.get("#1-3").trigger("mouseover");
+    cy.get("#1-1").should("have.class", "highlighted");
+    cy.get("#1-2").should("have.class", "highlighted");
+    cy.get("#1-3").should("have.class", "highlighted");
+    cy.get("#1-2").trigger("mouseover");
+    cy.get("#1-2").trigger("mouseup");
+    cy.get("#1-1").should("have.class", "highlighted");
+    cy.get("#1-2").should("have.class", "highlighted");
+    cy.get("#1-3").should("not.have.class", "highlighted");
+  });
+
   it("selects ranges of cells in reverse", () => {
     cy.get("#2-2").trigger("mousedown");
     cy.get("#1-1").trigger("mouseover");
