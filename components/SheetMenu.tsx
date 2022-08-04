@@ -3,7 +3,7 @@ import { SelectedCellContext } from "../contexts/SelectedCellContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { indexToAlpha } from "../lib/indexToAlpha";
-import { posToXAndY } from "../lib/xAndYtoPost";
+import { posToXAndY } from "../lib/xAndYtoPos";
 import { cellValues, setCellValue } from "../store/cellValuesSlice";
 import { selectedCell } from "../store/selectedCellSlice";
 

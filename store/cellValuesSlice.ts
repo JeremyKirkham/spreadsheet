@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { Parser as FormulaParser } from "hot-formula-parser";
-import { xAndYToPos } from "../lib/xAndYtoPost";
+import { xAndYToPos } from "../lib/xAndYtoPos";
 
 interface CellPos {
   index: number;

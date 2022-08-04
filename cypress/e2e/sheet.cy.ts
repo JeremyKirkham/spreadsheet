@@ -92,4 +92,22 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get(".cellInput>input").type("That");
     cy.get("#1-1>input").should("have.value", "That");
   });
+
+  it("selects ranges of cells", () => {
+    cy.get("#1-1").trigger("mousedown");
+    cy.get("#2-2").trigger("mouseover");
+    cy.get("#1-1").should("have.class", "highlighted");
+    cy.get("#1-2").should("have.class", "highlighted");
+    cy.get("#2-1").should("have.class", "highlighted");
+    cy.get("#2-2").should("have.class", "highlighted");
+  });
+
+  it("selects ranges of cells in reverse", () => {
+    cy.get("#2-2").trigger("mousedown");
+    cy.get("#1-1").trigger("mouseover");
+    cy.get("#1-1").should("have.class", "highlighted");
+    cy.get("#1-2").should("have.class", "highlighted");
+    cy.get("#2-1").should("have.class", "highlighted");
+    cy.get("#2-2").should("have.class", "highlighted");
+  });
 });

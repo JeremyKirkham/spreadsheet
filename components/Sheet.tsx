@@ -10,7 +10,7 @@ import { FixedSizeList as List } from "react-window";
 import { useWindowDimensions } from "../hooks/useWindowDimensions";
 import { ActionMenu } from "./menu/ActionMenu";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { BsFillCloudHazeFill } from "react-icons/bs";
+import { BsFileSpreadsheetFill } from "react-icons/bs";
 
 const alpha = Array.from(Array(26)).map((e, i) => i + 65);
 const alphabet = alpha.map((x) => String.fromCharCode(x));
@@ -56,7 +56,7 @@ export const Sheet: React.FC = () => {
     <>
       {height == 0 ? (
         <div className="loader">
-          <BsFillCloudHazeFill size={120} />
+          <BsFileSpreadsheetFill size={120} />
         </div>
       ) : (
         <Provider store={store}>

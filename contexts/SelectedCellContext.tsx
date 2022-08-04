@@ -1,7 +1,8 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
-import { xAndYToPos } from "../lib/xAndYtoPost";
+import { xAndYToPos } from "../lib/xAndYtoPos";
 import { selectedCellPosition, update } from "../store/selectedCellSlice";
+import { setMouseDown } from "../store/selectedRangeSlice";
 
 interface SelectedCellContext {
   setInMenu: (inMenu: boolean) => void;
@@ -72,10 +73,17 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
       }
     };
 
+    const onMouseUp = () => {
+      console.log("mouseup");
+      dispatch(setMouseDown(false));
+    };
+
     document.body.addEventListener("keydown", keydownfn);
+    document.body.addEventListener("mouseup", onMouseUp);
 
     return () => {
       document.body.removeEventListener("keydown", keydownfn);
+      document.body.removeEventListener("mouseup", onMouseUp);
     };
   }, [dispatch, cellPos, inMenu]);
 
