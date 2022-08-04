@@ -1,15 +1,28 @@
 import { BsAlignBottom } from "react-icons/bs";
-import { DropdownItem } from "../DropdownItem";
 import { FormatDropdown } from "./FormatDropdown";
 
 export const FormatTextVerticalAlignDropdown = () => {
+  const options = [
+    {
+      title: "Top",
+      value: "top",
+    },
+    {
+      title: "Middle",
+      value: "middle",
+    },
+    {
+      title: "Bottom",
+      value: "bottom",
+    },
+  ];
+
   return (
-    <>
-      <FormatDropdown icon={BsAlignBottom}>
-        <DropdownItem>Top</DropdownItem>
-        <DropdownItem>Middle</DropdownItem>
-        <DropdownItem>Bottom</DropdownItem>
-      </FormatDropdown>
-    </>
+    <FormatDropdown
+      icon={BsAlignBottom}
+      showCaret={false}
+      metaKey="horizontalAlign"
+      options={options}
+    />
   );
 };

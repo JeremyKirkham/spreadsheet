@@ -26,7 +26,9 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   const [localValue, setLocalValue] = useState<CellValue>({
     rawValue: "",
     calculatedValue: "",
-    format: "text",
+    meta: {
+      format: "text",
+    },
   });
   const dispatch = useAppDispatch();
   const [isSelected, setIsSelected] = useState(false);
@@ -96,7 +98,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
     <>
       <div className="cell" id={pos} onClick={onFocus}>
         <div className="calculatedValue">
-          {localValue.format == "currency" && "$"}
+          {localValue.meta.format == "currency" && "$"}
           {localValue.calculatedValue}
         </div>
         <input
@@ -131,6 +133,12 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           height: ${height}px;
           line-height: ${height - 2}px;
           padding: 0px 2px;
+          color: ${localValue.meta.color ?? "default"};
+          background-color: ${localValue.meta.backgroundColor ?? "default"};
+          font-weight: ${localValue.meta.fontWeight ?? "normal"};
+          font-size: ${localValue.meta.fontSize ?? 12}px;
+          text-decoration: ${localValue.meta.textDecoration ?? "none"};
+          font-style: ${localValue.meta.fontStyle ?? "normal"};
         }
         input {
           outline: none;

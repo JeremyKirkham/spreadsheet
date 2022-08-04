@@ -1,15 +1,28 @@
 import { BsJustifyLeft } from "react-icons/bs";
-import { DropdownItem } from "../DropdownItem";
 import { FormatDropdown } from "./FormatDropdown";
 
 export const FormatTextAlignDropdown = () => {
+  const options = [
+    {
+      title: "Left",
+      value: "left",
+    },
+    {
+      title: "Center",
+      value: "center",
+    },
+    {
+      title: "Right",
+      value: "right",
+    },
+  ];
+
   return (
-    <>
-      <FormatDropdown icon={BsJustifyLeft}>
-        <DropdownItem>Left</DropdownItem>
-        <DropdownItem>Center</DropdownItem>
-        <DropdownItem>Right</DropdownItem>
-      </FormatDropdown>
-    </>
+    <FormatDropdown
+      icon={BsJustifyLeft}
+      showCaret={false}
+      metaKey="textAlign"
+      options={options}
+    />
   );
 };

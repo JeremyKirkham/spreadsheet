@@ -16,11 +16,26 @@ interface CellCoord {
 
 export type CellFormat = "text" | "number" | "currency" | "percentage";
 
+export interface Meta {
+  format?: CellFormat;
+  font?: string;
+  fontSize?: number;
+  fontWeight?: "normal" | "bold";
+  fontStyle?: "normal" | "italic";
+  textDecoration?: "none" | "strikethrough";
+  backgroundColor?: string;
+  color?: string;
+  textAlign?: "left" | "center" | "right";
+  horizontalAlign?: string;
+}
+
+export type MetaKeys = keyof Meta;
+
 export interface CellValue {
   rawValue: string;
   calculatedValue?: string;
   reliesOnCells?: string[];
-  format?: CellFormat;
+  meta: Meta;
 }
 
 // Define a type for the slice state
@@ -67,18 +82,22 @@ export const cellValuesSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setCellFormat: (
+    setCellMeta: (
       state,
       action: PayloadAction<{
         key: string;
-        format: CellFormat;
+        metaKey: MetaKeys;
+        metaValue: any;
       }>
     ) => {
       state.value = {
         ...state.value,
         [action.payload.key]: {
           ...state.value[action.payload.key],
-          format: action.payload.format,
+          meta: {
+            ...state.value[action.payload.key].meta,
+            [action.payload.metaKey]: action.payload.metaValue,
+          },
         },
       };
     },
@@ -98,7 +117,7 @@ export const cellValuesSlice = createSlice({
         rawValue,
         calculatedValue: rs.calculatedValue,
         reliesOnCells: rs.reliesOnCells,
-        format: currentVal?.format,
+        meta: currentVal?.meta ?? {},
       };
 
       state.value = {
@@ -126,7 +145,7 @@ export const cellValuesSlice = createSlice({
   },
 });
 
-export const { setCellValue, setCellFormat } = cellValuesSlice.actions;
+export const { setCellValue, setCellMeta } = cellValuesSlice.actions;
 
 export const cellValues = (state: RootState) => state.cellValues.value;
 

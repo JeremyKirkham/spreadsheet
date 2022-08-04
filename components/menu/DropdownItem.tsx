@@ -4,9 +4,14 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 interface Props {
   onClick?: () => void;
   children?: ReactNode;
+  isActive?: boolean;
 }
 
-export const DropdownItem: React.FC<Props> = ({ onClick, children }) => {
+export const DropdownItem: React.FC<Props> = ({
+  onClick,
+  isActive,
+  children,
+}) => {
   const { fontColor, highlightedColor } = useContext(ThemeContext);
 
   return (
@@ -18,6 +23,7 @@ export const DropdownItem: React.FC<Props> = ({ onClick, children }) => {
           padding: 4px;
           border-radius: 4px;
           color: ${fontColor};
+          background: ${isActive ? highlightedColor : "none"};
         }
         span:hover {
           background: ${highlightedColor};

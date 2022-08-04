@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { FormatBoldButton } from "./formats/FormatBoldButton";
 import { FormatCurrencyButton } from "./formats/FormatCurrencyButton";
-import { FormatFillColorButton } from "./formats/FormatFillColorButton";
+import { FormatFillColorDropdown } from "./formats/FormatFillColorDropdown";
 import { FormatFontDropdown } from "./formats/FormatFontDropdown";
 import { FormatItalicButton } from "./formats/FormatItalicButton";
 import { FormatPercentageButton } from "./formats/FormatPercentageButton";
 import { FormatSizeDropdown } from "./formats/FormatSizeDropdown";
 import { FormatStrikethroughButton } from "./formats/FormatStrikethroughButton";
 import { FormatTextAlignDropdown } from "./formats/FormatTextAlignDropdown";
-import { FormatTextColorButton } from "./formats/FormatTextColorButton";
+import { FormatTextColorDropdown } from "./formats/FormatTextColorDropdown";
 import { FormatTextVerticalAlignDropdown } from "./formats/FormatTextVerticalAlignDropdown";
 import { Spacer } from "./Spacer";
 
@@ -31,8 +31,8 @@ export const ActionMenu: React.FC = () => {
           <FormatBoldButton />
           <FormatItalicButton />
           <FormatStrikethroughButton />
-          <FormatTextColorButton />
-          <FormatFillColorButton />
+          <FormatTextColorDropdown />
+          <FormatFillColorDropdown />
           <Spacer />
           <FormatTextAlignDropdown />
           <FormatTextVerticalAlignDropdown />

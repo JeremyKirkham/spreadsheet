@@ -1,13 +1,24 @@
-import { DropdownItem } from "../DropdownItem";
 import { FormatDropdown } from "./FormatDropdown";
 
 export const FormatFontDropdown = () => {
+  const options = [
+    {
+      title: "Arial",
+      value: "arial",
+    },
+    {
+      title: "Times New Roman",
+      value: "Times New Roman",
+    },
+  ];
+
   return (
-    <>
-      <FormatDropdown title="Font" minWidth={180}>
-        <DropdownItem>Arial</DropdownItem>
-        <DropdownItem>Times New Roman</DropdownItem>
-      </FormatDropdown>
-    </>
+    <FormatDropdown
+      minWidth={180}
+      title="Font"
+      showCaret={false}
+      metaKey="font"
+      options={options}
+    />
   );
 };
