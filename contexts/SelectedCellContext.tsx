@@ -47,11 +47,15 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
       if (inMenu) {
         return;
       }
+
       const existingX = cellPos.x;
       const existingY = cellPos.y;
       let newX = 1;
       let newY = 1;
-      if (event.key == "ArrowDown" || event.key == "Enter") {
+      if (
+        event.key == "ArrowDown" ||
+        (!event.shiftKey && event.key == "Enter")
+      ) {
         newX = existingX ?? 1;
         newY = existingY ? existingY + 1 : 1;
         document
@@ -60,7 +64,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
           .focus();
         dispatch(update(xAndYToPos(newX, newY)));
       }
-      if (event.key == "ArrowUp") {
+      if (event.key == "ArrowUp" || (event.shiftKey && event.key == "Enter")) {
         newX = existingX ?? 1;
         newY = existingY && existingY > 1 ? existingY - 1 : 1;
         document
@@ -69,7 +73,10 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
           .focus();
         dispatch(update(xAndYToPos(newX, newY)));
       }
-      if (event.key == "ArrowRight") {
+      if (
+        event.key == "ArrowRight" ||
+        (!event.shiftKey && event.key == "Tab")
+      ) {
         newX = existingX ? existingX + 1 : 1;
         newY = existingY ?? 1;
         document
@@ -78,7 +85,7 @@ export const SelectedCellProvider: React.FC<PropsWithChildren<{}>> = ({
           .focus();
         dispatch(update(xAndYToPos(newX, newY)));
       }
-      if (event.key == "ArrowLeft") {
+      if (event.key == "ArrowLeft" || (event.shiftKey && event.key == "Tab")) {
         newX = existingX && existingX > 1 ? existingX - 1 : 1;
         newY = existingY ?? 1;
         document

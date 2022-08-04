@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppSelector } from "../hooks/store";
 import { selectedCellPosition } from "../store/selectedCellSlice";
 
@@ -8,6 +10,8 @@ interface Props {
 }
 
 export const SheetHeaderRow: React.FC<Props> = ({ width, height, columns }) => {
+  const { fontColor, mediumColor, borderColor, darkColor } =
+    useContext(ThemeContext);
   const cellPos = useAppSelector(selectedCellPosition);
 
   return (
@@ -31,11 +35,6 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, height, columns }) => {
         </div>
       </div>
       <style jsx>{`
-        .sheetHeader {
-          position: sticky;
-          top: 0;
-          z-index: 9;
-        }
         .inner {
           display: flex;
         }
@@ -43,11 +42,12 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, height, columns }) => {
           width: ${width}px;
           text-align: center;
           flex-shrink: 0;
-          background: #f2f2f2;
+          background: ${mediumColor};
           height: ${height}px;
           line-height: ${height}px;
-          border-right: solid 1px #c0c0c0;
-          border-bottom: solid 1px #c0c0c0;
+          border-right: solid 1px ${borderColor};
+          border-bottom: solid 1px ${borderColor};
+          color: ${fontColor};
         }
         .cellHeader:first-of-type {
           width: 60px;
@@ -55,7 +55,7 @@ export const SheetHeaderRow: React.FC<Props> = ({ width, height, columns }) => {
           left: 0;
         }
         .cellHeader.selected {
-          background: #e8eaed;
+          background: ${darkColor};
         }
       `}</style>
     </>

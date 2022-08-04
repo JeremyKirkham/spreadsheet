@@ -1,10 +1,13 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppSelector } from "../hooks/store";
 import { selectedCellPosition } from "../store/selectedCellSlice";
 
 export const Row: React.FC<
   PropsWithChildren<{ row: number; style: any; height: number }>
 > = ({ row, style, height, children }) => {
+  const { fontColor, mediumColor, borderColor, darkColor } =
+    useContext(ThemeContext);
   const cellPos = useAppSelector(selectedCellPosition);
 
   return (
@@ -26,17 +29,18 @@ export const Row: React.FC<
         }
         .rowHeader {
           width: 60px;
-          background: #f2f2f2;
+          background: ${mediumColor};
           flex-shrink: 0;
           text-align: center;
-          border-bottom: solid 1px #c0c0c0;
-          border-right: solid 1px #c0c0c0;
+          border-bottom: solid 1px ${borderColor};
+          border-right: solid 1px ${borderColor};
           position: sticky;
           left: 0;
           z-index: 10;
+          color: ${fontColor};
         }
         .rowHeader.selected {
-          background: #e8eaed;
+          background: ${darkColor};
         }
       `}</style>
     </>

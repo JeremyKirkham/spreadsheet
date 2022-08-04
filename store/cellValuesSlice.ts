@@ -14,10 +14,28 @@ interface CellCoord {
   column: CellPos;
 }
 
+export type CellFormat = "text" | "number" | "currency" | "percentage";
+
+export interface Meta {
+  format?: CellFormat;
+  font?: string;
+  fontSize?: number;
+  fontWeight?: "normal" | "bold";
+  fontStyle?: "normal" | "italic";
+  textDecoration?: "none" | "strikethrough";
+  backgroundColor?: string;
+  color?: string;
+  textAlign?: "left" | "center" | "right";
+  horizontalAlign?: string;
+}
+
+export type MetaKeys = keyof Meta;
+
 export interface CellValue {
   rawValue: string;
   calculatedValue?: string;
   reliesOnCells?: string[];
+  meta: Meta;
 }
 
 // Define a type for the slice state
@@ -64,6 +82,25 @@ export const cellValuesSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    setCellMeta: (
+      state,
+      action: PayloadAction<{
+        key: string;
+        metaKey: MetaKeys;
+        metaValue: any;
+      }>
+    ) => {
+      state.value = {
+        ...state.value,
+        [action.payload.key]: {
+          ...state.value[action.payload.key],
+          meta: {
+            ...state.value[action.payload.key].meta,
+            [action.payload.metaKey]: action.payload.metaValue,
+          },
+        },
+      };
+    },
     setCellValue: (
       state,
       action: PayloadAction<{
@@ -74,11 +111,13 @@ export const cellValuesSlice = createSlice({
     ) => {
       const rawValue = action.payload.rawValue;
       const rs = calculateFromRaw(state, rawValue);
+      const currentVal = state.value[action.payload.key];
 
       const newVal = {
         rawValue,
         calculatedValue: rs.calculatedValue,
         reliesOnCells: rs.reliesOnCells,
+        meta: currentVal?.meta ?? {},
       };
 
       state.value = {
@@ -106,7 +145,7 @@ export const cellValuesSlice = createSlice({
   },
 });
 
-export const { setCellValue } = cellValuesSlice.actions;
+export const { setCellValue, setCellMeta } = cellValuesSlice.actions;
 
 export const cellValues = (state: RootState) => state.cellValues.value;
 

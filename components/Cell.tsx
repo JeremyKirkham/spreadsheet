@@ -1,8 +1,16 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { selectedCell, update } from "../store/selectedCellSlice";
 import { CellValue, cellValues, setCellValue } from "../store/cellValuesSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { xAndYToPos } from "../lib/xAndYtoPost";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 interface Props {
   width: number;
@@ -12,10 +20,15 @@ interface Props {
 }
 
 export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
+  const { fontColor, lightColor, darkColor, highlightedColor, selectedColor } =
+    useContext(ThemeContext);
   const [localRaw, setLocalRaw] = useState<string>("");
   const [localValue, setLocalValue] = useState<CellValue>({
     rawValue: "",
     calculatedValue: "",
+    meta: {
+      format: "text",
+    },
   });
   const dispatch = useAppDispatch();
   const [isSelected, setIsSelected] = useState(false);
@@ -28,7 +41,9 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   useEffect(() => {
     if (selectedCellValue == pos) {
       setIsSelected(true);
-      inputRef.current?.focus();
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 20);
     } else {
       setIsSelected(false);
     }
@@ -48,6 +63,12 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
 
   const onFocus = () => {
     dispatch(update(pos));
+  };
+
+  const onTab = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key == "Tab") {
+      e.preventDefault();
+    }
   };
 
   const onBlur = () => {
@@ -76,12 +97,17 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   return (
     <>
       <div className="cell" id={pos} onClick={onFocus}>
+        <div className="calculatedValue">
+          {localValue.meta.format == "currency" && "$"}
+          {localValue.calculatedValue}
+        </div>
         <input
           value={isSelected ? localRaw : localValue.calculatedValue ?? ""}
           onFocus={onFocus}
           onBlur={onBlur}
           onMouseOver={onMouseOver}
           onChange={onChange}
+          onKeyDown={onTab}
           ref={inputRef}
         ></input>
         <div className="dragger"></div>
@@ -94,25 +120,46 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           display: flex;
           border-left: solid 1px rgba(0, 0, 0, 0);
           border-top: solid 1px rgba(0, 0, 0, 0);
-          border-right: solid 1px #e2e3e3;
-          border-bottom: solid 1px #e2e3e3;
-          background: ${isHighlighted() ? "#E8F0FD" : null};
-          border: ${isSelected ? "solid 1px blue" : "default"};
+          border-right: solid 1px ${darkColor};
+          border-bottom: solid 1px ${darkColor};
+          background: ${isHighlighted() ? highlightedColor : lightColor};
+          color: ${fontColor};
+          border: ${isSelected ? `solid 1px ${selectedColor}` : "default"};
+          position: relative;
+        }
+        .calculatedValue {
+          width: ${width - 3}px;
+          overflow: hidden;
+          height: ${height}px;
+          line-height: ${height - 2}px;
+          padding: 0px 2px;
+          color: ${localValue.meta.color ?? "default"};
+          background-color: ${localValue.meta.backgroundColor ?? "default"};
+          font-weight: ${localValue.meta.fontWeight ?? "normal"};
+          font-size: ${localValue.meta.fontSize ?? 12}px;
+          text-decoration: ${localValue.meta.textDecoration ?? "none"};
+          font-style: ${localValue.meta.fontStyle ?? "normal"};
         }
         input {
           outline: none;
           border: none;
           width: ${width - 2}px;
+          height: ${height - 2}px;
           cursor: default;
-          background: none;
+          background: ${lightColor};
+          color: ${fontColor};
+          position: absolute;
+          top: 0;
+          left: 0;
+          visibility: ${isSelected ? "show" : "hidden"};
         }
         .dragger {
           width: 8px;
           height: 8px;
-          background: blue;
-          position: relative;
-          top: ${height - 6}px;
-          left: -5px;
+          background: ${selectedColor};
+          position: absolute;
+          right: -3px;
+          bottom: -3px;
           z-index: 9;
           flex-shrink: 0;
           display: ${isSelected ? "block" : "none"};
