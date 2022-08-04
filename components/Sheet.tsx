@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { SelectedCellProvider } from "../contexts/SelectedCellContext";
 import { Cell } from "./Cell";
 import { Row } from "./Row";
@@ -9,12 +9,15 @@ import { store } from "../store";
 import { FixedSizeList as List } from "react-window";
 import { useWindowDimensions } from "../hooks/useWindowDimensions";
 import { ActionMenu } from "./menu/ActionMenu";
+import { ThemeContext } from "../contexts/ThemeContext";
+import { BsFillCloudHazeFill } from "react-icons/bs";
 
 const alpha = Array.from(Array(26)).map((e, i) => i + 65);
 const alphabet = alpha.map((x) => String.fromCharCode(x));
 const rowCount = 100;
 
 export const Sheet: React.FC = () => {
+  const { darkColor, mediumColor, borderColor } = useContext(ThemeContext);
   const [columns] = useState(alphabet);
   const [rows] = useState(Array.from(Array(rowCount).keys()));
   const [colWidth] = useState(110);
@@ -45,42 +48,49 @@ export const Sheet: React.FC = () => {
     }
   };
 
-  if (height == 0) {
-    return <>Loading...</>;
-  }
-
   const itemKey = (index: number, data: number[]) => {
     return data[index];
   };
 
   return (
     <>
-      <Provider store={store}>
-        <SelectedCellProvider>
-          <ActionMenu />
-          <SheetMenu />
-          <div className="sheetBody">
-            <List
-              height={height}
-              itemCount={rows.length + 1}
-              itemData={rows}
-              itemSize={rowHeight}
-              itemKey={itemKey}
-              width="100%"
-            >
-              {RowChild}
-            </List>
-          </div>
-        </SelectedCellProvider>
-      </Provider>
+      {height == 0 ? (
+        <div className="loader">
+          <BsFillCloudHazeFill size={120} />
+        </div>
+      ) : (
+        <Provider store={store}>
+          <SelectedCellProvider>
+            <ActionMenu />
+            <SheetMenu />
+            <div className="sheetBody">
+              <List
+                height={height}
+                itemCount={rows.length + 1}
+                itemData={rows}
+                itemSize={rowHeight}
+                itemKey={itemKey}
+                width="100%"
+              >
+                {RowChild}
+              </List>
+            </div>
+          </SelectedCellProvider>
+        </Provider>
+      )}
       <style jsx>{`
         .sidebarcol {
           height: ${rowHeight}px;
-          background: #f2f2f2;
-          border-bottom: 1px solid #c0c0c0;
+          background: ${mediumColor};
+          border-bottom: 1px solid ${borderColor};
+        }
+        .loader {
+          text-align: center;
+          color: ${darkColor};
+          margin-top: 100px;
         }
         .sidebarcol:first-of-type {
-          border-top: 1px solid #c0c0c0;
+          border-top: 1px solid ${borderColor};
         }
       `}</style>
     </>

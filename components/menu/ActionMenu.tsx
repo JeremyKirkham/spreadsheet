@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { FormatBoldButton } from "./formats/FormatBoldButton";
 import { FormatCurrencyButton } from "./formats/FormatCurrencyButton";
 import { FormatFillColorButton } from "./formats/FormatFillColorButton";
@@ -8,10 +10,12 @@ import { FormatSizeDropdown } from "./formats/FormatSizeDropdown";
 import { FormatStrikethroughButton } from "./formats/FormatStrikethroughButton";
 import { FormatTextAlignDropdown } from "./formats/FormatTextAlignDropdown";
 import { FormatTextColorButton } from "./formats/FormatTextColorButton";
-import { FormatTextVerticalAlignDropdown } from "./formats/FormatTextVerticalAlignButton";
+import { FormatTextVerticalAlignDropdown } from "./formats/FormatTextVerticalAlignDropdown";
 import { Spacer } from "./Spacer";
 
 export const ActionMenu: React.FC = () => {
+  const { mediumColor, darkColor } = useContext(ThemeContext);
+
   return (
     <>
       <div className="actionmenu">
@@ -39,10 +43,10 @@ export const ActionMenu: React.FC = () => {
         .actionmenu {
           height: 40px;
           width: 100%;
-          background: #f8f9fa;
+          background: ${mediumColor};
           display: flex;
           padding-left: 58px;
-          border-bottom: 1px solid #dadce0;
+          border-bottom: 1px solid ${darkColor};
         }
         .format {
           display: flex;

@@ -1,6 +1,7 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { IconType } from "react-icons";
 import { BsCaretDownFill } from "react-icons/bs";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { useClickOutside } from "../../hooks/useClickOutside";
 import { Button } from "./Button";
 
@@ -18,8 +19,8 @@ export const Dropdown: React.FC<Props> = ({
   minWidth,
   children,
   showCaret = true,
-  ...props
 }) => {
+  const { lightColor } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
   const ref = useClickOutside(() => {
     if (open) {
@@ -62,13 +63,13 @@ export const Dropdown: React.FC<Props> = ({
           flex-direction: column;
           width: ${minWidth ? `${minWidth}px` : "default"};
           padding: 4px;
-          max-height: 400px;
+          max-height: 300px;
           overflow-y: auto;
           position: absolute;
           top: 36px;
           left: 2px;
           z-index: 999;
-          background: white;
+          background: ${lightColor};
           border-radius: 4px;
           box-shadow: var(--shadow-elevation-medium);
         }

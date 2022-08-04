@@ -1,8 +1,16 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { selectedCell, update } from "../store/selectedCellSlice";
 import { CellValue, cellValues, setCellValue } from "../store/cellValuesSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { xAndYToPos } from "../lib/xAndYtoPost";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 interface Props {
   width: number;
@@ -12,6 +20,8 @@ interface Props {
 }
 
 export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
+  const { fontColor, lightColor, darkColor, highlightedColor, selectedColor } =
+    useContext(ThemeContext);
   const [localRaw, setLocalRaw] = useState<string>("");
   const [localValue, setLocalValue] = useState<CellValue>({
     rawValue: "",
@@ -108,10 +118,11 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           display: flex;
           border-left: solid 1px rgba(0, 0, 0, 0);
           border-top: solid 1px rgba(0, 0, 0, 0);
-          border-right: solid 1px #e2e3e3;
-          border-bottom: solid 1px #e2e3e3;
-          background: ${isHighlighted() ? "#E8F0FD" : null};
-          border: ${isSelected ? "solid 1px blue" : "default"};
+          border-right: solid 1px ${darkColor};
+          border-bottom: solid 1px ${darkColor};
+          background: ${isHighlighted() ? highlightedColor : lightColor};
+          color: ${fontColor};
+          border: ${isSelected ? `solid 1px ${selectedColor}` : "default"};
           position: relative;
         }
         .calculatedValue {
@@ -127,7 +138,8 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           width: ${width - 2}px;
           height: ${height - 2}px;
           cursor: default;
-          background: white;
+          background: ${lightColor};
+          color: ${fontColor};
           position: absolute;
           top: 0;
           left: 0;
@@ -136,7 +148,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
         .dragger {
           width: 8px;
           height: 8px;
-          background: blue;
+          background: ${selectedColor};
           position: absolute;
           right: -3px;
           bottom: -3px;

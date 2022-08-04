@@ -1,24 +1,15 @@
 import { BsJustifyLeft } from "react-icons/bs";
+import { DropdownItem } from "../DropdownItem";
 import { FormatDropdown } from "./FormatDropdown";
 
 export const FormatTextAlignDropdown = () => {
   return (
     <>
       <FormatDropdown icon={BsJustifyLeft}>
-        <span>Left</span>
-        <span>Center</span>
-        <span>Right</span>
+        <DropdownItem>Left</DropdownItem>
+        <DropdownItem>Center</DropdownItem>
+        <DropdownItem>Right</DropdownItem>
       </FormatDropdown>
-      <style jsx>{`
-        span {
-          cursor: pointer;
-          padding: 4px;
-          border-radius: 4px;
-        }
-        span:hover {
-          background: #e8f0fd;
-        }
-      `}</style>
     </>
   );
 };

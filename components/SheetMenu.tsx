@@ -1,5 +1,6 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { SelectedCellContext } from "../contexts/SelectedCellContext";
+import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { indexToAlpha } from "../lib/indexToAlpha";
 import { posToXAndY } from "../lib/xAndYtoPost";
@@ -7,6 +8,13 @@ import { cellValues, setCellValue } from "../store/cellValuesSlice";
 import { selectedCell } from "../store/selectedCellSlice";
 
 export const SheetMenu: React.FC = () => {
+  const {
+    fontColor,
+    fontPlaceholderColor,
+    lightColor,
+    mediumColor,
+    borderColor,
+  } = useContext(ThemeContext);
   const { setInMenu } = useContext(SelectedCellContext);
   const [localValue, setLocalValue] = useState("");
   const currentCellValues = useAppSelector(cellValues);
@@ -70,21 +78,25 @@ export const SheetMenu: React.FC = () => {
         .secondmenu {
           height: 30px;
           width: 100%;
-          background: #f2f2f2;
-          border-bottom: 1px solid #c0c0c0;
+          background: ${mediumColor};
+          border-bottom: 1px solid ${borderColor};
           display: flex;
         }
         .selectedCells {
-          border-right: 1px solid #c0c0c0;
+          border-right: 1px solid ${borderColor};
           height: 30px;
           line-height: 30px;
           width: 60px;
           padding: 0px 4px;
           text-align: center;
+          color: ${fontColor};
         }
         .cellInput {
           flex-grow: 1;
-          background: white;
+          background: ${lightColor};
+        }
+        ::placeholder {
+          color: ${fontPlaceholderColor};
         }
         input {
           outline: none;
@@ -92,6 +104,8 @@ export const SheetMenu: React.FC = () => {
           height: 29px;
           width: 100%;
           padding: 0px 4px;
+          background: none;
+          color: ${fontColor};
         }
       `}</style>
     </>

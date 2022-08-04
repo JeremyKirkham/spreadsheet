@@ -1,22 +1,13 @@
 import { Dropdown } from "../Dropdown";
+import { DropdownItem } from "../DropdownItem";
 
 export const TaskFormatDropdown = () => {
   return (
     <>
       <Dropdown title="Format" minWidth={180} showCaret={false}>
-        <span>Option 1</span>
-        <span>Option 2</span>
+        <DropdownItem>Option 1</DropdownItem>
+        <DropdownItem>Option 2</DropdownItem>
       </Dropdown>
-      <style jsx>{`
-        span {
-          cursor: pointer;
-          padding: 4px;
-          border-radius: 4px;
-        }
-        span:hover {
-          background: #e8f0fd;
-        }
-      `}</style>
     </>
   );
 };
