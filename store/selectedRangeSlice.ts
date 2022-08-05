@@ -90,7 +90,10 @@ export const { addCell, clearRange, setMouseDown } = selectedRangeSlice.actions;
 
 export const selectedRange = (state: RootState) => state.selectedRange.value;
 export const selectedRangeSymbol = (state: RootState) =>
-  state.selectedRange.value.start && state.selectedRange.value.end
+  state.selectedRange.value.start &&
+  state.selectedRange.value.end &&
+  state.selectedRange.value.start.x != state.selectedRange.value.end.x &&
+  state.selectedRange.value.start.y != state.selectedRange.value.end.y
     ? `${indexToAlpha(state.selectedRange.value.start.x)}${
         state.selectedRange.value.start.y
       }:${indexToAlpha(state.selectedRange.value.end.x)}${

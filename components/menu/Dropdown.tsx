@@ -20,7 +20,7 @@ export const Dropdown: React.FC<Props> = ({
   children,
   showCaret = true,
 }) => {
-  const { lightColor } = useContext(ThemeContext);
+  const { boxShadowVar, lightColor } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
   const ref = useClickOutside(() => {
     if (open) {
@@ -71,7 +71,7 @@ export const Dropdown: React.FC<Props> = ({
           z-index: 999;
           background: ${lightColor};
           border-radius: 4px;
-          box-shadow: var(--shadow-elevation-medium);
+          box-shadow: var(${boxShadowVar});
         }
       `}</style>
     </>

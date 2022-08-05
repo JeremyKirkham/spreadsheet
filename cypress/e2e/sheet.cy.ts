@@ -21,37 +21,46 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#1-1").click();
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    cy.get(".selectedCells").contains("A1");
     // Down
     cy.get("body").type("{downArrow}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-2").should("have.class", "selected");
+    cy.get(".selectedCells").contains("A2");
     // Right
     cy.get("body").type("{rightArrow}");
     cy.get("#header-B").should("have.class", "selected");
     cy.get("#row-2").should("have.class", "selected");
+    cy.get(".selectedCells").contains("B2");
     // Up
     cy.get("body").type("{upArrow}");
     cy.get("#header-B").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    cy.get(".selectedCells").contains("B1");
     // Left
     cy.get("body").type("{leftArrow}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    cy.get(".selectedCells").contains("A1");
     // Enter key
     cy.get("body").type("{enter}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-2").should("have.class", "selected");
+    cy.get(".selectedCells").contains("A2");
     // Shift Enter key
     cy.get("body").type("{shift}{enter}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    cy.get(".selectedCells").contains("A1");
     // Test you can't navigate outside of the sheet parameters.
     cy.get("body").type("{leftArrow}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    cy.get(".selectedCells").contains("A1");
     cy.get("body").type("{upArrow}");
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
+    cy.get(".selectedCells").contains("A1");
   });
 
   it("calculates values", () => {
@@ -97,6 +106,7 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#1-1").trigger("mousedown");
     cy.get("#2-2").trigger("mouseover");
     cy.get("#2-2").trigger("mouseup");
+    cy.get(".selectedCells").contains("A1:B2");
     cy.get("#1-1").should("have.class", "highlighted");
     cy.get("#1-2").should("have.class", "highlighted");
     cy.get("#2-1").should("have.class", "highlighted");
@@ -107,6 +117,7 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#1-1").trigger("mousedown");
     cy.get("#1-2").trigger("mouseover");
     cy.get("#1-3").trigger("mouseover");
+    cy.get(".selectedCells").contains("A1:A3");
     cy.get("#1-1").should("have.class", "highlighted");
     cy.get("#1-2").should("have.class", "highlighted");
     cy.get("#1-3").should("have.class", "highlighted");
