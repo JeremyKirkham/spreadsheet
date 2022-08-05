@@ -63,7 +63,38 @@ const calculateFromRaw = (state: CellValuesState, rawValue: string) => {
     done(state.value[cellId].calculatedValue);
   };
 
+  const rangeFn = (
+    startCellCoord: CellCoord,
+    endCellCoord: CellCoord,
+    done: any
+  ) => {
+    const fragment = [];
+    for (
+      let row = startCellCoord.row.index;
+      row <= endCellCoord.row.index;
+      row++
+    ) {
+      const colFragment = [];
+
+      for (
+        let col = startCellCoord.column.index;
+        col <= endCellCoord.column.index;
+        col++
+      ) {
+        const pos = xAndYToPos(col + 1, row + 1);
+        const val = state.value[pos].calculatedValue;
+        colFragment.push(val);
+      }
+      fragment.push(colFragment);
+    }
+
+    if (fragment) {
+      done(fragment);
+    }
+  };
+
   parser.on("callCellValue", fn);
+  parser.on("callRangeValue", rangeFn);
 
   let calculatedValue = rawValue;
   if (rawValue.charAt(0) == "=") {

@@ -91,6 +91,14 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#2-1>input").should("have.value", "7");
   });
 
+  it("calculates values with range values", () => {
+    cy.get("#1-1").click().type("1");
+    cy.get("#1-2").click().type("2");
+    cy.get("#2-1").click().type("= SUM(A1:A2)");
+    cy.get("#2-2").click();
+    cy.get("#2-1>input").should("have.value", "3");
+  });
+
   it("typing in cell updates sheet menu input", () => {
     cy.get("#1-1").click().type("This");
     cy.get(".cellInput>input").should("have.value", "This");
