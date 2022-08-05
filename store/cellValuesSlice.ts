@@ -81,9 +81,10 @@ const calculateFromRaw = (state: CellValuesState, rawValue: string) => {
         col <= endCellCoord.column.index;
         col++
       ) {
-        const pos = xAndYToPos(col + 1, row + 1);
-        const val = state.value[pos].calculatedValue;
+        const cellId = xAndYToPos(col + 1, row + 1);
+        const val = state.value[cellId].calculatedValue;
         colFragment.push(val);
+        reliesOnCells.push(cellId);
       }
       fragment.push(colFragment);
     }

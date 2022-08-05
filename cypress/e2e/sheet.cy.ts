@@ -97,6 +97,9 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#2-1").click().type("= SUM(A1:A2)");
     cy.get("#2-2").click();
     cy.get("#2-1>input").should("have.value", "3");
+    cy.get("#1-1").click().clear().type("2");
+    cy.get("#2-2").click();
+    cy.get("#2-1>input").should("have.value", "4");
   });
 
   it("typing in cell updates sheet menu input", () => {
