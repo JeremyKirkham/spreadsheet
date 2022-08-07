@@ -2,7 +2,6 @@ import { ColumnHeader } from "./ColumnHeader";
 import { RowColKey } from "./RowColKey";
 
 interface Props {
-  width: number;
   height: number;
   columns: string[];
 }

@@ -21,7 +21,6 @@ import { columnWidths } from "../store/columnWidthsSlice";
 import { indexToAlpha } from "../lib/indexToAlpha";
 
 interface Props {
-  width: number;
   height: number;
   x: number;
   y: number;

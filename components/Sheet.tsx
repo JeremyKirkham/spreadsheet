@@ -18,32 +18,19 @@ export const Sheet: React.FC = () => {
   const { darkColor, mediumColor, borderColor } = useContext(ThemeContext);
   const columns = useAppSelector(columnWidths);
   const [rows] = useState(Array.from(Array(rowCount).keys()));
-  const [colWidth] = useState(110);
   const [rowHeight] = useState(24);
   const { height } = useWindowDimensions();
 
   const RowChild = ({ index, style }: { index: number; style: any }) => {
     if (index == 0) {
       return (
-        <SheetHeaderRow
-          width={colWidth}
-          columns={Object.keys(columns)}
-          height={rowHeight}
-        />
+        <SheetHeaderRow columns={Object.keys(columns)} height={rowHeight} />
       );
     } else {
       return (
         <Row style={style} row={index} height={rowHeight}>
           {Object.keys(columns).map((col, j) => {
-            return (
-              <Cell
-                x={j + 1}
-                y={index}
-                key={j}
-                width={colWidth}
-                height={rowHeight}
-              />
-            );
+            return <Cell x={j + 1} y={index} key={j} height={rowHeight} />;
           })}
         </Row>
       );
