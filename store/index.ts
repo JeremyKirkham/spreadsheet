@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import selectedCellReducer from "./selectedCellSlice";
 import cellValuesReducer from "./cellValuesSlice";
 import selectedRangeReducer from "./selectedRangeSlice";
+import columnWidthsReducer from "./columnWidthsSlice";
 
 export const store = configureStore({
   reducer: {
     selectedCell: selectedCellReducer,
     cellValues: cellValuesReducer,
     selectedRange: selectedRangeReducer,
+    columnWidths: columnWidthsReducer,
   },
 });
 

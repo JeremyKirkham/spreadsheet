@@ -17,6 +17,8 @@ import {
   selectedRange,
   setMouseDown,
 } from "../store/selectedRangeSlice";
+import { columnWidths } from "../store/columnWidthsSlice";
+import { indexToAlpha } from "../lib/indexToAlpha";
 
 interface Props {
   width: number;
@@ -25,7 +27,7 @@ interface Props {
   y: number;
 }
 
-export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
+export const Cell: React.FC<Props> = ({ x, y, height }) => {
   const { fontColor, lightColor, darkColor, highlightedColor, selectedColor } =
     useContext(ThemeContext);
   const [isHighlighted, setIsHighlighted] = useState(false);
@@ -42,7 +44,9 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   const currentCellValues = useAppSelector(cellValues);
   const selectedCellValue = useAppSelector(selectedCell);
   const selectedRangeValue = useAppSelector(selectedRange);
+  const columnWidthValues = useAppSelector(columnWidths);
   const inputRef = useRef<HTMLInputElement>(null);
+  const width = columnWidthValues[indexToAlpha(x)];
 
   const pos = xAndYToPos(x, y);
 

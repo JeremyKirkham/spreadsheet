@@ -39,7 +39,9 @@ export const Row: React.FC<
           width: 60px;
           background: ${mediumColor};
           flex-shrink: 0;
-          text-align: center;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
           border-bottom: solid 1px ${borderColor};
           border-right: solid 1px ${borderColor};
           position: sticky;
