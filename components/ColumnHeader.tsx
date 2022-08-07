@@ -30,10 +30,12 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
   const width = columnWidthValues[c];
   const [size, setSize] = useState({ x: width, y: 0 });
   const [mouseUpEnd, setMouseUpEnd] = useState(false);
+  const [grabbing, setGrabbing] = useState(false);
 
   const handler = (mouseDownEvent: any) => {
     const startSize = size;
     const startPosition = { x: mouseDownEvent.pageX, y: mouseDownEvent.pageY };
+    setGrabbing(true);
 
     function onMouseMove(mouseMoveEvent: MouseEvent) {
       const newX = startSize.x - startPosition.x + mouseMoveEvent.pageX;
@@ -44,8 +46,9 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
     }
 
     function onMouseUp() {
-      document.body.removeEventListener("mousemove", onMouseMove);
+      setGrabbing(false);
       setMouseUpEnd(true);
+      document.body.removeEventListener("mousemove", onMouseMove);
       // uncomment the following line if not using `{ once: true }`
       // document.body.removeEventListener("mouseup", onMouseUp);
     }
@@ -118,7 +121,7 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
           margin-left: auto;
           width: 20px;
           height: ${height}px;
-          cursor: grab;
+          cursor: ${grabbing ? "grabbing" : "grab"};
           position: relative;
           z-index: 2;
         }
