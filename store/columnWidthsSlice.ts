@@ -31,6 +31,7 @@ export const columnWidthsSlice = createSlice({
       action: PayloadAction<{ key: string; width: number }>
     ) => {
       state.value = {
+        ...state.value,
         [action.payload.key]: action.payload.width,
       };
     },
