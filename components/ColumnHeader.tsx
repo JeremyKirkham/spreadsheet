@@ -22,13 +22,14 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
       }, 10);
     }
   });
-  const { fontColor, mediumColor, borderColor, darkColor } =
+  const { fontColor, mediumColor, borderColor, darkColor, selectedColor } =
     useContext(ThemeContext);
   const cellPos = useAppSelector(selectedCellPosition);
   const selectedRangeValue = useAppSelector(selectedRange);
   const columnWidthValues = useAppSelector(columnWidths);
   const width = columnWidthValues[c];
   const [size, setSize] = useState({ x: width, y: 0 });
+  const [resizeX, setResizeX] = useState(0);
   const [mouseUpEnd, setMouseUpEnd] = useState(false);
   const [grabbing, setGrabbing] = useState(false);
 
@@ -39,6 +40,7 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
 
     function onMouseMove(mouseMoveEvent: MouseEvent) {
       const newX = startSize.x - startPosition.x + mouseMoveEvent.pageX;
+      setResizeX(mouseMoveEvent.pageX);
       setSize((currentSize) => ({
         x: newX,
         y: startSize.y - startPosition.y + mouseMoveEvent.pageY,
@@ -93,6 +95,7 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
         <span className="headerVal">{c}</span>
         <div onMouseDown={handler} className="rightBorder"></div>
       </div>
+      {grabbing && <div className="resizeLine"></div>}
       <style jsx>{`
         .cellHeader {
           width: ${size.x}px;
@@ -119,9 +122,9 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
         .rightBorder {
           flex: 0 1 auto;
           margin-left: auto;
-          width: 20px;
+          width: 10px;
           height: ${height}px;
-          cursor: ${grabbing ? "grabbing" : "grab"};
+          cursor: e-resize;
           position: relative;
           z-index: 2;
         }
@@ -130,6 +133,15 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
         }
         .cellHeader.selected {
           background: ${darkColor};
+        }
+        .resizeLine {
+          position: absolute;
+          top: 0;
+          left: ${resizeX}px;
+          height: 100%;
+          width: 0px;
+          border-right: 1px solid ${selectedColor};
+          z-index: 999;
         }
       `}</style>
     </>
