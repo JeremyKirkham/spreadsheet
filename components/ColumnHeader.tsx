@@ -87,8 +87,8 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
         onClick={onClick}
         ref={ref}
       >
-        {c}
-        {selected && <div onMouseDown={handler} className="rightBorder"></div>}
+        <span className="headerVal">{c}</span>
+        <div onMouseDown={handler} className="rightBorder"></div>
       </div>
       <style jsx>{`
         .cellHeader {
@@ -102,13 +102,28 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
           border-bottom: solid 1px ${borderColor};
           color: ${fontColor};
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-start;
+          position: relative;
+        }
+        .headerVal {
+          flex: 0 1 auto;
+          width: ${size.x}px;
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1;
         }
         .rightBorder {
-          border-right: solid 4px ${borderColor};
-          width: 0px;
+          flex: 0 1 auto;
+          margin-left: auto;
+          width: 20px;
           height: ${height}px;
           cursor: grab;
+          position: relative;
+          z-index: 2;
+        }
+        .rightBorder:hover {
+          border-right: solid 5px ${borderColor};
         }
         .cellHeader.selected {
           background: ${darkColor};
