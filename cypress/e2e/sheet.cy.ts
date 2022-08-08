@@ -174,4 +174,19 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     });
     cy.get("#header-B").should("have.css", "width", "135px");
   });
+
+  it("resizes rows", () => {
+    cy.get("#row-1").should("have.css", "height", "24px");
+    cy.get("#row-1>.bottomBorder").trigger("mousedown");
+    cy.wait(10);
+    cy.get("#row-1>.bottomBorder").trigger("mousemove", 0, 30, {
+      force: true,
+    });
+    cy.get(".resizeLine").should("be.visible");
+    cy.wait(10);
+    cy.get("#row-1>.bottomBorder").trigger("mouseup", {
+      force: true,
+    });
+    cy.get("#row-1").should("have.css", "height", "49px");
+  });
 });
