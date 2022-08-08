@@ -20,7 +20,7 @@ export const FormatTextVerticalAlignDropdown = () => {
   return (
     <FormatDropdown
       icon={BsAlignBottom}
-      showCaret={false}
+      showCaret={true}
       metaKey="horizontalAlign"
       options={options}
     />

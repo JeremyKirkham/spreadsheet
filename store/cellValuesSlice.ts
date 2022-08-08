@@ -1,56 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { Parser as FormulaParser } from "hot-formula-parser";
-import { xAndYToPos } from "../lib/xAndYtoPos";
-
-interface CellPos {
-  index: number;
-  label: string;
-  isAbsolute: boolean;
-}
-interface CellCoord {
-  label: string;
-  row: CellPos;
-  column: CellPos;
-}
-
-export type CellFormat = "text" | "number" | "currency" | "percentage";
-
-export interface Meta {
-  format?: CellFormat;
-  font?: string;
-  fontSize?: number;
-  fontWeight?: "normal" | "bold";
-  fontStyle?: "normal" | "italic";
-  textDecoration?: "none" | "strikethrough";
-  backgroundColor?: string;
-  color?: string;
-  textAlign?: "left" | "center" | "right";
-  horizontalAlign?: string;
-}
-
-export type MetaKeys = keyof Meta;
-
-export interface CellValue {
-  rawValue: string;
-  calculatedValue?: string;
-  reliesOnCells?: string[];
-  meta: Meta;
-}
-
-// Define a type for the slice state
-interface CellValuesState {
-  value: {
-    [key: string]: CellValue;
-  };
-}
+import { CellKey, xAndYToPos, posToXAndY } from "../lib/xAndYtoPos";
+import { indexToAlpha } from "../lib/indexToAlpha";
+import { CellCoord, CellValuesState, MetaKeys } from "./CellValuesState";
+import { addColumnToLeft as addColumnToLeftFn } from "./addColumnToLeft";
 
 // Define the initial state using that type
 const initialState: CellValuesState = {
   value: {},
 };
 
-const calculateFromRaw = (state: CellValuesState, rawValue: string) => {
+export const calculateFromRaw = (state: CellValuesState, rawValue: string) => {
   const parser = new FormulaParser();
   let reliesOnCells: string[] = [];
 
@@ -114,6 +75,17 @@ export const cellValuesSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
+    addColumnToLeft: (state, action: PayloadAction<{ key: string }>) => {
+      const newState = addColumnToLeftFn(state, action.payload.key);
+      state.value = newState;
+    },
+    addColumnToRight: (state, action: PayloadAction<{ key: string }>) => {
+      const newKey = indexToAlpha(posToXAndY(action.payload.key).x + 1);
+      cellValuesSlice.caseReducers.addColumnToLeft(state, {
+        ...action,
+        payload: { key: newKey },
+      });
+    },
     setCellMeta: (
       state,
       action: PayloadAction<{
@@ -136,7 +108,7 @@ export const cellValuesSlice = createSlice({
     setCellValue: (
       state,
       action: PayloadAction<{
-        key: string;
+        key: CellKey;
         rawValue: string;
         propagateChanges: boolean;
       }>
@@ -177,7 +149,8 @@ export const cellValuesSlice = createSlice({
   },
 });
 
-export const { setCellValue, setCellMeta } = cellValuesSlice.actions;
+export const { addColumnToLeft, addColumnToRight, setCellValue, setCellMeta } =
+  cellValuesSlice.actions;
 
 export const cellValues = (state: RootState) => state.cellValues.value;
 

@@ -42,7 +42,7 @@ export const Dropdown: React.FC<Props> = ({
           {Icon && <Icon />}
           {showCaret && (
             <span className="caret">
-              <BsCaretDownFill size={12} />
+              <BsCaretDownFill size={8} />
             </span>
           )}
         </Button>

@@ -35,10 +35,15 @@ export const columnWidthsSlice = createSlice({
         [action.payload.key]: action.payload.width,
       };
     },
+    addColumnToLeft: (state, action: PayloadAction<{ key: string }>) => {
+      state.value = {
+        ...state.value,
+      };
+    },
   },
 });
 
-export const { setColumnWidth } = columnWidthsSlice.actions;
+export const { setColumnWidth, addColumnToLeft } = columnWidthsSlice.actions;
 
 export const columnWidths = (state: RootState) => state.columnWidths.value;
 

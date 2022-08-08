@@ -10,7 +10,7 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
   });
 
   it("selects cell", () => {
-    cy.get("#1-1").click();
+    cy.get("#A-1").click();
     cy.get(".selectedCells").contains("A1");
     cy.get(".selectedCells").contains("A1");
     cy.get("#header-A").should("have.class", "selected");
@@ -18,7 +18,7 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
   });
 
   it("navigates with keyboard", () => {
-    cy.get("#1-1").click();
+    cy.get("#A-1").click();
     cy.get("#header-A").should("have.class", "selected");
     cy.get("#row-1").should("have.class", "selected");
     cy.get(".selectedCells").contains("A1");
@@ -64,100 +64,100 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
   });
 
   it("calculates values", () => {
-    cy.get("#1-1").click().type("1");
-    cy.get("#2-1").click().type("= A1 + 2");
-    cy.get("#2-2").click();
-    cy.get("#2-1>input").should("have.value", "3");
-    cy.get("#3-1").click().type("= B1 - 1");
-    cy.get("#2-2").click();
-    cy.get("#3-1>input").should("have.value", "2");
-    cy.get("#1-1").click().clear().type("2");
-    cy.get("#2-2").click();
-    cy.get("#2-1>input").should("have.value", "4");
-    cy.get("#3-1>input").should("have.value", "3");
+    cy.get("#A-1").click().type("1");
+    cy.get("#B-1").click().type("= A1 + 2");
+    cy.get("#B-2").click();
+    cy.get("#B-1>input").should("have.value", "3");
+    cy.get("#C-1").click().type("= B1 - 1");
+    cy.get("#B-2").click();
+    cy.get("#C-1>input").should("have.value", "2");
+    cy.get("#A-1").click().clear().type("2");
+    cy.get("#B-2").click();
+    cy.get("#B-1>input").should("have.value", "4");
+    cy.get("#C-1>input").should("have.value", "3");
   });
 
   it("calculates values with multiple dependencies", () => {
-    cy.get("#1-1").click().type("1");
-    cy.get("#1-2").click().type("2");
-    cy.get("#2-1").click().type("= A1 + A2 + 2");
-    cy.get("#2-2").click();
-    cy.get("#2-1>input").should("have.value", "5");
-    cy.get("#1-1").click().clear().type("2");
-    cy.get("#2-2").click();
-    cy.get("#2-1>input").should("have.value", "6");
-    cy.get("#1-2").click().clear().type("3");
-    cy.get("#2-2").click();
-    cy.get("#2-1>input").should("have.value", "7");
+    cy.get("#A-1").click().type("1");
+    cy.get("#A-2").click().type("2");
+    cy.get("#B-1").click().type("= A1 + A2 + 2");
+    cy.get("#B-2").click();
+    cy.get("#B-1>input").should("have.value", "5");
+    cy.get("#A-1").click().clear().type("2");
+    cy.get("#B-2").click();
+    cy.get("#B-1>input").should("have.value", "6");
+    cy.get("#A-2").click().clear().type("3");
+    cy.get("#B-2").click();
+    cy.get("#B-1>input").should("have.value", "7");
   });
 
   it("calculates values with range values", () => {
-    cy.get("#1-1").click().type("1");
-    cy.get("#1-2").click().type("2");
-    cy.get("#2-1").click().type("= SUM(A1:A2)");
-    cy.get("#2-2").click();
-    cy.get("#2-1>input").should("have.value", "3");
-    cy.get("#1-1").click().clear().type("2");
-    cy.get("#2-2").click();
-    cy.get("#2-1>input").should("have.value", "4");
+    cy.get("#A-1").click().type("1");
+    cy.get("#A-2").click().type("2");
+    cy.get("#B-1").click().type("= SUM(A1:A2)");
+    cy.get("#B-2").click();
+    cy.get("#B-1>input").should("have.value", "3");
+    cy.get("#A-1").click().clear().type("2");
+    cy.get("#B-2").click();
+    cy.get("#B-1>input").should("have.value", "4");
   });
 
   it("typing in cell updates sheet menu input", () => {
-    cy.get("#1-1").click().type("This");
+    cy.get("#A-1").click().type("This");
     cy.get(".cellInput>input").should("have.value", "This");
   });
 
   it("typing in sheet menu input updates cell", () => {
-    cy.get("#1-1").click();
+    cy.get("#A-1").click();
     cy.get(".cellInput>input").type("That");
-    cy.get("#1-1>input").should("have.value", "That");
+    cy.get("#A-1>input").should("have.value", "That");
   });
 
   it("selects ranges of cells", () => {
-    cy.get("#1-1").trigger("mousedown");
-    cy.get("#2-2").trigger("mouseover");
-    cy.get("#2-2").trigger("mouseup");
+    cy.get("#A-1").trigger("mousedown");
+    cy.get("#B-2").trigger("mouseover");
+    cy.get("#B-2").trigger("mouseup");
     cy.get(".selectedCells").contains("A1:B2");
-    cy.get("#1-1").should("have.class", "highlighted");
-    cy.get("#1-2").should("have.class", "highlighted");
-    cy.get("#2-1").should("have.class", "highlighted");
-    cy.get("#2-2").should("have.class", "highlighted");
+    cy.get("#A-1").should("have.class", "highlighted");
+    cy.get("#A-2").should("have.class", "highlighted");
+    cy.get("#B-1").should("have.class", "highlighted");
+    cy.get("#B-2").should("have.class", "highlighted");
   });
 
   it("selects ranges of cells 2", () => {
-    cy.get("#1-1").trigger("mousedown");
-    cy.get("#1-2").trigger("mouseover");
-    cy.get("#1-3").trigger("mouseover");
-    cy.get("#1-1").should("have.class", "highlighted");
-    cy.get("#1-2").should("have.class", "highlighted");
-    cy.get("#1-3").should("have.class", "highlighted");
+    cy.get("#A-1").trigger("mousedown");
+    cy.get("#A-2").trigger("mouseover");
+    cy.get("#A-3").trigger("mouseover");
+    cy.get("#A-1").should("have.class", "highlighted");
+    cy.get("#A-2").should("have.class", "highlighted");
+    cy.get("#A-3").should("have.class", "highlighted");
     cy.get(".selectedCells").contains("A1:A3");
-    cy.get("#1-2").trigger("mouseover");
-    cy.get("#1-2").trigger("mouseup");
-    cy.get("#1-1").should("have.class", "highlighted");
-    cy.get("#1-2").should("have.class", "highlighted");
-    cy.get("#1-3").should("not.have.class", "highlighted");
+    cy.get("#A-2").trigger("mouseover");
+    cy.get("#A-2").trigger("mouseup");
+    cy.get("#A-1").should("have.class", "highlighted");
+    cy.get("#A-2").should("have.class", "highlighted");
+    cy.get("#A-3").should("not.have.class", "highlighted");
     cy.get(".selectedCells").contains("A1:A2");
   });
 
   it("selects ranges of cells in reverse", () => {
-    cy.get("#2-2").trigger("mousedown");
-    cy.get("#1-1").trigger("mouseover");
-    cy.get("#1-1").trigger("mouseup");
-    cy.get("#1-1").should("have.class", "highlighted");
-    cy.get("#1-2").should("have.class", "highlighted");
-    cy.get("#2-1").should("have.class", "highlighted");
-    cy.get("#2-2").should("have.class", "highlighted");
+    cy.get("#B-2").trigger("mousedown");
+    cy.get("#A-1").trigger("mouseover");
+    cy.get("#A-1").trigger("mouseup");
+    cy.get("#A-1").should("have.class", "highlighted");
+    cy.get("#A-2").should("have.class", "highlighted");
+    cy.get("#B-1").should("have.class", "highlighted");
+    cy.get("#B-2").should("have.class", "highlighted");
   });
 
   it("selects ranges of cells in reverse 2", () => {
-    cy.get("#1-2").trigger("mousedown");
-    cy.get("#2-1").trigger("mouseover");
-    cy.get("#2-1").trigger("mouseup");
-    cy.get("#1-1").should("have.class", "highlighted");
-    cy.get("#1-2").should("have.class", "highlighted");
-    cy.get("#2-1").should("have.class", "highlighted");
-    cy.get("#2-2").should("have.class", "highlighted");
+    cy.get("#A-2").trigger("mousedown");
+    cy.get("#B-1").trigger("mouseover");
+    cy.get("#B-1").trigger("mouseup");
+    cy.get("#A-1").should("have.class", "highlighted");
+    cy.get("#A-2").should("have.class", "highlighted");
+    cy.get("#B-1").should("have.class", "highlighted");
+    cy.get("#B-2").should("have.class", "highlighted");
   });
 
   it("resizes columns", () => {

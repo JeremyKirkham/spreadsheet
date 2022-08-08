@@ -16,7 +16,7 @@ export const FormatTextColorDropdown = () => {
   return (
     <FormatDropdown
       icon={BsPalette}
-      showCaret={false}
+      showCaret={true}
       metaKey="color"
       options={options}
     />
