@@ -31,7 +31,7 @@ export const Row: React.FC<
 
     function onMouseMove(mouseMoveEvent: MouseEvent) {
       const newY = startSize.y - startPosition.y + mouseMoveEvent.pageY;
-      if (newY > 20) {
+      if (newY > 24) {
         setResizeY(newY);
         setSize((currentSize) => ({
           y: newY,
@@ -82,7 +82,7 @@ export const Row: React.FC<
         .sheetRow {
           height: ${size.y}px;
           display: flex;
-          line-heigth: ${height}px;
+          line-height: 24px;
           z-index: ${grabbing ? 9999 : "auto"};
         }
         .rowHeader {
@@ -90,8 +90,6 @@ export const Row: React.FC<
           width: 60px;
           background: ${mediumColor};
           flex-shrink: 0;
-          display: flex;
-          justify-content: space-around;
           align-items: center;
           border-bottom: solid 1px ${borderColor};
           border-right: solid 1px ${borderColor};
@@ -99,7 +97,6 @@ export const Row: React.FC<
           z-index: 10;
           color: ${fontColor};
           display: flex;
-          justify-content: flex-start;
           flex-direction: column;
           position: relative;
         }
