@@ -40,11 +40,13 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
 
     function onMouseMove(mouseMoveEvent: MouseEvent) {
       const newX = startSize.x - startPosition.x + mouseMoveEvent.pageX;
-      setResizeX(mouseMoveEvent.pageX);
-      setSize((currentSize) => ({
-        x: newX,
-        y: startSize.y - startPosition.y + mouseMoveEvent.pageY,
-      }));
+      if (newX > 20) {
+        setResizeX(mouseMoveEvent.pageX);
+        setSize((currentSize) => ({
+          x: newX,
+          y: startSize.y - startPosition.y + mouseMoveEvent.pageY,
+        }));
+      }
     }
 
     function onMouseUp() {
