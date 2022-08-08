@@ -159,4 +159,19 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#2-1").should("have.class", "highlighted");
     cy.get("#2-2").should("have.class", "highlighted");
   });
+
+  it("resizes columns", () => {
+    cy.get("#header-B").should("have.css", "width", "110px");
+    cy.get("#header-B>.rightBorder").trigger("mousedown");
+    cy.wait(10);
+    cy.get("#header-B>.rightBorder").trigger("mousemove", 30, 0, {
+      force: true,
+    });
+    cy.get(".resizeLine").should("be.visible");
+    cy.wait(10);
+    cy.get("#header-B>.rightBorder").trigger("mouseup", {
+      force: true,
+    });
+    cy.get("#header-B").should("have.css", "width", "135px");
+  });
 });

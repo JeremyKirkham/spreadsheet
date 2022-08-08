@@ -127,6 +127,7 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
           cursor: e-resize;
           position: relative;
           z-index: 2;
+          border-right: solid 5px ${grabbing ? borderColor : "rgba(0, 0, 0, 0)"};
         }
         .rightBorder:hover {
           border-right: solid 5px ${borderColor};
