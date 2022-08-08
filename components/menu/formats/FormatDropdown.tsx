@@ -1,10 +1,7 @@
 import { IconType } from "react-icons";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
-import {
-  cellValues,
-  MetaKeys,
-  setCellMeta,
-} from "../../../store/slices/cellValuesSlice";
+import { MetaKeys } from "../../../store/lib/CellValuesState";
+import { cellValues, setCellMeta } from "../../../store/slices/cellValuesSlice";
 import { selectedCell } from "../../../store/slices/selectedCellSlice";
 import { Dropdown } from "../Dropdown";
 import { DropdownItem } from "../DropdownItem";
