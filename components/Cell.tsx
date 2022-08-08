@@ -180,7 +180,6 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           background-color: ${localValue.meta.backgroundColor ?? "default"};
           font-weight: ${localValue.meta.fontWeight ?? "normal"};
           font-size: ${localValue.meta.fontSize ?? 12}px;
-          text-decoration: ${localValue.meta.textDecoration ?? "none"};
           font-style: ${localValue.meta.fontStyle ?? "normal"};
           text-align: ${localValue.meta.textAlign ?? "left"};
         }
@@ -191,6 +190,7 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           line-height: normal;
           margin: 1px 0;
           visibility: ${isSelected ? "hidden" : "show"};
+          text-decoration: ${localValue.meta.textDecoration ?? "none"};
         }
         input {
           outline: none;

@@ -22,6 +22,7 @@ export const Button: React.FC<Props> = ({ children, isActive, ...props }) => {
           align-items: center;
           justify-content: space-around;
           color: ${fontColor};
+          cursor: pointer;
         }
         button:hover {
           background: ${darkColor};
