@@ -190,6 +190,7 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           vertical-align: ${localValue.meta.horizontalAlign ?? "top"};
           line-height: normal;
           margin: 1px 0;
+          visibility: ${isSelected ? "hidden" : "show"};
         }
         input {
           outline: none;
