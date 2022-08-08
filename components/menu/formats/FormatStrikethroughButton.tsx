@@ -5,7 +5,7 @@ export const FormatStrikethroughButton = () => {
   return (
     <FormatButton
       metaKey="textDecoration"
-      metaValue="strikethrough"
+      metaValue="line-through"
       metaDefaultValue="none"
       icon={BsTypeStrikethrough}
     />

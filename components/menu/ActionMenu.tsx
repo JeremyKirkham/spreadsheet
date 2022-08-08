@@ -6,7 +6,7 @@ import { FormatFillColorDropdown } from "./formats/FormatFillColorDropdown";
 import { FormatFontDropdown } from "./formats/FormatFontDropdown";
 import { FormatItalicButton } from "./formats/FormatItalicButton";
 import { FormatPercentageButton } from "./formats/FormatPercentageButton";
-import { FormatSizeDropdown } from "./formats/FormatSizeDropdown";
+import { FormatFontSizeDropdown } from "./formats/FormatFontSizeDropdown";
 import { FormatStrikethroughButton } from "./formats/FormatStrikethroughButton";
 import { FormatTextAlignDropdown } from "./formats/FormatTextAlignDropdown";
 import { FormatTextColorDropdown } from "./formats/FormatTextColorDropdown";
@@ -26,7 +26,7 @@ export const ActionMenu: React.FC = () => {
           <Spacer />
           <FormatFontDropdown />
           <Spacer />
-          <FormatSizeDropdown />
+          <FormatFontSizeDropdown />
           <Spacer />
           <FormatBoldButton />
           <FormatItalicButton />

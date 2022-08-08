@@ -1,6 +1,6 @@
 import { FormatDropdown } from "./FormatDropdown";
 
-export const FormatSizeDropdown = () => {
+export const FormatFontSizeDropdown = () => {
   const options = [
     {
       title: "8px",
