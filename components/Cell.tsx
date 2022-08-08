@@ -6,8 +6,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { selectedCell, update } from "../store/selectedCellSlice";
-import { CellValue, cellValues, setCellValue } from "../store/cellValuesSlice";
+import { selectedCell, update } from "../store/slices/selectedCellSlice";
+import { cellValues, setCellValue } from "../store/slices/cellValuesSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { xAndYToPos } from "../lib/xAndYtoPos";
 import { ThemeContext } from "../contexts/ThemeContext";
@@ -16,9 +16,10 @@ import {
   clearRange,
   selectedRange,
   setMouseDown,
-} from "../store/selectedRangeSlice";
-import { columnWidths } from "../store/columnWidthsSlice";
+} from "../store/slices/selectedRangeSlice";
+import { columnWidths } from "../store/slices/columnWidthsSlice";
 import { indexToAlpha } from "../lib/indexToAlpha";
+import { CellValue } from "../store/lib/CellValuesState";
 
 interface Props {
   height: number;

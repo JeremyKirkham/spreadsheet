@@ -1,8 +1,11 @@
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { xAndYToPos } from "../lib/xAndYtoPos";
-import { selectedCellPosition, update } from "../store/selectedCellSlice";
-import { setMouseDown } from "../store/selectedRangeSlice";
+import {
+  selectedCellPosition,
+  update,
+} from "../store/slices/selectedCellSlice";
+import { setMouseDown } from "../store/slices/selectedRangeSlice";
 
 interface SelectedCellContext {
   setInMenu: (inMenu: boolean) => void;

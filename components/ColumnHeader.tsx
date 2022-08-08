@@ -2,10 +2,19 @@ import { useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { useClickOutside } from "../hooks/useClickOutside";
-import { addColumnToLeft, addColumnToRight } from "../store/cellValuesSlice";
-import { columnWidths, setColumnWidth } from "../store/columnWidthsSlice";
-import { selectedCellPosition, update } from "../store/selectedCellSlice";
-import { clearRange, selectedRange } from "../store/selectedRangeSlice";
+import {
+  addColumnToLeft,
+  addColumnToRight,
+} from "../store/slices/cellValuesSlice";
+import {
+  columnWidths,
+  setColumnWidth,
+} from "../store/slices/columnWidthsSlice";
+import {
+  selectedCellPosition,
+  update,
+} from "../store/slices/selectedCellSlice";
+import { clearRange, selectedRange } from "../store/slices/selectedRangeSlice";
 import { Dropdown } from "./menu/Dropdown";
 import { DropdownItem } from "./menu/DropdownItem";
 

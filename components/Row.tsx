@@ -1,9 +1,9 @@
 import { PropsWithChildren, useContext, useEffect, useState } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
-import { setRowHeight } from "../store/rowHeightsSlice";
-import { selectedCellPosition } from "../store/selectedCellSlice";
-import { selectedRange } from "../store/selectedRangeSlice";
+import { setRowHeight } from "../store/slices/rowHeightsSlice";
+import { selectedCellPosition } from "../store/slices/selectedCellSlice";
+import { selectedRange } from "../store/slices/selectedRangeSlice";
 
 export const Row: React.FC<
   PropsWithChildren<{ row: number; style: any; height: number; resizeRef: any }>

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from ".";
-import { indexToAlpha } from "../lib/indexToAlpha";
-import { CellKey, Position, posToXAndY } from "../lib/xAndYtoPos";
+import { RootState } from "..";
+import { indexToAlpha } from "../../lib/indexToAlpha";
+import { CellKey, Position, posToXAndY } from "../../lib/xAndYtoPos";
 
 // Define a type for the slice state
 interface SelectedRangeState {

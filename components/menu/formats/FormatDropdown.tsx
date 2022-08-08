@@ -4,8 +4,8 @@ import {
   cellValues,
   MetaKeys,
   setCellMeta,
-} from "../../../store/cellValuesSlice";
-import { selectedCell } from "../../../store/selectedCellSlice";
+} from "../../../store/slices/cellValuesSlice";
+import { selectedCell } from "../../../store/slices/selectedCellSlice";
 import { Dropdown } from "../Dropdown";
 import { DropdownItem } from "../DropdownItem";
 

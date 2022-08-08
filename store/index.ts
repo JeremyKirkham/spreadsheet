@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import selectedCellReducer from "./selectedCellSlice";
-import cellValuesReducer from "./cellValuesSlice";
-import selectedRangeReducer from "./selectedRangeSlice";
-import columnWidthsReducer from "./columnWidthsSlice";
-import rowHeightsReducer from "./rowHeightsSlice";
+import selectedCellReducer from "./slices/selectedCellSlice";
+import cellValuesReducer from "./slices/cellValuesSlice";
+import selectedRangeReducer from "./slices/selectedRangeSlice";
+import columnWidthsReducer from "./slices/columnWidthsSlice";
+import rowHeightsReducer from "./slices/rowHeightsSlice";
 
 export const store = configureStore({
   reducer: {

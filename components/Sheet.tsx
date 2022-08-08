@@ -10,8 +10,8 @@ import { ActionMenu } from "./menu/ActionMenu";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { BsFileSpreadsheetFill } from "react-icons/bs";
 import { useAppSelector } from "../hooks/store";
-import { columnWidths } from "../store/columnWidthsSlice";
-import { rowHeights } from "../store/rowHeightsSlice";
+import { columnWidths } from "../store/slices/columnWidthsSlice";
+import { rowHeights } from "../store/slices/rowHeightsSlice";
 
 export const Sheet: React.FC = () => {
   const { darkColor } = useContext(ThemeContext);

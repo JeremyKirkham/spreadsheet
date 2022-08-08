@@ -1,73 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from ".";
-import { Parser as FormulaParser } from "hot-formula-parser";
-import { CellKey, xAndYToPos, posToXAndY } from "../lib/xAndYtoPos";
-import { indexToAlpha } from "../lib/indexToAlpha";
-import { CellCoord, CellValuesState, MetaKeys } from "./CellValuesState";
-import { addColumnToLeft as addColumnToLeftFn } from "./addColumnToLeft";
+import { RootState } from "..";
+import { CellKey, posToXAndY } from "../../lib/xAndYtoPos";
+import { indexToAlpha } from "../../lib/indexToAlpha";
+import { CellValuesState, MetaKeys } from "../lib/CellValuesState";
+import { addColumnToLeft as addColumnToLeftFn } from "../lib/addColumnToLeft";
+import { calculateFromRaw } from "../lib/calculateFromRaw";
 
 // Define the initial state using that type
 const initialState: CellValuesState = {
   value: {},
-};
-
-export const calculateFromRaw = (state: CellValuesState, rawValue: string) => {
-  const parser = new FormulaParser();
-  let reliesOnCells: string[] = [];
-
-  const fn = (cellCoord: CellCoord, done: any) => {
-    const cellId = xAndYToPos(
-      cellCoord.column.index + 1,
-      cellCoord.row.index + 1
-    );
-    reliesOnCells.push(cellId);
-    done(state.value[cellId].calculatedValue);
-  };
-
-  const rangeFn = (
-    startCellCoord: CellCoord,
-    endCellCoord: CellCoord,
-    done: any
-  ) => {
-    const fragment = [];
-    for (
-      let row = startCellCoord.row.index;
-      row <= endCellCoord.row.index;
-      row++
-    ) {
-      const colFragment = [];
-
-      for (
-        let col = startCellCoord.column.index;
-        col <= endCellCoord.column.index;
-        col++
-      ) {
-        const cellId = xAndYToPos(col + 1, row + 1);
-        const val = state.value[cellId].calculatedValue;
-        colFragment.push(val);
-        reliesOnCells.push(cellId);
-      }
-      fragment.push(colFragment);
-    }
-
-    if (fragment) {
-      done(fragment);
-    }
-  };
-
-  parser.on("callCellValue", fn);
-  parser.on("callRangeValue", rangeFn);
-
-  let calculatedValue = rawValue;
-  if (rawValue.charAt(0) == "=") {
-    const calculated = parser.parse(rawValue.substring(1));
-    calculatedValue = calculated.error ?? calculated.result;
-  }
-
-  return {
-    calculatedValue,
-    reliesOnCells,
-  };
 };
 
 export const cellValuesSlice = createSlice({

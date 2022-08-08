@@ -1,6 +1,6 @@
 import { WritableDraft } from "immer/dist/internal";
-import { alphaToIndex, indexToAlpha } from "../lib/indexToAlpha";
-import { posToXAndY, xAndYToPos } from "../lib/xAndYtoPos";
+import { alphaToIndex, indexToAlpha } from "../../lib/indexToAlpha";
+import { posToXAndY, xAndYToPos } from "../../lib/xAndYtoPos";
 import { CellValuesState } from "./CellValuesState";
 
 export const addColumnToLeft = (

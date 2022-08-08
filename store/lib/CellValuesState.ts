@@ -1,4 +1,4 @@
-import { CellKey } from "../lib/xAndYtoPos";
+import { CellKey } from "../../lib/xAndYtoPos";
 
 export interface CellPos {
   index: number;
