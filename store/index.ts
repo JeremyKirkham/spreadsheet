@@ -3,12 +3,14 @@ import selectedCellReducer from "./selectedCellSlice";
 import cellValuesReducer from "./cellValuesSlice";
 import selectedRangeReducer from "./selectedRangeSlice";
 import columnWidthsReducer from "./columnWidthsSlice";
+import rowHeightsReducer from "./rowHeightsSlice";
 
 export const store = configureStore({
   reducer: {
     selectedCell: selectedCellReducer,
     cellValues: cellValuesReducer,
     selectedRange: selectedRangeReducer,
+    rowHeights: rowHeightsReducer,
     columnWidths: columnWidthsReducer,
   },
 });
