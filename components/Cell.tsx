@@ -140,8 +140,10 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
         onClick={onClick}
       >
         <div className="calculatedValue">
-          {localValue.meta.format == "currency" && "$"}
-          {localValue.calculatedValue}
+          <span>
+            {localValue.meta.format == "currency" && "$"}
+            {localValue.calculatedValue}
+          </span>
         </div>
         <input
           value={isSelected ? localRaw : localValue.calculatedValue ?? ""}
@@ -182,11 +184,17 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           font-style: ${localValue.meta.fontStyle ?? "normal"};
           text-align: ${localValue.meta.textAlign ?? "left"};
         }
+        .calculatedValue > span {
+          width: 100%;
+          display: inline-block;
+          vertical-align: ${localValue.meta.horizontalAlign ?? "top"};
+          line-height: normal;
+          margin: 1px 0;
+        }
         input {
           outline: none;
           border: none;
           width: ${width - 2}px;
-          height: ${height - 2}px;
           cursor: default;
           background: ${isHighlighted ? highlightedColor : lightColor};
           color: ${fontColor};
