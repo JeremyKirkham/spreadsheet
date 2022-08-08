@@ -3,6 +3,11 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.visit("/");
   });
 
+  it("matches screenshot", () => {
+    cy.get(".selectedCells").should("have.value", "");
+    cy.compareSnapshot("home-page");
+  });
+
   it("starts empty", () => {
     cy.get(".selectedCells").should("have.value", "");
     cy.get("#header-A").should("not.have.class", "selected");
