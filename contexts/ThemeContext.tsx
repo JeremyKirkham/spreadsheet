@@ -11,6 +11,7 @@ interface ThemeContext {
   selectedColor: string;
   setIsDarkMode: (darkMode: boolean) => void;
   isDarkMode: boolean;
+  boxShadowVar: string;
 }
 
 export const ThemeContext = createContext<ThemeContext>({
@@ -24,6 +25,7 @@ export const ThemeContext = createContext<ThemeContext>({
   selectedColor: "#1A73E8",
   setIsDarkMode: () => {},
   isDarkMode: false,
+  boxShadowVar: "--shadow-elevation-medium",
 });
 
 export const ThemeProvider: React.FC<PropsWithChildren<{}>> = ({
@@ -39,6 +41,9 @@ export const ThemeProvider: React.FC<PropsWithChildren<{}>> = ({
   const borderColor = isDarkMode ? "#000000" : "#c0c0c0";
   const highlightedColor = isDarkMode ? "#212529" : "#e8f0fd";
   const selectedColor = "#1A73E8";
+  const boxShadowVar = isDarkMode
+    ? "--shadow-elevation-medium-dark"
+    : "--shadow-elevation-medium";
 
   return (
     <ThemeContext.Provider
@@ -51,6 +56,7 @@ export const ThemeProvider: React.FC<PropsWithChildren<{}>> = ({
         borderColor,
         highlightedColor,
         selectedColor,
+        boxShadowVar,
         setIsDarkMode,
         isDarkMode,
       }}

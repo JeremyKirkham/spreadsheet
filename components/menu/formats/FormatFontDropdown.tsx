@@ -3,8 +3,8 @@ import { FormatDropdown } from "./FormatDropdown";
 export const FormatFontDropdown = () => {
   const options = [
     {
-      title: "Arial",
-      value: "arial",
+      title: "Lato",
+      value: "Lato",
     },
     {
       title: "Times New Roman",

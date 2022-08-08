@@ -9,19 +9,27 @@ import {
 import { selectedCell, update } from "../store/selectedCellSlice";
 import { CellValue, cellValues, setCellValue } from "../store/cellValuesSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
-import { xAndYToPos } from "../lib/xAndYtoPost";
+import { xAndYToPos } from "../lib/xAndYtoPos";
 import { ThemeContext } from "../contexts/ThemeContext";
+import {
+  addCell,
+  clearRange,
+  selectedRange,
+  setMouseDown,
+} from "../store/selectedRangeSlice";
+import { columnWidths } from "../store/columnWidthsSlice";
+import { indexToAlpha } from "../lib/indexToAlpha";
 
 interface Props {
-  width: number;
   height: number;
   x: number;
   y: number;
 }
 
-export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
+export const Cell: React.FC<Props> = ({ x, y, height }) => {
   const { fontColor, lightColor, darkColor, highlightedColor, selectedColor } =
     useContext(ThemeContext);
+  const [isHighlighted, setIsHighlighted] = useState(false);
   const [localRaw, setLocalRaw] = useState<string>("");
   const [localValue, setLocalValue] = useState<CellValue>({
     rawValue: "",
@@ -34,9 +42,25 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
   const [isSelected, setIsSelected] = useState(false);
   const currentCellValues = useAppSelector(cellValues);
   const selectedCellValue = useAppSelector(selectedCell);
+  const selectedRangeValue = useAppSelector(selectedRange);
+  const columnWidthValues = useAppSelector(columnWidths);
   const inputRef = useRef<HTMLInputElement>(null);
+  const width = columnWidthValues[indexToAlpha(x)];
 
   const pos = xAndYToPos(x, y);
+
+  useEffect(() => {
+    if (selectedRangeValue.start && selectedRangeValue.end) {
+      const isH =
+        x >= selectedRangeValue.start?.x &&
+        x <= selectedRangeValue.end?.x &&
+        y >= selectedRangeValue.start?.y &&
+        y <= selectedRangeValue.end?.y;
+      setIsHighlighted(isH);
+    } else {
+      setIsHighlighted(false);
+    }
+  }, [selectedRangeValue, x, y]);
 
   useEffect(() => {
     if (selectedCellValue == pos) {
@@ -56,10 +80,6 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
       setLocalRaw(cellValue.rawValue);
     }
   }, [currentCellValues, pos]);
-
-  const isHighlighted = (): boolean => {
-    return false;
-  };
 
   const onFocus = () => {
     dispatch(update(pos));
@@ -92,11 +112,33 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
     );
   };
 
-  const onMouseOver = () => {};
+  const onMouseOver = () => {
+    dispatch(addCell(pos));
+  };
+  const onMouseDown = () => {
+    dispatch(update(pos));
+    dispatch(clearRange());
+    dispatch(setMouseDown(true));
+    dispatch(addCell(pos));
+  };
+  const onMouseUp = () => {
+    dispatch(setMouseDown(false));
+  };
+  const onClick = () => {
+    dispatch(clearRange());
+  };
 
   return (
     <>
-      <div className="cell" id={pos} onClick={onFocus}>
+      <div
+        className={`cell ${isHighlighted ? "highlighted" : null}`}
+        id={pos}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onFocus={onFocus}
+        onMouseOver={onMouseOver}
+        onClick={onClick}
+      >
         <div className="calculatedValue">
           {localValue.meta.format == "currency" && "$"}
           {localValue.calculatedValue}
@@ -105,7 +147,6 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           value={isSelected ? localRaw : localValue.calculatedValue ?? ""}
           onFocus={onFocus}
           onBlur={onBlur}
-          onMouseOver={onMouseOver}
           onChange={onChange}
           onKeyDown={onTab}
           ref={inputRef}
@@ -122,7 +163,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           border-top: solid 1px rgba(0, 0, 0, 0);
           border-right: solid 1px ${darkColor};
           border-bottom: solid 1px ${darkColor};
-          background: ${isHighlighted() ? highlightedColor : lightColor};
+          background: ${isHighlighted ? highlightedColor : lightColor};
           color: ${fontColor};
           border: ${isSelected ? `solid 1px ${selectedColor}` : "default"};
           position: relative;
@@ -147,7 +188,7 @@ export const Cell: React.FC<Props> = ({ x, y, width, height }) => {
           width: ${width - 2}px;
           height: ${height - 2}px;
           cursor: default;
-          background: ${lightColor};
+          background: ${isHighlighted ? highlightedColor : lightColor};
           color: ${fontColor};
           position: absolute;
           top: 0;

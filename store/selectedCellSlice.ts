@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import { posToXAndY } from "../lib/xAndYtoPost";
+import { posToXAndY } from "../lib/xAndYtoPos";
 
 type CellKey = string;
 

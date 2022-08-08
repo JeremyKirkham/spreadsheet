@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { Parser as FormulaParser } from "hot-formula-parser";
-import { xAndYToPos } from "../lib/xAndYtoPost";
+import { xAndYToPos } from "../lib/xAndYtoPos";
 
 interface CellPos {
   index: number;
@@ -63,7 +63,39 @@ const calculateFromRaw = (state: CellValuesState, rawValue: string) => {
     done(state.value[cellId].calculatedValue);
   };
 
+  const rangeFn = (
+    startCellCoord: CellCoord,
+    endCellCoord: CellCoord,
+    done: any
+  ) => {
+    const fragment = [];
+    for (
+      let row = startCellCoord.row.index;
+      row <= endCellCoord.row.index;
+      row++
+    ) {
+      const colFragment = [];
+
+      for (
+        let col = startCellCoord.column.index;
+        col <= endCellCoord.column.index;
+        col++
+      ) {
+        const cellId = xAndYToPos(col + 1, row + 1);
+        const val = state.value[cellId].calculatedValue;
+        colFragment.push(val);
+        reliesOnCells.push(cellId);
+      }
+      fragment.push(colFragment);
+    }
+
+    if (fragment) {
+      done(fragment);
+    }
+  };
+
   parser.on("callCellValue", fn);
+  parser.on("callRangeValue", rangeFn);
 
   let calculatedValue = rawValue;
   if (rawValue.charAt(0) == "=") {
