@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { BsPlusLg } from "react-icons/bs";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { useClickOutside } from "../hooks/useClickOutside";
@@ -118,11 +119,11 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
       >
         <div className="moremenu">
           <Dropdown title="" minWidth={180}>
-            <DropdownItem onClick={() => addColToLeft(c)}>
-              Insert 1 column to the left
+            <DropdownItem icon={BsPlusLg} onClick={() => addColToLeft(c)}>
+              Insert 1 column left
             </DropdownItem>
-            <DropdownItem onClick={() => addColToRight(c)}>
-              Insert 1 column to the right
+            <DropdownItem icon={BsPlusLg} onClick={() => addColToRight(c)}>
+              Insert 1 column right
             </DropdownItem>
           </Dropdown>
         </div>
