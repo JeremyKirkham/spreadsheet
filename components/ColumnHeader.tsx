@@ -118,7 +118,7 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
         ref={ref}
       >
         <div className="moremenu">
-          <Dropdown title="" minWidth={180}>
+          <Dropdown title="" minWidth={180} reverse={true}>
             <DropdownItem icon={BsArrowBarLeft} onClick={() => addColToLeft(c)}>
               Insert 1 column left
             </DropdownItem>
