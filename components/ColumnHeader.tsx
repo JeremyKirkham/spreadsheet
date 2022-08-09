@@ -147,8 +147,12 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
           position: relative;
         }
         .moremenu {
+          display: none;
           flex: 0 1 auto;
           z-index: 2;
+        }
+        .cellHeader:hover > .moremenu {
+          display: block;
         }
         .headerVal {
           flex: 0 1 auto;
