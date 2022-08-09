@@ -31,7 +31,7 @@ export const FormatFontSizeDropdown = () => {
   return (
     <FormatDropdown
       title="Size"
-      showCaret={false}
+      showCaret={true}
       metaKey="fontSize"
       options={options}
     />

@@ -16,7 +16,7 @@ export const FormatFontDropdown = () => {
     <FormatDropdown
       minWidth={180}
       title="Font"
-      showCaret={false}
+      showCaret={true}
       metaKey="font"
       options={options}
     />

@@ -4,9 +4,9 @@ import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { indexToAlpha } from "../lib/indexToAlpha";
 import { posToXAndY } from "../lib/xAndYtoPos";
-import { cellValues, setCellValue } from "../store/cellValuesSlice";
-import { selectedCell } from "../store/selectedCellSlice";
-import { selectedRangeSymbol } from "../store/selectedRangeSlice";
+import { cellValues, setCellValue } from "../store/slices/cellValuesSlice";
+import { selectedCell } from "../store/slices/selectedCellSlice";
+import { selectedRangeSymbol } from "../store/slices/selectedRangeSlice";
 
 export const SheetMenu: React.FC = () => {
   const {

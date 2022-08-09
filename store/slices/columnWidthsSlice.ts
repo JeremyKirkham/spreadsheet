@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from ".";
+import { RootState } from "..";
 
 // Define a type for the slice state
 interface ColumnState {
@@ -35,10 +35,15 @@ export const columnWidthsSlice = createSlice({
         [action.payload.key]: action.payload.width,
       };
     },
+    addColumnToLeft: (state, action: PayloadAction<{ key: string }>) => {
+      state.value = {
+        ...state.value,
+      };
+    },
   },
 });
 
-export const { setColumnWidth } = columnWidthsSlice.actions;
+export const { setColumnWidth, addColumnToLeft } = columnWidthsSlice.actions;
 
 export const columnWidths = (state: RootState) => state.columnWidths.value;
 

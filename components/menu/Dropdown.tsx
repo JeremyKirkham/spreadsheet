@@ -20,7 +20,7 @@ export const Dropdown: React.FC<Props> = ({
   children,
   showCaret = true,
 }) => {
-  const { boxShadowVar, lightColor } = useContext(ThemeContext);
+  const { boxShadowVar, lightColor, mediumColor } = useContext(ThemeContext);
   const [open, setOpen] = useState(false);
   const ref = useClickOutside(() => {
     if (open) {
@@ -42,7 +42,7 @@ export const Dropdown: React.FC<Props> = ({
           {Icon && <Icon />}
           {showCaret && (
             <span className="caret">
-              <BsCaretDownFill size={12} />
+              <BsCaretDownFill size={8} />
             </span>
           )}
         </Button>
@@ -66,12 +66,13 @@ export const Dropdown: React.FC<Props> = ({
           max-height: 300px;
           overflow-y: auto;
           position: absolute;
-          top: 36px;
+          top: 100%;
           left: 2px;
           z-index: 999;
           background: ${lightColor};
-          border-radius: 4px;
+          border-radius: 2px;
           box-shadow: var(${boxShadowVar});
+          border: solid 1px ${mediumColor};
         }
       `}</style>
     </>

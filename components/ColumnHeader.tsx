@@ -1,10 +1,23 @@
 import { useContext, useEffect, useState } from "react";
+import { BsPlusLg } from "react-icons/bs";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { useAppDispatch, useAppSelector } from "../hooks/store";
 import { useClickOutside } from "../hooks/useClickOutside";
-import { columnWidths, setColumnWidth } from "../store/columnWidthsSlice";
-import { selectedCellPosition, update } from "../store/selectedCellSlice";
-import { clearRange, selectedRange } from "../store/selectedRangeSlice";
+import {
+  addColumnToLeft,
+  addColumnToRight,
+} from "../store/slices/cellValuesSlice";
+import {
+  columnWidths,
+  setColumnWidth,
+} from "../store/slices/columnWidthsSlice";
+import {
+  selectedCellPosition,
+  update,
+} from "../store/slices/selectedCellSlice";
+import { clearRange, selectedRange } from "../store/slices/selectedRangeSlice";
+import { Dropdown } from "./menu/Dropdown";
+import { DropdownItem } from "./menu/DropdownItem";
 
 interface Props {
   height: number;
@@ -86,6 +99,16 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
     dispatch(clearRange());
   };
 
+  const addColToLeft = (col: string) => {
+    dispatch(addColumnToLeft({ key: col }));
+    return undefined;
+  };
+
+  const addColToRight = (col: string) => {
+    dispatch(addColumnToRight({ key: col }));
+    return undefined;
+  };
+
   return (
     <>
       <div
@@ -94,6 +117,16 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
         onClick={onClick}
         ref={ref}
       >
+        <div className="moremenu">
+          <Dropdown title="" minWidth={180}>
+            <DropdownItem icon={BsPlusLg} onClick={() => addColToLeft(c)}>
+              Insert 1 column left
+            </DropdownItem>
+            <DropdownItem icon={BsPlusLg} onClick={() => addColToRight(c)}>
+              Insert 1 column right
+            </DropdownItem>
+          </Dropdown>
+        </div>
         <span className="headerVal">{c}</span>
         <div onMouseDown={handler} className="rightBorder"></div>
       </div>
@@ -112,6 +145,10 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
           display: flex;
           justify-content: flex-start;
           position: relative;
+        }
+        .moremenu {
+          flex: 0 1 auto;
+          z-index: 2;
         }
         .headerVal {
           flex: 0 1 auto;

@@ -20,7 +20,7 @@ export const FormatFillColorDropdown = () => {
   return (
     <FormatDropdown
       icon={BsPaintBucket}
-      showCaret={false}
+      showCaret={true}
       metaKey="backgroundColor"
       options={options}
     />
