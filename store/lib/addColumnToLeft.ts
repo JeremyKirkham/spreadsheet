@@ -9,10 +9,30 @@ export const addColumnToLeft = (
 ): WritableDraft<CellValuesState["value"]> => {
   const keyIndex = alphaToIndex(key);
   const newValArr = Object.keys(state.value).map((k) => {
+    const currentValue = state.value[k];
+
+    const newReliesOnCells = currentValue.reliesOnCells?.map((c) => {
+      const cellKey = posToXAndY(c);
+      if (cellKey.x >= keyIndex) {
+        const existKey = `${indexToAlpha(cellKey.x)}${cellKey.y}`;
+        const newKey = `${indexToAlpha(cellKey.x + 1)}${cellKey.y}`;
+        const regex = new RegExp(existKey, "g");
+        currentValue.rawValue = currentValue.rawValue.replace(regex, newKey);
+        return xAndYToPos(cellKey.x + 1, cellKey.y);
+      } else {
+        return c;
+      }
+    });
+
+    const updatedCurrentValue = {
+      ...currentValue,
+      reliesOnCells: newReliesOnCells,
+    };
+
     const destKey = posToXAndY(k);
     if (destKey.x < keyIndex) {
       return {
-        [k]: state.value[k],
+        [k]: updatedCurrentValue,
       };
     } else if (indexToAlpha(destKey.x) === key) {
       return {
@@ -20,11 +40,11 @@ export const addColumnToLeft = (
           rawValue: "",
           meta: {},
         },
-        [xAndYToPos(destKey.x + 1, destKey.y)]: state.value[k],
+        [xAndYToPos(destKey.x + 1, destKey.y)]: updatedCurrentValue,
       };
     } else {
       return {
-        [xAndYToPos(destKey.x + 1, destKey.y)]: state.value[k],
+        [xAndYToPos(destKey.x + 1, destKey.y)]: updatedCurrentValue,
       };
     }
   });
