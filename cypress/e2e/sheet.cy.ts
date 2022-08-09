@@ -189,4 +189,14 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     });
     cy.get("#row-1").should("have.css", "height", "49px");
   });
+
+  it("adds column to left", () => {
+    cy.get("#A-1").click().type("= B1 + C2");
+    cy.get("#B-1").click().type("1");
+    cy.get("#C-2").click().type("2");
+    cy.get("#C-3").click();
+    cy.get("#header-B>").find(".caret").click();
+    cy.get("#header-B>").contains("Insert 1 column to the left").click();
+    cy.get("#A-1").click().find("input").should("have.value", "= C1 + D2");
+  });
 });
