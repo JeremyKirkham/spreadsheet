@@ -147,7 +147,7 @@ export const ColumnHeader: React.FC<Props> = ({ height, c, i }) => {
           position: relative;
         }
         .moremenu {
-          display: none;
+          display: ${selected ? "block" : "none"};
           flex: 0 1 auto;
           z-index: 2;
         }
