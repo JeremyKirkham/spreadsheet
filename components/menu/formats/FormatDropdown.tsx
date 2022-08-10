@@ -51,6 +51,7 @@ export const FormatDropdown: React.FC<Props> = ({
       minWidth={minWidth}
       showCaret={showCaret}
       tooltip={tooltip}
+      className={metaKey}
     >
       {options.map((opt, i) => {
         return (

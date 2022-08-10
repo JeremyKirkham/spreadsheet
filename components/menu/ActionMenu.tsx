@@ -46,7 +46,6 @@ export const ActionMenu: React.FC = () => {
           display: flex;
           padding-left: 58px;
           border-bottom: 1px solid ${darkColor};
-          overflow-x: auto;
         }
         .format {
           display: flex;

@@ -30,7 +30,12 @@ export const FormatButton: React.FC<{
   };
 
   return (
-    <Button isActive={isActive} onClick={onClick} tooltip={tooltip}>
+    <Button
+      isActive={isActive}
+      onClick={onClick}
+      tooltip={tooltip}
+      className={metaKey}
+    >
       <Icon />
     </Button>
   );

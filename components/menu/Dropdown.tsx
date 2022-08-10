@@ -13,6 +13,7 @@ interface Props {
   showCaret?: boolean;
   reverse?: boolean;
   tooltip?: string;
+  className?: string;
 }
 
 export const Dropdown: React.FC<Props> = ({
@@ -22,6 +23,7 @@ export const Dropdown: React.FC<Props> = ({
   children,
   reverse,
   tooltip,
+  className,
   showCaret = true,
 }) => {
   const { boxShadowVar, lightColor, mediumColor } = useContext(ThemeContext);
@@ -46,6 +48,7 @@ export const Dropdown: React.FC<Props> = ({
           onClick={onClick}
           reverse={reverse}
           tooltip={tooltip}
+          className={className}
         >
           {title}
           {Icon && <Icon />}

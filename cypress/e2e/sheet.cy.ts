@@ -199,4 +199,12 @@ describe("Spreadsheet", { scrollBehavior: false }, () => {
     cy.get("#header-B").contains("Insert 1 column left").click();
     cy.get("#A-1").click().find("input").should("have.value", "= C1 + D2");
   });
+
+  it("sets font size", () => {
+    cy.get("#A-1>.calculatedValue").should("have.css", "font-size", "12px");
+    cy.get("#A-1").click().type("Some text");
+    cy.get(".fontSize").click();
+    cy.contains("8px").click();
+    cy.get("#A-1>.calculatedValue").should("have.css", "font-size", "8px");
+  });
 });

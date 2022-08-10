@@ -45,7 +45,6 @@ export const TopMenu: React.FC = () => {
           border-bottom: 1px solid ${darkColor};
         }
         .scrollable {
-          overflow-x: auto;
           display: flex;
         }
         .icon {
