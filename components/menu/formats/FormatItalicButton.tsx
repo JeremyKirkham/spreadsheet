@@ -8,6 +8,7 @@ export const FormatItalicButton = () => {
       metaValue="italic"
       metaDefaultValue="normal"
       icon={BsTypeItalic}
+      tooltip="Italic"
     />
   );
 };

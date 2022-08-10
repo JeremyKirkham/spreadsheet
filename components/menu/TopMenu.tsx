@@ -21,26 +21,31 @@ export const TopMenu: React.FC = () => {
         <div className="icon">
           <BsFileSpreadsheetFill size={24} color="#34A853" />
         </div>
-        <Spacer />
-        <TaskFileDropdown />
-        <TaskEditDropdown />
-        <TaskViewDropdown />
-        <TaskInsertDropdown />
-        <TaskFormatDropdown />
-        <TaskDataDropdown />
-        <TaskToolsDropdown />
-        <TaskExtensionsDropdown />
-        <Spacer />
-        <DarkModeButton />
-        <Spacer />
+        <div className="scrollable">
+          <Spacer />
+          <TaskFileDropdown />
+          <TaskEditDropdown />
+          <TaskViewDropdown />
+          <TaskInsertDropdown />
+          <TaskFormatDropdown />
+          <TaskDataDropdown />
+          <TaskToolsDropdown />
+          <TaskExtensionsDropdown />
+          <Spacer />
+          <DarkModeButton />
+          <Spacer />
+        </div>
       </div>
       <style jsx>{`
         .topmenu {
-          height: 40px;
+          min-height: 40px;
           width: 100%;
           background: ${mediumColor};
           display: flex;
           border-bottom: 1px solid ${darkColor};
+        }
+        .scrollable {
+          display: flex;
         }
         .icon {
           width: 58px;

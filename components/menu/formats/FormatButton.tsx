@@ -10,7 +10,8 @@ export const FormatButton: React.FC<{
   metaValue: any;
   metaDefaultValue: any;
   icon: IconType;
-}> = ({ metaKey, metaValue, metaDefaultValue, icon: Icon }) => {
+  tooltip?: string;
+}> = ({ metaKey, metaValue, metaDefaultValue, tooltip, icon: Icon }) => {
   const currentCellValues = useAppSelector(cellValues);
   const selectedCellValue = useAppSelector(selectedCell);
   const dispatch = useAppDispatch();
@@ -29,7 +30,12 @@ export const FormatButton: React.FC<{
   };
 
   return (
-    <Button isActive={isActive} onClick={onClick}>
+    <Button
+      isActive={isActive}
+      onClick={onClick}
+      tooltip={tooltip}
+      className={metaKey}
+    >
       <Icon />
     </Button>
   );

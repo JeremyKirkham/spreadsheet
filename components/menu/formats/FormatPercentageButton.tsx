@@ -8,6 +8,7 @@ export const FormatPercentageButton = () => {
       metaValue="percentage"
       metaDefaultValue="text"
       icon={BsPercent}
+      tooltip="Format as percentage"
     />
   );
 };

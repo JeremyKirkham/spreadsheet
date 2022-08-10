@@ -19,6 +19,7 @@ export const FormatFontDropdown = () => {
       showCaret={true}
       metaKey="font"
       options={options}
+      tooltip="Font"
     />
   );
 };

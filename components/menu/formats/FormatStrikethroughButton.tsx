@@ -8,6 +8,7 @@ export const FormatStrikethroughButton = () => {
       metaValue="line-through"
       metaDefaultValue="none"
       icon={BsTypeStrikethrough}
+      tooltip="Strikethrough"
     />
   );
 };

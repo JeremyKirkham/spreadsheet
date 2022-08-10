@@ -23,6 +23,7 @@ export const FormatFillColorDropdown = () => {
       showCaret={true}
       metaKey="backgroundColor"
       options={options}
+      tooltip="Background color"
     />
   );
 };
