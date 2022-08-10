@@ -197,6 +197,7 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
         input {
           outline: none;
           border: none;
+          height: 100%;
           width: ${width - 2}px;
           cursor: default;
           background: ${isHighlighted ? highlightedColor : lightColor};

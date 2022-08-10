@@ -9,6 +9,7 @@ import { DropdownItem } from "../DropdownItem";
 interface Option {
   title: string;
   value: string | number;
+  children?: any;
 }
 
 interface Props {
@@ -64,7 +65,7 @@ export const FormatDropdown: React.FC<Props> = ({
             }}
             key={i}
           >
-            {opt.title}
+            {opt.children ?? opt.title}
           </DropdownItem>
         );
       })}
