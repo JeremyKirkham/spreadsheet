@@ -19,6 +19,7 @@ export const FormatTextColorDropdown = () => {
       showCaret={true}
       metaKey="color"
       options={options}
+      tooltip="Text color"
     />
   );
 };

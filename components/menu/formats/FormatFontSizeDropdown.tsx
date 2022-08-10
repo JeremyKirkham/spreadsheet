@@ -34,6 +34,7 @@ export const FormatFontSizeDropdown = () => {
       showCaret={true}
       metaKey="fontSize"
       options={options}
+      tooltip="Font size"
     />
   );
 };

@@ -8,6 +8,7 @@ export const FormatBoldButton = () => {
       metaValue="bold"
       metaDefaultValue="normal"
       icon={BsTypeBold}
+      tooltip="Bold"
     />
   );
 };

@@ -12,6 +12,7 @@ interface Props {
   children?: ReactNode;
   showCaret?: boolean;
   reverse?: boolean;
+  tooltip?: string;
 }
 
 export const Dropdown: React.FC<Props> = ({
@@ -20,6 +21,7 @@ export const Dropdown: React.FC<Props> = ({
   minWidth,
   children,
   reverse,
+  tooltip,
   showCaret = true,
 }) => {
   const { boxShadowVar, lightColor, mediumColor } = useContext(ThemeContext);
@@ -39,7 +41,12 @@ export const Dropdown: React.FC<Props> = ({
   return (
     <>
       <div className="dropdown-container">
-        <Button isActive={open} onClick={onClick} reverse={reverse}>
+        <Button
+          isActive={open}
+          onClick={onClick}
+          reverse={reverse}
+          tooltip={tooltip}
+        >
           {title}
           {Icon && <Icon />}
           {showCaret && (

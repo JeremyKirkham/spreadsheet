@@ -23,6 +23,7 @@ export const FormatTextVerticalAlignDropdown = () => {
       showCaret={true}
       metaKey="horizontalAlign"
       options={options}
+      tooltip="Vertical alignment"
     />
   );
 };

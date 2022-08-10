@@ -8,6 +8,7 @@ export const FormatCurrencyButton = () => {
       metaValue="currency"
       metaDefaultValue="text"
       icon={BsCurrencyDollar}
+      tooltip="Format as currency"
     />
   );
 };

@@ -18,6 +18,7 @@ interface Props {
   metaKey: MetaKeys;
   minWidth?: number;
   showCaret?: boolean;
+  tooltip?: string;
 }
 
 export const FormatDropdown: React.FC<Props> = ({
@@ -27,6 +28,7 @@ export const FormatDropdown: React.FC<Props> = ({
   showCaret,
   options,
   metaKey,
+  tooltip,
 }) => {
   const currentCellValues = useAppSelector(cellValues);
   const selectedCellValue = useAppSelector(selectedCell);
@@ -48,6 +50,7 @@ export const FormatDropdown: React.FC<Props> = ({
       icon={icon}
       minWidth={minWidth}
       showCaret={showCaret}
+      tooltip={tooltip}
     >
       {options.map((opt, i) => {
         return (
