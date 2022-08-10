@@ -7,8 +7,8 @@ export const FormatFontDropdown = () => {
       value: "Lato",
     },
     {
-      title: "Times New Roman",
-      value: "Times New Roman",
+      title: "Roboto",
+      value: "Roboto",
     },
   ];
 

@@ -179,6 +179,7 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           padding: 0px 2px;
           color: ${localValue.meta.color ?? "default"};
           background-color: ${localValue.meta.backgroundColor ?? "default"};
+          font-family: ${localValue.meta.font ?? "default"};
           font-weight: ${localValue.meta.fontWeight ?? "normal"};
           font-size: ${localValue.meta.fontSize ?? 12}px;
           font-style: ${localValue.meta.fontStyle ?? "normal"};
