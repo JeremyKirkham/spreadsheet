@@ -40,7 +40,7 @@ export const ThemeProvider: React.FC<PropsWithChildren<{}>> = ({
   const darkColor = isDarkMode ? "#212529" : "#E8EAED";
   const borderColor = isDarkMode ? "#000000" : "#c0c0c0";
   const highlightedColor = isDarkMode ? "#212529" : "#e8f0fd";
-  const selectedColor = "#1A73E8";
+  const selectedColor = "#4285F4";
   const boxShadowVar = isDarkMode
     ? "--shadow-elevation-medium-dark"
     : "--shadow-elevation-medium";
