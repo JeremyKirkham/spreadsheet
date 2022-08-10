@@ -41,12 +41,12 @@ export const ActionMenu: React.FC = () => {
       </div>
       <style jsx>{`
         .actionmenu {
-          height: 40px;
           width: 100%;
           background: ${mediumColor};
           display: flex;
           padding-left: 58px;
           border-bottom: 1px solid ${darkColor};
+          overflow-x: auto;
         }
         .format {
           display: flex;
