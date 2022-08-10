@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { IconType } from "react-icons";
 import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { MetaKeys } from "../../../store/lib/CellValuesState";
@@ -9,7 +10,7 @@ import { DropdownItem } from "../DropdownItem";
 interface Option {
   title: string;
   value: string | number;
-  children?: any;
+  children?: ReactNode;
 }
 
 interface Props {
