@@ -162,8 +162,6 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           height: ${height}px;
           flex-shrink: 0;
           display: flex;
-          border-left: solid 1px rgba(0, 0, 0, 0);
-          border-top: solid 1px rgba(0, 0, 0, 0);
           border-right: solid 1px ${darkColor};
           border-bottom: solid 1px ${darkColor};
           background: ${isHighlighted ? highlightedColor : lightColor};
@@ -172,11 +170,10 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           position: relative;
         }
         .calculatedValue {
-          width: ${width - 3}px;
+          width: 100%;
           overflow: hidden;
-          height: 100%;
-          line-height: ${height - 4}px;
-          padding: 0px 2px;
+          line-height: ${height - 2}px;
+          padding: 0px 3px;
           color: ${localValue.meta.color ?? "default"};
           background-color: ${localValue.meta.backgroundColor ?? "default"};
           font-family: ${localValue.meta.font ?? "default"};
