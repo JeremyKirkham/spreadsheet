@@ -174,7 +174,7 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
         .calculatedValue {
           width: ${width - 3}px;
           overflow: hidden;
-          height: ${height}px;
+          height: 100%;
           line-height: ${height - 4}px;
           padding: 0px 2px;
           color: ${localValue.meta.color ?? "default"};
@@ -189,7 +189,6 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           width: 100%;
           display: inline-block;
           vertical-align: ${localValue.meta.horizontalAlign ?? "middle"};
-          line-height: normal;
           margin: 1px 0;
           visibility: ${isSelected ? "hidden" : "show"};
           text-decoration: ${localValue.meta.textDecoration ?? "none"};
@@ -201,7 +200,12 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           width: ${width - 2}px;
           cursor: default;
           background: ${isHighlighted ? highlightedColor : lightColor};
-          color: ${fontColor};
+          color: ${localValue.meta.color ?? fontColor};
+          font-family: ${localValue.meta.font ?? "default"};
+          font-weight: ${localValue.meta.fontWeight ?? "normal"};
+          font-size: ${localValue.meta.fontSize ?? 12}px;
+          font-style: ${localValue.meta.fontStyle ?? "normal"};
+          text-align: ${localValue.meta.textAlign ?? "left"};
           position: absolute;
           top: 0;
           left: 0;
