@@ -175,7 +175,7 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
           width: ${width - 3}px;
           overflow: hidden;
           height: ${height}px;
-          line-height: ${height - 2}px;
+          line-height: ${height - 4}px;
           padding: 0px 2px;
           color: ${localValue.meta.color ?? "default"};
           background-color: ${localValue.meta.backgroundColor ?? "default"};
@@ -188,7 +188,7 @@ export const Cell: React.FC<Props> = ({ x, y, height }) => {
         .calculatedValue > span {
           width: 100%;
           display: inline-block;
-          vertical-align: ${localValue.meta.horizontalAlign ?? "top"};
+          vertical-align: ${localValue.meta.horizontalAlign ?? "middle"};
           line-height: normal;
           margin: 1px 0;
           visibility: ${isSelected ? "hidden" : "show"};
